@@ -10,21 +10,15 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           colors: {
             brand: {
-              50: '#f0fdf4',
+              50: '#ecfdf5',
+              100: '#d1fae5',
               500: '#10b981',
               600: '#059669',
-              900: '#064e3b'
-            },
-            surface: {
-              dark: '#080c14',
-              card: '#0f172a',
-              cardLight: '#1e293b',
-              border: '#1e293b'
+              700: '#047857'
             }
           }
         }
@@ -35,48 +29,48 @@
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #080c14;
-      color: #f1f5f9;
+      background-color: #f8fafc;
+      color: #0f172a;
     }
     .mono { font-family: 'JetBrains Mono', monospace; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #080c14; }
-    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white bg-slate-50 text-slate-900">
 
   <!-- Top App Navigation -->
-  <header class="h-16 border-b border-surface-border bg-surface-dark/95 backdrop-blur px-6 flex items-center justify-between sticky top-0 z-50">
+  <header class="h-16 border-b border-slate-200 bg-white/95 backdrop-blur px-6 flex items-center justify-between sticky top-0 z-50 shadow-sm">
     <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 cursor-pointer" onclick="navigate('landing')">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shadow-md shadow-emerald-500/20 cursor-pointer" onclick="navigate('landing')">
         <i data-lucide="zap" class="w-5 h-5 text-white"></i>
       </div>
       <div onclick="navigate('landing')" class="cursor-pointer">
         <div class="flex items-center gap-2">
-          <span class="font-extrabold text-base tracking-tight text-white">Prospect<span class="text-emerald-400">Pulse</span></span>
-          <span class="px-2 py-0.5 text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">AI SDR Platform</span>
+          <span class="font-extrabold text-base tracking-tight text-slate-900">Prospect<span class="text-emerald-600">Pulse</span></span>
+          <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full">AI SDR Platform</span>
         </div>
-        <p class="text-[11px] text-slate-400">Autonomous B2B Outbound, Lead Lists & Pipeline CRM</p>
+        <p class="text-[11px] text-slate-500">Autonomous B2B Outbound, Lead Lists & Pipeline CRM</p>
       </div>
     </div>
 
     <!-- Navigation Bar for All 4 Core Views -->
-    <nav class="hidden md:flex items-center bg-surface-card p-1 rounded-xl border border-surface-border text-xs">
-      <button onclick="navigate('landing')" id="nav-landing" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+    <nav class="hidden md:flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
+      <button onclick="navigate('landing')" id="nav-landing" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
         <i data-lucide="home" class="w-3.5 h-3.5"></i>
         <span>Overview</span>
       </button>
-      <button onclick="navigate('agent')" id="nav-agent" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold bg-emerald-500 text-white transition flex items-center gap-1.5">
-        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+      <button onclick="navigate('agent')" id="nav-agent" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold bg-white text-emerald-700 shadow-sm border border-slate-200 transition flex items-center gap-1.5">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i>
         <span>AI SDR Agent</span>
       </button>
-      <button onclick="navigate('lists')" id="nav-lists" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+      <button onclick="navigate('lists')" id="nav-lists" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
         <i data-lucide="list-filter" class="w-3.5 h-3.5"></i>
         <span>Lead Lists</span>
       </button>
-      <button onclick="navigate('crm')" id="nav-crm" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+      <button onclick="navigate('crm')" id="nav-crm" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
         <i data-lucide="kanban" class="w-3.5 h-3.5"></i>
         <span>Pipeline CRM</span>
       </button>
@@ -84,14 +78,14 @@
 
     <!-- Right Controls -->
     <div class="flex items-center gap-3">
-      <button onclick="openWebhookModal()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-2">
-        <i data-lucide="share-2" class="w-3.5 h-3.5 text-blue-400"></i>
+      <button onclick="openWebhookModal()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition flex items-center gap-2 shadow-sm">
+        <i data-lucide="share-2" class="w-3.5 h-3.5 text-blue-600"></i>
         <span class="hidden sm:inline">n8n Export</span>
       </button>
-      <button onclick="navigate('landing')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 transition">
+      <button onclick="navigate('landing')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 transition shadow-sm">
         Pricing: $34/mo
       </button>
-      <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-emerald-400">
+      <div class="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-emerald-700">
         VS
       </div>
     </div>
@@ -100,61 +94,60 @@
   <!-- ========================================== -->
   <!-- VIEW 1: PUBLIC MARKETING LANDING PAGE      -->
   <!-- ========================================== -->
-  <section id="viewLanding" class="hidden flex-1 flex flex-col">
-    <!-- Hero Section -->
+  <section id="viewLanding" class="hidden flex-1 flex flex-col bg-gradient-to-b from-white via-slate-50 to-slate-100">
     <div class="relative py-20 px-6 max-w-6xl mx-auto text-center flex flex-col items-center">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-6">
-        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold mb-6 shadow-sm">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i>
         <span>Next-Gen Autonomous Sales Development (2026)</span>
       </div>
 
-      <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight max-w-4xl">
-        Replace a $50,000/yr SDR with an <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Autonomous AI Sales Agent</span>
+      <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight max-w-4xl">
+        Replace a $50,000/yr SDR with an <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">Autonomous AI Sales Agent</span>
       </h1>
 
-      <p class="mt-6 text-base md:text-lg text-slate-400 max-w-2xl leading-relaxed">
+      <p class="mt-6 text-base md:text-lg text-slate-600 max-w-2xl leading-relaxed">
         ProspectPulse continuously discovers target accounts, analyzes hiring signals & tech stacks, drafts non-spam personalized pitches, and syncs meetings directly to your CRM.
       </p>
 
       <div class="mt-8 flex flex-col sm:flex-row gap-4 items-center">
-        <button onclick="navigate('agent')" class="px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-sm shadow-xl shadow-emerald-500/25 transition flex items-center gap-2">
+        <button onclick="navigate('agent')" class="px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm shadow-lg shadow-emerald-600/20 transition flex items-center gap-2">
           <span>Launch AI Agent Workspace</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
-        <button onclick="navigate('crm')" class="px-6 py-3 rounded-xl bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-300 font-semibold text-sm transition flex items-center gap-2">
-          <i data-lucide="kanban" class="w-4 h-4 text-emerald-400"></i>
+        <button onclick="navigate('crm')" class="px-6 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-sm transition flex items-center gap-2 shadow-sm">
+          <i data-lucide="kanban" class="w-4 h-4 text-emerald-600"></i>
           <span>View Pipeline CRM Demo</span>
         </button>
       </div>
 
       <!-- Feature Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 w-full text-left">
-        <div class="p-6 rounded-2xl bg-surface-card border border-surface-border">
-          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4">
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-4">
             <i data-lucide="flame" class="w-5 h-5"></i>
           </div>
-          <h3 class="font-bold text-base text-white">Signal-Driven Prospecting</h3>
-          <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          <h3 class="font-bold text-base text-slate-900">Signal-Driven Prospecting</h3>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
             Targets buyers when they are actively hiring or raising capital, yielding 4x higher response rates than cold blast emails.
           </p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-surface-card border border-surface-border">
-          <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 mb-4">
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition">
+          <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600 mb-4">
             <i data-lucide="shield-check" class="w-5 h-5"></i>
           </div>
-          <h3 class="font-bold text-base text-white">Zero-Cliché Copywriting</h3>
-          <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          <h3 class="font-bold text-base text-slate-900">Zero-Cliché Copywriting</h3>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
             Strict algorithmic gates reject generic AI templates. Pitches reference actual tools and milestones in under 85 words.
           </p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-surface-card border border-surface-border">
-          <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-4">
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 mb-4">
             <i data-lucide="kanban" class="w-5 h-5"></i>
           </div>
-          <h3 class="font-bold text-base text-white">Built-in Kanban Pipeline</h3>
-          <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          <h3 class="font-bold text-base text-slate-900">Built-in Kanban Pipeline</h3>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
             Manage your entire sales funnel from discovered leads to approved meetings inside one unified dashboard.
           </p>
         </div>
@@ -162,51 +155,51 @@
 
       <!-- Transparent Pricing Tiers -->
       <div class="mt-20 w-full max-w-4xl">
-        <h2 class="text-2xl font-extrabold text-white">Transparent, Credit-Friendly Pricing</h2>
-        <p class="text-xs text-slate-400 mt-1">Scale from solo founder to agency without massive upfront commitments.</p>
+        <h2 class="text-2xl font-extrabold text-slate-900">Transparent, Credit-Friendly Pricing</h2>
+        <p class="text-xs text-slate-500 mt-1">Scale from solo founder to agency without massive upfront commitments.</p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 text-left">
           <!-- Pro Plan ($34/mo) -->
-          <div class="p-8 rounded-3xl bg-surface-card border border-surface-border flex flex-col justify-between">
+          <div class="p-8 rounded-3xl bg-white border border-slate-200 flex flex-col justify-between shadow-sm">
             <div>
-              <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-300">Starter SDR</span>
+              <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700">Starter SDR</span>
               <div class="mt-4 flex items-baseline gap-2">
-                <span class="text-4xl font-extrabold text-white">$34</span>
-                <span class="text-xs text-slate-400">/ month</span>
+                <span class="text-4xl font-extrabold text-slate-900">$34</span>
+                <span class="text-xs text-slate-500">/ month</span>
               </div>
-              <p class="text-xs text-slate-400 mt-2">For founders and consultants looking to book 5-10 client calls monthly.</p>
-              <ul class="mt-6 space-y-2.5 text-xs text-slate-300">
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>300 Fully Researched Leads / Month</span></li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Multi-Domain Adaptation (Healthcare, FinTech, Retail)</span></li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>LinkedIn Notes + Cold Emails</span></li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Built-in Pipeline CRM</span></li>
+              <p class="text-xs text-slate-600 mt-2">For founders and consultants looking to book 5-10 client calls monthly.</p>
+              <ul class="mt-6 space-y-2.5 text-xs text-slate-600">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i><span>300 Fully Researched Leads / Month</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i><span>Multi-Domain Adaptation (Healthcare, FinTech, Retail)</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i><span>LinkedIn Notes + Cold Emails</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i><span>Built-in Pipeline CRM</span></li>
               </ul>
             </div>
-            <button onclick="navigate('agent')" class="mt-8 w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition">
+            <button onclick="navigate('agent')" class="mt-8 w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition border border-slate-200">
               Start Free Trial
             </button>
           </div>
 
           <!-- Growth Plan ($99/mo) -->
-          <div class="p-8 rounded-3xl bg-gradient-to-b from-surface-card to-surface-cardLight border-2 border-emerald-500/50 flex flex-col justify-between relative shadow-2xl">
-            <div class="absolute -top-3 right-8 px-3 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-white uppercase tracking-wider">
+          <div class="p-8 rounded-3xl bg-white border-2 border-emerald-500 flex flex-col justify-between relative shadow-xl">
+            <div class="absolute -top-3 right-8 px-3 py-0.5 rounded-full text-[10px] font-bold bg-emerald-600 text-white uppercase tracking-wider">
               Most Popular
             </div>
             <div>
-              <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Agency & Scale</span>
+              <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Agency & Scale</span>
               <div class="mt-4 flex items-baseline gap-2">
-                <span class="text-4xl font-extrabold text-white">$99</span>
-                <span class="text-xs text-slate-400">/ month</span>
+                <span class="text-4xl font-extrabold text-slate-900">$99</span>
+                <span class="text-xs text-slate-500">/ month</span>
               </div>
-              <p class="text-xs text-slate-400 mt-2">For high-growth agencies managing outbound for multiple client niches.</p>
-              <ul class="mt-6 space-y-2.5 text-xs text-slate-300">
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>1,500 Researched Leads / Month</span></li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Unlimited n8n & Zapier Webhook Sync</span></li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Inbound Authority Social Selling Studio</span></li>
-                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Multi-Account Pacing & Anti-Ban Protection</span></li>
+              <p class="text-xs text-slate-600 mt-2">For high-growth agencies managing outbound for multiple client niches.</p>
+              <ul class="mt-6 space-y-2.5 text-xs text-slate-600">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i><span>1,500 Researched Leads / Month</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i><span>Unlimited n8n & Zapier Webhook Sync</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i><span>Inbound Authority Social Selling Studio</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i><span>Multi-Account Pacing & Anti-Ban Protection</span></li>
               </ul>
             </div>
-            <button onclick="navigate('agent')" class="mt-8 w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-xs transition shadow-lg shadow-emerald-500/20">
+            <button onclick="navigate('agent')" class="mt-8 w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs transition shadow-md shadow-emerald-600/20">
               Get Started Now
             </button>
           </div>
@@ -220,7 +213,7 @@
   <!-- ========================================== -->
   <main id="viewAgent" class="flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
     <!-- Ingestion & Search Bar -->
-    <section class="p-5 rounded-2xl bg-surface-card border border-surface-border shadow-xl">
+    <section class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
       <div class="flex flex-col lg:flex-row gap-4 items-center">
         <div class="flex-1 relative w-full">
           <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -228,7 +221,7 @@
           </div>
           <input id="inputDomain" type="text" placeholder="Enter target domain or LinkedIn URL (e.g. acmehealth.com)"
             value="acmehealth.com"
-            class="w-full pl-10 pr-4 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+            class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
         </div>
 
         <div class="w-full lg:w-56 relative">
@@ -237,7 +230,7 @@
           </div>
           <input id="inputContact" type="text" placeholder="Contact (e.g. Sarah Vance)"
             value="Dr. Marcus Vance"
-            class="w-full pl-10 pr-4 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+            class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
         </div>
 
         <div class="w-full lg:w-56 relative">
@@ -246,11 +239,11 @@
           </div>
           <input id="inputRole" type="text" placeholder="Role (e.g. COO, VP Eng)"
             value="Chief Operating Officer"
-            class="w-full pl-10 pr-4 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+            class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
         </div>
 
         <div class="w-full lg:w-48 relative">
-          <select id="selectSector" class="w-full px-3.5 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition appearance-none">
+          <select id="selectSector" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white transition appearance-none cursor-pointer">
             <option value="Healthcare">Healthcare & Life Sci</option>
             <option value="Banking & FinTech">Banking & FinTech</option>
             <option value="Retail & E-Commerce">Retail & E-Commerce</option>
@@ -258,7 +251,7 @@
           </select>
         </div>
 
-        <button onclick="triggerResearchAgent()" id="btnSubmit" class="w-full lg:w-auto px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-semibold rounded-xl text-sm shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition duration-150">
+        <button onclick="triggerResearchAgent()" id="btnSubmit" class="w-full lg:w-auto px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition duration-150">
           <i data-lucide="sparkles" class="w-4 h-4"></i>
           <span>Run Autonomous Recon</span>
         </button>
@@ -271,70 +264,70 @@
       <div class="lg:col-span-4 flex flex-col gap-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <h2 class="font-bold text-sm text-slate-200">Prospect Review Queue</h2>
-            <span id="queueBadge" class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">4 Ready</span>
+            <h2 class="font-bold text-sm text-slate-800">Prospect Review Queue</h2>
+            <span id="queueBadge" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">4 Ready</span>
           </div>
-          <span class="text-xs text-slate-500">Auto-Refreshed</span>
+          <span class="text-xs text-slate-400">Auto-Refreshed</span>
         </div>
 
         <div id="leadQueueFeed" class="flex flex-col gap-3 overflow-y-auto max-h-[720px] pr-1">
-          <div onclick="selectLead('acme')" id="item-acme" class="lead-item p-4 rounded-xl bg-surface-card border-2 border-emerald-500/50 hover:border-emerald-500 cursor-pointer transition shadow-md">
+          <div onclick="selectLead('acme')" id="item-acme" class="lead-item p-4 rounded-xl bg-white border-2 border-emerald-500 shadow-sm hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
-                <h3 class="font-bold text-sm text-white">Acme Health Partners</h3>
-                <p class="text-xs text-slate-400 mt-0.5">Dr. Marcus Vance • COO</p>
+                <h3 class="font-bold text-sm text-slate-900">Acme Health Partners</h3>
+                <p class="text-xs text-slate-500 mt-0.5">Dr. Marcus Vance • COO</p>
               </div>
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Verified</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Verified</span>
             </div>
-            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-300">
-              <span class="px-2 py-0.5 bg-slate-800 rounded">Series B Expansion</span>
-              <span class="text-slate-500">•</span>
-              <span class="text-slate-400">14 open jobs</span>
+            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-600">
+              <span class="px-2 py-0.5 bg-slate-100 rounded text-slate-700 font-medium">Series B Expansion</span>
+              <span class="text-slate-300">•</span>
+              <span class="text-slate-500">14 open jobs</span>
             </div>
           </div>
 
-          <div onclick="selectLead('fintech')" id="item-fintech" class="lead-item p-4 rounded-xl bg-surface-card border border-surface-border hover:border-slate-600 cursor-pointer transition">
+          <div onclick="selectLead('fintech')" id="item-fintech" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
-                <h3 class="font-bold text-sm text-white">NovaPay Solutions</h3>
-                <p class="text-xs text-slate-400 mt-0.5">Julian Scott • VP Payments</p>
+                <h3 class="font-bold text-sm text-slate-900">NovaPay Solutions</h3>
+                <p class="text-xs text-slate-500 mt-0.5">Julian Scott • VP Payments</p>
               </div>
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">Ready</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Ready</span>
             </div>
-            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-300">
-              <span class="px-2 py-0.5 bg-slate-800 rounded">ISO 20022 Migration</span>
-              <span class="text-slate-500">•</span>
-              <span class="text-slate-400">FinTech</span>
+            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-600">
+              <span class="px-2 py-0.5 bg-slate-100 rounded text-slate-700 font-medium">ISO 20022 Migration</span>
+              <span class="text-slate-300">•</span>
+              <span class="text-slate-500">FinTech</span>
             </div>
           </div>
 
-          <div onclick="selectLead('retail')" id="item-retail" class="lead-item p-4 rounded-xl bg-surface-card border border-surface-border hover:border-slate-600 cursor-pointer transition">
+          <div onclick="selectLead('retail')" id="item-retail" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
-                <h3 class="font-bold text-sm text-white">Kestrel Outdoor Goods</h3>
-                <p class="text-xs text-slate-400 mt-0.5">Elena Rostova • Head of Commerce</p>
+                <h3 class="font-bold text-sm text-slate-900">Kestrel Outdoor Goods</h3>
+                <p class="text-xs text-slate-500 mt-0.5">Elena Rostova • Head of Commerce</p>
               </div>
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Verified</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Verified</span>
             </div>
-            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-300">
-              <span class="px-2 py-0.5 bg-slate-800 rounded">Headless Mobile Surge</span>
-              <span class="text-slate-500">•</span>
-              <span class="text-slate-400">Retail</span>
+            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-600">
+              <span class="px-2 py-0.5 bg-slate-100 rounded text-slate-700 font-medium">Headless Mobile Surge</span>
+              <span class="text-slate-300">•</span>
+              <span class="text-slate-500">Retail</span>
             </div>
           </div>
 
-          <div onclick="selectLead('middleware')" id="item-middleware" class="lead-item p-4 rounded-xl bg-surface-card border border-surface-border hover:border-slate-600 cursor-pointer transition">
+          <div onclick="selectLead('middleware')" id="item-middleware" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
-                <h3 class="font-bold text-sm text-white">Aether Telecom Systems</h3>
-                <p class="text-xs text-slate-400 mt-0.5">Tariq Patel • Chief Architect</p>
+                <h3 class="font-bold text-sm text-slate-900">Aether Telecom Systems</h3>
+                <p class="text-xs text-slate-500 mt-0.5">Tariq Patel • Chief Architect</p>
               </div>
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">Review</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">Review</span>
             </div>
-            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-300">
-              <span class="px-2 py-0.5 bg-slate-800 rounded">Kafka Consumer Lag</span>
-              <span class="text-slate-500">•</span>
-              <span class="text-slate-400">Middleware</span>
+            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-600">
+              <span class="px-2 py-0.5 bg-slate-100 rounded text-slate-700 font-medium">Kafka Consumer Lag</span>
+              <span class="text-slate-300">•</span>
+              <span class="text-slate-500">Middleware</span>
             </div>
           </div>
         </div>
@@ -342,77 +335,77 @@
 
       <!-- Right Column: Active Lead Dossier & Deliverables (8 Cols) -->
       <div class="lg:col-span-8 flex flex-col gap-6">
-        <div class="p-6 rounded-2xl bg-surface-card border border-surface-border shadow-xl">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-surface-border">
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
             <div>
               <div class="flex items-center gap-3">
-                <h1 id="dossierCompany" class="text-xl font-bold text-white tracking-tight">Acme Health Partners</h1>
-                <a id="dossierDomain" href="https://acmehealth.com" target="_blank" class="text-xs text-emerald-400 flex items-center gap-1 hover:underline">
+                <h1 id="dossierCompany" class="text-xl font-bold text-slate-900 tracking-tight">Acme Health Partners</h1>
+                <a id="dossierDomain" href="https://acmehealth.com" target="_blank" class="text-xs text-emerald-600 font-semibold flex items-center gap-1 hover:underline">
                   <span>acmehealth.com</span>
                   <i data-lucide="external-link" class="w-3 h-3"></i>
                 </a>
               </div>
-              <p id="dossierTarget" class="text-xs text-slate-400 mt-1">Target Contact: <strong class="text-slate-200">Dr. Marcus Vance</strong> (Chief Operating Officer)</p>
+              <p id="dossierTarget" class="text-xs text-slate-500 mt-1">Target Contact: <strong class="text-slate-800">Dr. Marcus Vance</strong> (Chief Operating Officer)</p>
             </div>
 
             <div class="flex items-center gap-3">
               <div class="text-right">
-                <div class="text-[11px] text-slate-400">Quality Grounding</div>
-                <div id="dossierScore" class="text-sm font-bold text-emerald-400">98 / 100 PASS</div>
+                <div class="text-[11px] text-slate-400 font-medium">Quality Grounding</div>
+                <div id="dossierScore" class="text-sm font-extrabold text-emerald-600">98 / 100 PASS</div>
               </div>
-              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
                 <i data-lucide="shield-check" class="w-5 h-5"></i>
               </div>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-            <div class="p-4 rounded-xl bg-surface-dark border border-surface-border">
-              <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                <i data-lucide="flame" class="w-4 h-4 text-amber-400"></i>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="flex items-center gap-2 text-xs font-bold text-slate-800">
+                <i data-lucide="flame" class="w-4 h-4 text-amber-500"></i>
                 <span>Detected Buying Trigger</span>
               </div>
-              <p id="dossierTrigger" class="text-xs text-slate-300 mt-2 leading-relaxed">
+              <p id="dossierTrigger" class="text-xs text-slate-600 mt-2 leading-relaxed">
                 Announced a <strong>$15M Series B expansion</strong> to open <strong>8 new regional urgent care centers</strong>, with 14 active openings for patient intake coordinators.
               </p>
             </div>
 
-            <div class="p-4 rounded-xl bg-surface-dark border border-surface-border">
-              <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                <i data-lucide="cpu" class="w-4 h-4 text-teal-400"></i>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="flex items-center gap-2 text-xs font-bold text-slate-800">
+                <i data-lucide="cpu" class="w-4 h-4 text-teal-600"></i>
                 <span>Detected Tech Stack</span>
               </div>
               <div id="dossierTech" class="flex flex-wrap gap-1.5 mt-2">
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">HubSpot CRM</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">Zendesk Support</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">WordPress</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-white text-slate-700 border border-slate-200 font-medium shadow-2xs">HubSpot CRM</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-white text-slate-700 border border-slate-200 font-medium shadow-2xs">Zendesk Support</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-white text-slate-700 border border-slate-200 font-medium shadow-2xs">WordPress</span>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Outreach Deliverables -->
-        <div class="p-6 rounded-2xl bg-surface-card border border-surface-border shadow-xl flex flex-col gap-5">
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-5">
           <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-slate-200 flex items-center gap-2">
-              <i data-lucide="send" class="w-4 h-4 text-emerald-400"></i>
+            <h2 class="font-bold text-sm text-slate-900 flex items-center gap-2">
+              <i data-lucide="send" class="w-4 h-4 text-emerald-600"></i>
               <span>Generated Outreach Deliverables</span>
             </h2>
-            <span class="text-[11px] text-emerald-400 font-medium">Strict Anti-Cliché Verified</span>
+            <span class="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold">Strict Anti-Cliché Verified</span>
           </div>
 
           <!-- LinkedIn Connection Note -->
           <div class="space-y-2">
             <div class="flex items-center justify-between text-xs">
-              <span class="font-semibold text-slate-300 flex items-center gap-1.5">
-                <i data-lucide="linkedin" class="w-3.5 h-3.5 text-blue-400"></i>
+              <span class="font-bold text-slate-700 flex items-center gap-1.5">
+                <i data-lucide="linkedin" class="w-3.5 h-3.5 text-blue-600"></i>
                 <span>LinkedIn Connection Note</span>
               </span>
-              <span id="charCount" class="mono text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">214 / 250 Chars</span>
+              <span id="charCount" class="mono text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">214 / 250 Chars</span>
             </div>
             <div class="relative">
-              <textarea id="linkedinText" rows="3" class="w-full p-3.5 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-200 focus:outline-none focus:border-emerald-500 leading-relaxed font-sans"></textarea>
-              <button onclick="copyToClipboard('linkedinText')" class="absolute top-2.5 right-2.5 px-2.5 py-1 text-[11px] font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 transition flex items-center gap-1">
+              <textarea id="linkedinText" rows="3" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white leading-relaxed font-sans"></textarea>
+              <button onclick="copyToClipboard('linkedinText')" class="absolute top-2.5 right-2.5 px-2.5 py-1 text-[11px] font-bold bg-white hover:bg-slate-50 text-slate-700 rounded border border-slate-200 transition flex items-center gap-1 shadow-xs">
                 <i data-lucide="copy" class="w-3 h-3"></i>
                 <span>Copy</span>
               </button>
@@ -422,37 +415,37 @@
           <!-- Cold Email -->
           <div class="space-y-2">
             <div class="flex items-center justify-between text-xs">
-              <span class="font-semibold text-slate-300 flex items-center gap-1.5">
-                <i data-lucide="mail" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span class="font-bold text-slate-700 flex items-center gap-1.5">
+                <i data-lucide="mail" class="w-3.5 h-3.5 text-amber-500"></i>
                 <span>Cold Email Sequence</span>
               </span>
-              <span id="wordCount" class="mono text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">78 Words (Under 85)</span>
+              <span id="wordCount" class="mono text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">78 Words (Under 85)</span>
             </div>
-            <div class="p-3.5 bg-surface-dark border border-surface-border rounded-xl space-y-2">
-              <div class="text-xs font-semibold text-slate-300 pb-2 border-b border-slate-800 flex items-center justify-between">
-                <div><span class="text-slate-500">Subject: </span><span id="emailSubject" class="text-white"></span></div>
-                <button onclick="copyEmailFull()" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 transition flex items-center gap-1">
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+              <div class="text-xs font-bold text-slate-800 pb-2 border-b border-slate-200 flex items-center justify-between">
+                <div><span class="text-slate-400 font-normal">Subject: </span><span id="emailSubject" class="text-slate-900"></span></div>
+                <button onclick="copyEmailFull()" class="px-2.5 py-1 text-[11px] font-bold bg-white hover:bg-slate-50 text-slate-700 rounded border border-slate-200 transition flex items-center gap-1 shadow-xs">
                   <i data-lucide="copy" class="w-3 h-3"></i>
                   <span>Copy</span>
                 </button>
               </div>
-              <textarea id="emailBody" rows="7" class="w-full bg-transparent text-xs text-slate-200 focus:outline-none leading-relaxed font-sans border-0 p-0"></textarea>
+              <textarea id="emailBody" rows="7" class="w-full bg-transparent text-xs text-slate-800 focus:outline-none leading-relaxed font-sans border-0 p-0"></textarea>
             </div>
           </div>
 
           <!-- Action Footer -->
-          <div class="pt-4 border-t border-surface-border flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center gap-2 text-xs text-slate-400">
-              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+          <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2 text-xs text-slate-500">
+              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
               <span>Grounded in raw scrape. Zero hallucinations detected.</span>
             </div>
 
             <div class="flex items-center gap-3">
-              <button onclick="addCurrentLeadToCRM()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-1.5">
-                <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <button onclick="addCurrentLeadToCRM()" class="px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 transition flex items-center gap-1.5 shadow-xs">
+                <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
                 <span>Move to Pipeline CRM</span>
               </button>
-              <button onclick="approveAndDispatch()" id="btnDispatch" class="px-5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
+              <button onclick="approveAndDispatch()" id="btnDispatch" class="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5">
                 <i data-lucide="send" class="w-3.5 h-3.5"></i>
                 <span>Approve & Dispatch</span>
               </button>
@@ -470,16 +463,16 @@
   <main id="viewLists" class="hidden flex-1 max-w-[1500px] w-full mx-auto p-6 flex flex-col gap-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
-        <h2 class="text-xl font-bold text-white">Lead Lists & Target Segments</h2>
-        <p class="text-xs text-slate-400 mt-1">Organize prospect pools, filter by industry signals, and run bulk autonomous enrichment.</p>
+        <h2 class="text-xl font-bold text-slate-900">Lead Lists & Target Segments</h2>
+        <p class="text-xs text-slate-500 mt-1">Organize prospect pools, filter by industry signals, and run bulk autonomous enrichment.</p>
       </div>
 
       <div class="flex items-center gap-3">
-        <button onclick="alert('CSV Lead List uploaded successfully!')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-2">
+        <button onclick="alert('CSV Lead List uploaded successfully!')" class="px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 transition flex items-center gap-2 shadow-xs">
           <i data-lucide="upload" class="w-3.5 h-3.5"></i>
           <span>Import CSV</span>
         </button>
-        <button onclick="createCustomList()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg shadow-emerald-500/20 transition flex items-center gap-2">
+        <button onclick="createCustomList()" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 transition flex items-center gap-2">
           <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i>
           <span>Create New List</span>
         </button>
@@ -488,48 +481,48 @@
 
     <!-- Lists Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="p-6 rounded-2xl bg-surface-card border border-surface-border flex flex-col justify-between">
+      <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between">
-            <span class="px-2.5 py-1 rounded-md text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Healthcare</span>
-            <span class="text-xs text-slate-400">42 Leads</span>
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Healthcare</span>
+            <span class="text-xs text-slate-400 font-medium">42 Leads</span>
           </div>
-          <h3 class="font-bold text-base text-white mt-3">Urgent Care & Regional Clinics</h3>
-          <p class="text-xs text-slate-400 mt-1">Hospitals and clinic groups opening 3+ locations in 2026.</p>
+          <h3 class="font-bold text-base text-slate-900 mt-3">Urgent Care & Regional Clinics</h3>
+          <p class="text-xs text-slate-600 mt-1">Hospitals and clinic groups opening 3+ locations in 2026.</p>
         </div>
-        <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
-          <span class="text-emerald-400 font-semibold">100% Enriched</span>
-          <button onclick="navigate('agent')" class="text-slate-300 hover:text-white flex items-center gap-1">Open ➔</button>
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="text-emerald-600 font-bold">100% Enriched</span>
+          <button onclick="navigate('agent')" class="text-slate-600 hover:text-slate-900 font-semibold flex items-center gap-1">Open ➔</button>
         </div>
       </div>
 
-      <div class="p-6 rounded-2xl bg-surface-card border border-surface-border flex flex-col justify-between">
+      <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between">
-            <span class="px-2.5 py-1 rounded-md text-[10px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">FinTech</span>
-            <span class="text-xs text-slate-400">28 Leads</span>
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">FinTech</span>
+            <span class="text-xs text-slate-400 font-medium">28 Leads</span>
           </div>
-          <h3 class="font-bold text-base text-white mt-3">Payment Rails & ISO 20022</h3>
-          <p class="text-xs text-slate-400 mt-1">European & US payment platforms upgrading core ledgers.</p>
+          <h3 class="font-bold text-base text-slate-900 mt-3">Payment Rails & ISO 20022</h3>
+          <p class="text-xs text-slate-600 mt-1">European & US payment platforms upgrading core ledgers.</p>
         </div>
-        <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
-          <span class="text-blue-400 font-semibold">92% Enriched</span>
-          <button onclick="navigate('agent')" class="text-slate-300 hover:text-white flex items-center gap-1">Open ➔</button>
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="text-blue-600 font-bold">92% Enriched</span>
+          <button onclick="navigate('agent')" class="text-slate-600 hover:text-slate-900 font-semibold flex items-center gap-1">Open ➔</button>
         </div>
       </div>
 
-      <div class="p-6 rounded-2xl bg-surface-card border border-surface-border flex flex-col justify-between">
+      <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between">
-            <span class="px-2.5 py-1 rounded-md text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">Retail</span>
-            <span class="text-xs text-slate-400">65 Leads</span>
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">Retail</span>
+            <span class="text-xs text-slate-400 font-medium">65 Leads</span>
           </div>
-          <h3 class="font-bold text-base text-white mt-3">Shopify Plus Scalebrands</h3>
-          <p class="text-xs text-slate-400 mt-1">E-commerce apparel & outdoor retailers with >$5M ARR.</p>
+          <h3 class="font-bold text-base text-slate-900 mt-3">Shopify Plus Scalebrands</h3>
+          <p class="text-xs text-slate-600 mt-1">E-commerce apparel & outdoor retailers with >$5M ARR.</p>
         </div>
-        <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
-          <span class="text-amber-400 font-semibold">Pending Approval</span>
-          <button onclick="navigate('agent')" class="text-slate-300 hover:text-white flex items-center gap-1">Open ➔</button>
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="text-amber-600 font-bold">Pending Approval</span>
+          <button onclick="navigate('agent')" class="text-slate-600 hover:text-slate-900 font-semibold flex items-center gap-1">Open ➔</button>
         </div>
       </div>
     </div>
@@ -541,111 +534,111 @@
   <main id="viewCRM" class="hidden flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
-        <h2 class="text-xl font-bold text-white">Outbound Sales Pipeline & CRM Board</h2>
-        <p class="text-xs text-slate-400 mt-1">Track every deal stage from autonomous AI reconnaissance to booked sales calls.</p>
+        <h2 class="text-xl font-bold text-slate-900">Outbound Sales Pipeline & CRM Board</h2>
+        <p class="text-xs text-slate-500 mt-1">Track every deal stage from autonomous AI reconnaissance to booked sales calls.</p>
       </div>
 
       <div class="flex items-center gap-6 text-xs">
-        <div>Total Value: <strong class="text-white font-bold">$184,000</strong></div>
-        <div class="w-px h-4 bg-slate-800"></div>
-        <div>Active Meetings: <strong class="text-emerald-400 font-bold">7 Booked</strong></div>
+        <div>Total Value: <strong class="text-slate-900 font-bold">$184,000</strong></div>
+        <div class="w-px h-4 bg-slate-200"></div>
+        <div>Active Meetings: <strong class="text-emerald-600 font-bold">7 Booked</strong></div>
       </div>
     </div>
 
     <!-- Kanban Stages (5 Columns) -->
     <div class="grid grid-cols-1 md:grid-cols-5 gap-4 flex-1">
       <!-- Col 1: Discovered -->
-      <div class="p-4 rounded-2xl bg-surface-card border border-surface-border flex flex-col gap-3">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-          <span class="font-bold text-xs text-slate-300">1. Discovered</span>
-          <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">12</span>
+      <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+          <span class="font-bold text-xs text-slate-700">1. Discovered</span>
+          <span class="px-2 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 font-bold">12</span>
         </div>
-        <div class="p-3.5 rounded-xl bg-surface-dark border border-slate-800 flex flex-col gap-1.5 shadow">
-          <h4 class="font-bold text-xs text-white">Apex Logistics Co.</h4>
-          <p class="text-[11px] text-slate-400">Marcus Sterling • VP Ops</p>
-          <span class="text-[10px] text-emerald-400 mt-1">Series A Hiring</span>
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5 shadow-2xs">
+          <h4 class="font-bold text-xs text-slate-900">Apex Logistics Co.</h4>
+          <p class="text-[11px] text-slate-500">Marcus Sterling • VP Ops</p>
+          <span class="text-[10px] text-emerald-700 font-semibold mt-1">Series A Hiring</span>
         </div>
       </div>
 
       <!-- Col 2: AI Enriched -->
-      <div class="p-4 rounded-2xl bg-surface-card border border-surface-border flex flex-col gap-3">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-          <span class="font-bold text-xs text-blue-400">2. AI Enriched</span>
-          <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">4</span>
+      <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+          <span class="font-bold text-xs text-blue-700">2. AI Enriched</span>
+          <span class="px-2 py-0.5 rounded text-[10px] bg-blue-50 text-blue-700 font-bold">4</span>
         </div>
-        <div class="p-3.5 rounded-xl bg-surface-dark border border-blue-500/30 flex flex-col gap-1.5 shadow">
-          <h4 class="font-bold text-xs text-white">NovaPay Solutions</h4>
-          <p class="text-[11px] text-slate-400">Julian Scott • VP Payments</p>
-          <span class="text-[10px] text-blue-400 mt-1">ISO 20022 Pitch Ready</span>
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-blue-200 flex flex-col gap-1.5 shadow-2xs">
+          <h4 class="font-bold text-xs text-slate-900">NovaPay Solutions</h4>
+          <p class="text-[11px] text-slate-500">Julian Scott • VP Payments</p>
+          <span class="text-[10px] text-blue-700 font-semibold mt-1">ISO 20022 Pitch Ready</span>
         </div>
       </div>
 
       <!-- Col 3: Approved & Contacted -->
-      <div class="p-4 rounded-2xl bg-surface-card border border-surface-border flex flex-col gap-3">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-          <span class="font-bold text-xs text-amber-400">3. Contacted</span>
-          <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">8</span>
+      <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+          <span class="font-bold text-xs text-amber-700">3. Contacted</span>
+          <span class="px-2 py-0.5 rounded text-[10px] bg-amber-50 text-amber-700 font-bold">8</span>
         </div>
-        <div class="p-3.5 rounded-xl bg-surface-dark border border-amber-500/30 flex flex-col gap-1.5 shadow">
-          <h4 class="font-bold text-xs text-white">Acme Health Partners</h4>
-          <p class="text-[11px] text-slate-400">Dr. Marcus Vance • COO</p>
-          <span class="text-[10px] text-amber-400 mt-1">LinkedIn Note Sent</span>
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-amber-200 flex flex-col gap-1.5 shadow-2xs">
+          <h4 class="font-bold text-xs text-slate-900">Acme Health Partners</h4>
+          <p class="text-[11px] text-slate-500">Dr. Marcus Vance • COO</p>
+          <span class="text-[10px] text-amber-700 font-semibold mt-1">LinkedIn Note Sent</span>
         </div>
       </div>
 
       <!-- Col 4: Meeting Booked -->
-      <div class="p-4 rounded-2xl bg-surface-card border-2 border-emerald-500/40 flex flex-col gap-3">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-          <span class="font-bold text-xs text-emerald-400">4. Meeting Booked</span>
-          <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 font-bold">7</span>
+      <div class="p-4 rounded-2xl bg-white border-2 border-emerald-400 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+          <span class="font-bold text-xs text-emerald-700">4. Meeting Booked</span>
+          <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 font-extrabold">7</span>
         </div>
-        <div class="p-3.5 rounded-xl bg-surface-dark border border-emerald-500/50 flex flex-col gap-1.5 shadow-lg shadow-emerald-500/10">
-          <h4 class="font-bold text-xs text-white">Kestrel Outdoor Goods</h4>
-          <p class="text-[11px] text-slate-300">Elena Rostova • Head Commerce</p>
-          <span class="text-[10px] text-emerald-400 font-semibold mt-1">Demo Call: Thu 2:30 PM</span>
+        <div class="p-3.5 rounded-xl bg-emerald-50/50 border border-emerald-200 flex flex-col gap-1.5 shadow-2xs">
+          <h4 class="font-bold text-xs text-slate-900">Kestrel Outdoor Goods</h4>
+          <p class="text-[11px] text-slate-600">Elena Rostova • Head Commerce</p>
+          <span class="text-[10px] text-emerald-700 font-bold mt-1">Demo Call: Thu 2:30 PM</span>
         </div>
       </div>
 
       <!-- Col 5: Closed Won -->
-      <div class="p-4 rounded-2xl bg-surface-card border border-surface-border flex flex-col gap-3">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-          <span class="font-bold text-xs text-purple-400">5. Closed Won</span>
-          <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">$32k</span>
+      <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+          <span class="font-bold text-xs text-purple-700">5. Closed Won</span>
+          <span class="px-2 py-0.5 rounded text-[10px] bg-purple-50 text-purple-700 font-bold">$32k</span>
         </div>
-        <div class="p-3.5 rounded-xl bg-surface-dark border border-purple-500/30 flex flex-col gap-1.5 shadow">
-          <h4 class="font-bold text-xs text-white">Aether Telecom</h4>
-          <p class="text-[11px] text-slate-400">Annual Contract: $32,000</p>
-          <span class="text-[10px] text-purple-400 mt-1">Signed via Agent Pitch</span>
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-purple-200 flex flex-col gap-1.5 shadow-2xs">
+          <h4 class="font-bold text-xs text-slate-900">Aether Telecom</h4>
+          <p class="text-[11px] text-slate-500">Annual Contract: $32,000</p>
+          <span class="text-[10px] text-purple-700 font-semibold mt-1">Signed via Agent Pitch</span>
         </div>
       </div>
     </div>
   </main>
 
   <!-- Webhook & n8n Modal -->
-  <div id="webhookModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-surface-card border border-surface-border rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
-      <div class="flex items-center justify-between pb-3 border-b border-surface-border">
-        <h3 class="font-bold text-sm text-white flex items-center gap-2">
-          <i data-lucide="share-2" class="w-4 h-4 text-blue-400"></i>
+  <div id="webhookModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-2">
+          <i data-lucide="share-2" class="w-4 h-4 text-blue-600"></i>
           <span>Dispatch to n8n / Webhook</span>
         </h3>
-        <button onclick="closeWebhookModal()" class="text-slate-400 hover:text-white">
+        <button onclick="closeWebhookModal()" class="text-slate-400 hover:text-slate-700">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
-      <p class="text-xs text-slate-400 leading-relaxed">
+      <p class="text-xs text-slate-600 leading-relaxed">
         Send the current lead dossier and personalized outreach copy directly to your **n8n.io**, **Zapier**, or **Make** webhook URL.
       </p>
 
       <div>
-        <label class="text-[11px] font-semibold text-slate-300 block mb-1">Webhook URL</label>
-        <input id="inputWebhookUrl" type="url" placeholder="https://n8n.yourdomain.com/webhook/..." value="https://webhook.site/demo-prospect-pulse" class="w-full px-3 py-2 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-100 focus:outline-none focus:border-blue-500 font-mono">
+        <label class="text-[11px] font-bold text-slate-700 block mb-1">Webhook URL</label>
+        <input id="inputWebhookUrl" type="url" placeholder="https://n8n.yourdomain.com/webhook/..." value="https://webhook.site/demo-prospect-pulse" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-blue-500 font-mono">
       </div>
 
       <div class="flex items-center justify-end gap-3 pt-2">
-        <button onclick="closeWebhookModal()" class="px-4 py-2 rounded-xl text-xs text-slate-400 hover:text-white">Cancel</button>
-        <button onclick="dispatchWebhook()" id="btnSendWebhook" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-blue-500/20 transition flex items-center gap-1.5">
+        <button onclick="closeWebhookModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-medium">Cancel</button>
+        <button onclick="dispatchWebhook()" id="btnSendWebhook" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md shadow-blue-600/20 transition flex items-center gap-1.5">
           <i data-lucide="send" class="w-3.5 h-3.5"></i>
           <span>Send Payload</span>
         </button>
@@ -717,14 +710,14 @@
       document.getElementById('viewCRM').classList.add('hidden');
 
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('bg-emerald-500', 'text-white');
-        btn.classList.add('text-slate-400');
+        btn.classList.remove('bg-white', 'text-emerald-700', 'shadow-sm', 'border', 'border-slate-200');
+        btn.classList.add('text-slate-600');
       });
 
       const activeNav = document.getElementById('nav-' + viewName);
       if (activeNav) {
-        activeNav.classList.add('bg-emerald-500', 'text-white');
-        activeNav.classList.remove('text-slate-400');
+        activeNav.classList.add('bg-white', 'text-emerald-700', 'shadow-sm', 'border', 'border-slate-200');
+        activeNav.classList.remove('text-slate-600');
       }
 
       if (viewName === 'landing') document.getElementById('viewLanding').classList.remove('hidden');
@@ -737,13 +730,13 @@
 
     function selectLead(id) {
       document.querySelectorAll('.lead-item').forEach(el => {
-        el.classList.remove('border-2', 'border-emerald-500/50');
-        el.classList.add('border-surface-border');
+        el.classList.remove('border-2', 'border-emerald-500');
+        el.classList.add('border-slate-200');
       });
       const selected = document.getElementById('item-' + id);
       if (selected) {
-        selected.classList.remove('border-surface-border');
-        selected.classList.add('border-2', 'border-emerald-500/50');
+        selected.classList.remove('border-slate-200');
+        selected.classList.add('border-2', 'border-emerald-500');
       }
 
       const data = LEADS[id];
@@ -752,7 +745,7 @@
       document.getElementById('dossierCompany').innerText = data.company;
       document.getElementById('dossierDomain').innerText = data.domain;
       document.getElementById('dossierDomain').href = "https://" + data.domain;
-      document.getElementById('dossierTarget').innerHTML = `Target Contact: <strong class="text-slate-200">${data.target}</strong>`;
+      document.getElementById('dossierTarget').innerHTML = `Target Contact: <strong class="text-slate-800">${data.target}</strong>`;
       document.getElementById('dossierScore').innerText = data.score;
       document.getElementById('dossierTrigger').innerHTML = data.trigger;
       
@@ -760,7 +753,7 @@
       techContainer.innerHTML = '';
       data.tech.forEach(t => {
         const badge = document.createElement('span');
-        badge.className = "px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700";
+        badge.className = "px-2 py-0.5 rounded text-[11px] bg-white text-slate-700 border border-slate-200 font-medium shadow-2xs";
         badge.innerText = t;
         techContainer.appendChild(badge);
       });
@@ -830,10 +823,25 @@
     function approveAndDispatch() {
       const btn = document.getElementById('btnDispatch');
       btn.innerHTML = `<i data-lucide="check-circle" class="w-3.5 h-3.5"></i><span>Dispatched to Queue</span>`;
-      btn.classList.remove('from-emerald-600', 'to-teal-500');
-      btn.classList.add('bg-slate-700', 'text-slate-300');
+      btn.classList.remove('from-emerald-600', 'to-teal-600');
+      btn.classList.add('bg-slate-700', 'text-white');
       lucide.createIcons();
       alert('Success! Outreach approved and dispatched to LinkedIn Staging Queue.');
+    }
+
+    function triggerResearchAgent() {
+      const btn = document.getElementById('btnSubmit');
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Analyzing Signals...</span>`;
+      lucide.createIcons();
+
+      setTimeout(() => {
+        btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Recon Complete</span>`;
+        selectLead('acme');
+        setTimeout(() => {
+          btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i><span>Run Autonomous Recon</span>`;
+          lucide.createIcons();
+        }, 2000);
+      }, 1200);
     }
 
     // Init

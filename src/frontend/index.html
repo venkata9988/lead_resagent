@@ -2436,6 +2436,16 @@ Thank you for building high-converting outbound pipelines with ProspectPulse!
     };
 
     function renderKanban() {
+      // Sync persisted handoffs from localStorage
+      KANBAN_DEALS.forEach(deal => {
+        const compKey = (deal.company || '').toLowerCase().split(' ')[0];
+        if (localStorage.getItem('deal_handoff_' + deal.id) === 'true' || localStorage.getItem('deal_handoff_' + compKey) === 'true') {
+          deal.csHandedOff = true;
+          deal.pill = 'CS Onboarding Active ✓';
+          deal.pillColor = 'text-emerald-800 bg-emerald-100 font-bold border border-emerald-300';
+        }
+      });
+
       // Clear all stage containers
       STAGE_ORDER.forEach(s => {
         const container = document.getElementById('cards-' + s);
@@ -2637,8 +2647,13 @@ Thank you for building high-converting outbound pipelines with ProspectPulse!
         if (preCloseActions) preCloseActions.classList.add('hidden');
 
         // Check if this deal was already handed off to Customer Success
-        const dealObj = KANBAN_DEALS.find(d => d.company.toLowerCase().includes(company.toLowerCase().split(' ')[0]));
-        const isHandedOff = dealObj && (dealObj.csHandedOff || (dealObj.pill && dealObj.pill.includes('CS Onboarding Active')));
+        const compKey = (company || '').toLowerCase().split(' ')[0];
+        const dealObj = KANBAN_DEALS.find(d => d.company.toLowerCase().includes(compKey));
+        const isHandedOff = (dealObj && dealObj.csHandedOff) || 
+                            (dealObj && dealObj.pill && dealObj.pill.includes('CS Onboarding Active')) ||
+                            localStorage.getItem('deal_handoff_' + (dealObj ? dealObj.id : '')) === 'true' ||
+                            localStorage.getItem('deal_handoff_' + compKey) === 'true';
+
         const btnHandoff = document.getElementById('btnCsHandoffAction');
         const badgeHandoff = document.getElementById('badgeCsAlreadyHandedOff');
         if (btnHandoff && badgeHandoff) {
@@ -2780,23 +2795,53 @@ KICKOFF MEETING:    Thursday, Nov 12, 2026 @ 10:00 AM EST (Google Meet)
     let currentCsHandoffDealId = '';
 
     function handoffToCustomerSuccess() {
-      const comp = document.getElementById('modalDealCompany').innerText;
-      const val = document.getElementById('modalDealValue').innerText;
+      const comp = document.getElementById('modalDealCompany').innerText || 'Aether Telecom Systems';
+      const val = document.getElementById('modalDealValue').innerText || '$32,000 / yr';
+      const compKey = comp.toLowerCase().split(' ')[0];
       currentCsHandoffCompany = comp;
 
-      // Find deal in KANBAN_DEALS
-      const deal = KANBAN_DEALS.find(d => d.company.toLowerCase().includes(comp.toLowerCase().split(' ')[0]));
-      if (deal) currentCsHandoffDealId = deal.id;
-
-      // Populate CS modal
-      const sub = document.getElementById('csModalCompanySub');
-      if (sub) sub.innerText = `${comp} • ${val}`;
-      const slack = document.getElementById('csModalSlackChannel');
-      if (slack) slack.innerText = `#client-${comp.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
-
-      closeDealModal();
-      document.getElementById('csHandoffModal').classList.remove('hidden');
+      const btn = document.getElementById('btnCsHandoffAction');
+      if (btn) {
+        btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Transitioning to CS...</span>`;
+        btn.disabled = true;
+      }
       try { lucide.createIcons(); } catch(e) {}
+
+      // Find deal in KANBAN_DEALS
+      const deal = KANBAN_DEALS.find(d => d.company.toLowerCase().includes(compKey));
+      const dealId = deal ? deal.id : 'deal-5';
+      currentCsHandoffDealId = dealId;
+
+      setTimeout(() => {
+        // 1. Permanently update deal state & localStorage
+        if (deal) {
+          deal.csHandedOff = true;
+          deal.pill = 'CS Onboarding Active ✓';
+          deal.pillColor = 'text-emerald-800 bg-emerald-100 font-bold border border-emerald-300';
+        }
+        try {
+          localStorage.setItem('deal_handoff_' + dealId, 'true');
+          localStorage.setItem('deal_handoff_' + compKey, 'true');
+        } catch(e) {}
+
+        // 2. Refresh Kanban cards
+        renderKanban();
+
+        // 3. Immediately replace the hand-off button with the verified status badge in the Deal Modal
+        const badge = document.getElementById('badgeCsAlreadyHandedOff');
+        if (btn) {
+          btn.classList.add('hidden');
+          btn.innerHTML = `<i data-lucide="users" class="w-3.5 h-3.5"></i><span>Hand Off to Customer Success ➔</span>`;
+          btn.disabled = false;
+        }
+        if (badge) badge.classList.remove('hidden');
+        try { lucide.createIcons(); } catch(e) {}
+
+        // 4. Trigger the instant browser download of the Onboarding Package
+        downloadCsOnboardingPackage(comp);
+
+        showToast(`Account ${comp} successfully handed off to CS! Onboarding package downloaded & kickoff scheduled for Nov 12.`);
+      }, 500);
     }
 
     function closeCsHandoffModal() {
@@ -2804,28 +2849,8 @@ KICKOFF MEETING:    Thursday, Nov 12, 2026 @ 10:00 AM EST (Google Meet)
     }
 
     function confirmCsHandoff() {
-      const btn = document.getElementById('btnConfirmCsHandoff');
-      btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Notifying Team...</span>`;
-      try { lucide.createIcons(); } catch(e) {}
-
-      setTimeout(() => {
-        // Update deal pill in KANBAN_DEALS
-        const deal = KANBAN_DEALS.find(d => d.id === currentCsHandoffDealId || d.company.toLowerCase().includes(currentCsHandoffCompany.toLowerCase().split(' ')[0]));
-        if (deal) {
-          deal.pill = 'CS Onboarding Active ✓';
-          deal.pillColor = 'text-emerald-800 bg-emerald-100 font-bold border border-emerald-300';
-          deal.csHandedOff = true;
-          renderKanban();
-        }
-
-        // Trigger automatic package download to satisfy user requirement: "No package is getting downloaded"
-        downloadCsOnboardingPackage(currentCsHandoffCompany);
-
-        closeCsHandoffModal();
-        btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i><span>Confirm & Launch Onboarding ➔</span>`;
-        try { lucide.createIcons(); } catch(e) {}
-        showToast(`Account ${currentCsHandoffCompany} transitioned to CS! Onboarding package downloaded & kickoff scheduled for Nov 12.`);
-      }, 700);
+      handoffToCustomerSuccess();
+      closeCsHandoffModal();
     }
 
     function jumpDirectlyToDossier(leadId) {

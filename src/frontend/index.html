@@ -216,10 +216,13 @@
                 <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i><span>Built-in Pipeline CRM</span></li>
               </ul>
             </div>
-            <button onclick="openCheckoutModal('starter')" class="mt-8 w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition shadow-sm cursor-pointer flex items-center justify-center gap-2">
-              <span>Start 7-Day Free Trial</span>
+            <button onclick="openCheckoutModal('starter', 'pay')" id="btnLandingStarter" class="mt-8 w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition shadow-sm cursor-pointer flex items-center justify-center gap-2">
+              <span id="btnLandingStarterText">Subscribe Monthly ($34/mo)</span>
               <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
             </button>
+            <div class="mt-2 text-center">
+              <button onclick="openCheckoutModal('starter', 'trial')" class="text-[11px] text-slate-500 hover:text-emerald-600 underline font-medium cursor-pointer">Or start with 7-Day Free Trial ($0 today)</button>
+            </div>
           </div>
 
           <!-- Growth Plan ($99/mo) -->
@@ -841,12 +844,33 @@
 
       <!-- State 1: Checkout & Payment Form -->
       <div id="checkoutFormState" class="space-y-4">
-        <div class="p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200 text-xs text-emerald-800 space-y-1">
-          <div class="font-bold flex items-center gap-1.5">
-            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-            <span>100% Risk Free • Zero Upfront Billing</span>
+        
+        <!-- Payment Mode Selector: Direct Payment (Pay Now) vs 7-Day Trial -->
+        <div class="p-1 bg-slate-100 rounded-2xl grid grid-cols-2 gap-1 text-xs font-bold">
+          <button onclick="setCheckoutPaymentMode('pay')" id="tabModePay" class="py-2 rounded-xl bg-white text-slate-900 shadow-2xs transition cursor-pointer flex items-center justify-center gap-1.5">
+            <i data-lucide="credit-card" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <span>Pay Now (Direct)</span>
+          </button>
+          <button onclick="setCheckoutPaymentMode('trial')" id="tabModeTrial" class="py-2 rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center justify-center gap-1.5">
+            <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i>
+            <span>7-Day Free Trial</span>
+          </button>
+        </div>
+
+        <div id="modeBannerPay" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-1">
+          <div class="font-bold flex items-center gap-1.5 text-slate-900">
+            <i data-lucide="zap" class="w-4 h-4 text-emerald-600"></i>
+            <span>Instant Subscription Activation</span>
           </div>
-          <p class="text-[11px] text-emerald-700 leading-relaxed">Test autonomous scouting, generate 300 lead dossiers, and book meetings for 7 days before paying anything.</p>
+          <p class="text-[11px] text-slate-500 leading-relaxed">Immediate full access to autonomous scouting, 300+ monthly verified leads, and CRM sync. Cancel anytime.</p>
+        </div>
+
+        <div id="modeBannerTrial" class="hidden p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200 text-xs text-emerald-800 space-y-1">
+          <div class="font-bold flex items-center gap-1.5 text-emerald-900">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+            <span>Zero Upfront Billing</span>
+          </div>
+          <p class="text-[11px] text-emerald-700 leading-relaxed">Test autonomous recon and pipeline CRM for 7 days before paying anything. Cancel anytime in 1 click.</p>
         </div>
 
         <!-- Account Info -->
@@ -965,13 +989,13 @@
               <span id="summaryTierLabel">Starter SDR Plan (Monthly)</span>
               <span id="summaryTierPrice" class="font-semibold text-slate-800">$34.00</span>
             </div>
-            <div class="flex justify-between text-emerald-700">
-              <span>7-Day Free Trial Promo</span>
-              <span id="summaryDiscount" class="font-bold">-$34.00</span>
+            <div id="rowSummaryDiscount" class="hidden flex justify-between text-emerald-700">
+              <span id="labelSummaryDiscount">Promo Discount</span>
+              <span id="summaryDiscount" class="font-bold">-$0.00</span>
             </div>
             <div class="flex justify-between text-xs font-extrabold text-slate-900 pt-1 border-t border-dashed border-slate-200">
-              <span>Due Today</span>
-              <span class="text-emerald-700 font-bold text-sm">$0.00</span>
+              <span>Total Due Today</span>
+              <span id="summaryDueToday" class="text-emerald-700 font-bold text-sm">$34.00</span>
             </div>
           </div>
         </div>
@@ -1704,6 +1728,10 @@
       }
 
       changeGlobalCurrency(GLOBAL_CURRENCY);
+      const starterBtnText = document.getElementById('btnLandingStarterText');
+      if (starterBtnText) {
+        starterBtnText.innerText = cycle === 'annual' ? "Subscribe Yearly (Save 20%)" : "Subscribe Monthly ($34/mo)";
+      }
     }
 
     // Coupon Code Engine
@@ -1842,11 +1870,36 @@
       document.getElementById('legalModal').classList.add('hidden');
     }
 
-    // Checkout & Payment Handlers
+    // Checkout & Payment Handlers (Supports Monthly, Yearly, and Trial Modes)
     let currentBillingCycle = 'monthly';
+    let currentPaymentMode = 'pay'; // 'pay' (default) or 'trial'
 
-    function openCheckoutModal(tier) {
+    function setCheckoutPaymentMode(mode) {
+      currentPaymentMode = mode;
+      const tabPay = document.getElementById('tabModePay');
+      const tabTrial = document.getElementById('tabModeTrial');
+      const bannerPay = document.getElementById('modeBannerPay');
+      const bannerTrial = document.getElementById('modeBannerTrial');
+
+      if (mode === 'trial') {
+        tabTrial.className = "py-2 rounded-xl bg-white text-slate-900 shadow-2xs transition cursor-pointer flex items-center justify-center gap-1.5";
+        tabPay.className = "py-2 rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center justify-center gap-1.5";
+        if (bannerTrial) bannerTrial.classList.remove('hidden');
+        if (bannerPay) bannerPay.classList.add('hidden');
+      } else {
+        tabPay.className = "py-2 rounded-xl bg-white text-slate-900 shadow-2xs transition cursor-pointer flex items-center justify-center gap-1.5";
+        tabTrial.className = "py-2 rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center justify-center gap-1.5";
+        if (bannerPay) bannerPay.classList.remove('hidden');
+        if (bannerTrial) bannerTrial.classList.add('hidden');
+      }
+
+      recalculateCheckoutPrices();
+    }
+
+    function openCheckoutModal(tier, mode) {
       selectedCheckoutTier = tier || 'starter';
+      if (mode) currentPaymentMode = mode;
+      else currentPaymentMode = 'pay'; // default to direct payment
       
       // Reset view to form state
       const formState = document.getElementById('checkoutFormState');
@@ -1854,37 +1907,67 @@
       if (formState) formState.classList.remove('hidden');
       if (successState) successState.classList.add('hidden');
 
+      setCheckoutPaymentMode(currentPaymentMode);
+
+      document.getElementById('checkoutModal').classList.remove('hidden');
+      try { lucide.createIcons(); } catch(e) {}
+    }
+
+    function recalculateCheckoutPrices() {
+      const rate = CURRENCY_RATES[GLOBAL_CURRENCY] || 1.0;
+      const sym = CURRENCY_SYMBOLS[GLOBAL_CURRENCY] || '$';
+
       const tierBadge = document.getElementById('checkoutModalTier');
       const modalTitle = document.getElementById('checkoutModalTitle');
       const confirmBtnText = document.getElementById('btnConfirmPlanText');
       const summaryTierLabel = document.getElementById('summaryTierLabel');
       const summaryTierPrice = document.getElementById('summaryTierPrice');
+      const rowDiscount = document.getElementById('rowSummaryDiscount');
       const summaryDiscount = document.getElementById('summaryDiscount');
+      const summaryDueToday = document.getElementById('summaryDueToday');
       const monthlySub = document.getElementById('summaryMonthlySub');
       const annualSub = document.getElementById('summaryAnnualSub');
 
-      if (selectedCheckoutTier === 'agency') {
-        if (tierBadge) tierBadge.innerText = "Selected: Agency & Scale ($99/mo)";
-        if (modalTitle) modalTitle.innerText = "Activate Agency Plan ($99/mo)";
-        if (confirmBtnText) confirmBtnText.innerText = "Authorize & Activate Agency Plan";
-        if (summaryTierLabel) summaryTierLabel.innerText = "Agency & Scale Plan";
-        if (summaryTierPrice) summaryTierPrice.innerText = currentBillingCycle === 'annual' ? "$950.40 / yr" : "$99.00 / mo";
-        if (summaryDiscount) summaryDiscount.innerText = currentBillingCycle === 'annual' ? "-$237.60 (Save 20%)" : "-$99.00 (7-Day Trial)";
-        if (monthlySub) monthlySub.innerText = "$99/mo";
-        if (annualSub) annualSub.innerText = "$79/mo billed yearly";
-      } else {
-        if (tierBadge) tierBadge.innerText = "Selected: Starter SDR ($34/mo)";
-        if (modalTitle) modalTitle.innerText = "Start 7-Day Free Trial";
-        if (confirmBtnText) confirmBtnText.innerText = "Activate 7-Day Free Trial";
-        if (summaryTierLabel) summaryTierLabel.innerText = "Starter SDR Plan";
-        if (summaryTierPrice) summaryTierPrice.innerText = currentBillingCycle === 'annual' ? "$326.40 / yr" : "$34.00 / mo";
-        if (summaryDiscount) summaryDiscount.innerText = currentBillingCycle === 'annual' ? "-$81.60 (Save 20%)" : "-$34.00 (7-Day Trial)";
-        if (monthlySub) monthlySub.innerText = "$34/mo";
-        if (annualSub) annualSub.innerText = "$27/mo billed yearly";
-      }
+      const isAgency = (selectedCheckoutTier === 'agency');
+      const baseMonthly = isAgency ? 99 : 34;
+      const baseYearly = isAgency ? (79 * 12) : (27 * 12); // $948 or $324
 
-      document.getElementById('checkoutModal').classList.remove('hidden');
-      try { lucide.createIcons(); } catch(e) {}
+      const convMonthly = Math.round(baseMonthly * rate);
+      const convYearly = Math.round(baseYearly * rate);
+
+      if (monthlySub) monthlySub.innerText = `${sym}${convMonthly}/mo`;
+      if (annualSub) annualSub.innerText = `${sym}${Math.round(convYearly / 12)}/mo billed yearly`;
+
+      const planName = isAgency ? "Agency & Scale" : "Starter SDR";
+      const cycleName = (currentBillingCycle === 'annual') ? "Yearly" : "Monthly";
+      const fullPrice = (currentBillingCycle === 'annual') ? convYearly : convMonthly;
+
+      if (tierBadge) tierBadge.innerText = `Selected: ${planName} (${cycleName})`;
+      if (summaryTierLabel) summaryTierLabel.innerText = `${planName} (${cycleName} Billing)`;
+      if (summaryTierPrice) summaryTierPrice.innerText = `${sym}${fullPrice.toLocaleString()}`;
+
+      if (currentPaymentMode === 'trial') {
+        if (modalTitle) modalTitle.innerText = "Start 7-Day Free Trial";
+        if (confirmBtnText) confirmBtnText.innerText = "Activate 7-Day Free Trial ($0 Today)";
+        if (rowDiscount) rowDiscount.classList.remove('hidden');
+        if (summaryDiscount) summaryDiscount.innerText = `-${sym}${fullPrice.toLocaleString()} (Free Trial)`;
+        if (summaryDueToday) summaryDueToday.innerText = `${sym}0.00`;
+      } else {
+        // DIRECT PAYMENT (Monthly or Yearly)
+        let finalDue = fullPrice;
+        if (activeCouponDiscount > 0) {
+          const discountVal = Math.round(fullPrice * activeCouponDiscount);
+          finalDue = fullPrice - discountVal;
+          if (rowDiscount) rowDiscount.classList.remove('hidden');
+          if (summaryDiscount) summaryDiscount.innerText = `-${sym}${discountVal.toLocaleString()} (${Math.round(activeCouponDiscount * 100)}% Off)`;
+        } else {
+          if (rowDiscount) rowDiscount.classList.add('hidden');
+        }
+
+        if (modalTitle) modalTitle.innerText = `Subscribe to ${planName} (${cycleName})`;
+        if (confirmBtnText) confirmBtnText.innerText = `Pay ${sym}${finalDue.toLocaleString()} Now ➔`;
+        if (summaryDueToday) summaryDueToday.innerText = `${sym}${finalDue.toLocaleString()}`;
+      }
     }
 
     function closeCheckoutModal() {
@@ -1895,20 +1978,16 @@
       currentBillingCycle = cycle;
       const btnM = document.getElementById('btnCycleMonthly');
       const btnA = document.getElementById('btnCycleAnnual');
-      const summaryTierPrice = document.getElementById('summaryTierPrice');
-      const summaryDiscount = document.getElementById('summaryDiscount');
 
       if (cycle === 'annual') {
         btnA.className = "py-2.5 rounded-xl text-xs font-bold border-2 border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer flex flex-col items-center";
         btnM.className = "py-2.5 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-600 cursor-pointer flex flex-col items-center";
-        if (summaryTierPrice) summaryTierPrice.innerText = selectedCheckoutTier === 'agency' ? "$950.40 / yr" : "$326.40 / yr";
-        if (summaryDiscount) summaryDiscount.innerText = selectedCheckoutTier === 'agency' ? "-$237.60 (Save 20%)" : "-$81.60 (Save 20%)";
       } else {
         btnM.className = "py-2.5 rounded-xl text-xs font-bold border-2 border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer flex flex-col items-center";
         btnA.className = "py-2.5 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-600 cursor-pointer flex flex-col items-center";
-        if (summaryTierPrice) summaryTierPrice.innerText = selectedCheckoutTier === 'agency' ? "$99.00 / mo" : "$34.00 / mo";
-        if (summaryDiscount) summaryDiscount.innerText = selectedCheckoutTier === 'agency' ? "-$99.00 (7-Day Trial)" : "-$34.00 (7-Day Trial)";
       }
+
+      recalculateCheckoutPrices();
     }
 
     function confirmPlanActivation() {

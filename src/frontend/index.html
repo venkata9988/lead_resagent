@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ProspectPulse | Autonomous B2B AI Sales Agent & CRM Platform</title>
-  <!-- Custom Favicon for ProspectPulse -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="alternate icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23059669'/%3E%3Cstop offset='100%25' stop-color='%2314b8a6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Cpath d='M18 5L9 17h6l-2 10 9-12h-6l2-10z' fill='%23ffffff' stroke='%23ffffff' stroke-width='0.5' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <!-- Custom High-Compatibility Favicon for ProspectPulse (PNG & SVG Data URIs) -->
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAyklEQVR4nM2XUQrDMAxDG7H1ru2B2rtmHxsuFMKIaapozvSZgJ9kWidJk6PntrwnoV7rnmrr6dfgKyOIhNcYiITXWFDB87JRJtALZuClENn6bxkbI9ObMBLebUAhqNLP+xpnIAtaTxvIQjhlQC2MTG9KrYOIhV99nKCqiuDNBpj0rb/lo6fY307C+cZQAgvx0t+diGANKOByA4ygKhR6GKngJoyEHwa8F0vEmWBsjExvOgwwXeiFn8xULkZd0cvA8DYi4CYXGPU8/wCOWFVHuXMptAAAAABJRU5ErkJggg==">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23059669'/%3E%3Cstop offset='100%25' stop-color='%2314b8a6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Cpath d='M18 5L9 17h6l-2 10 9-12h-6l2-10z' fill='%23ffffff' stroke='%23ffffff' stroke-width='0.5' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="shortcut icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAyklEQVR4nM2XUQrDMAxDG7H1ru2B2rtmHxsuFMKIaapozvSZgJ9kWidJk6PntrwnoV7rnmrr6dfgKyOIhNcYiITXWFDB87JRJtALZuClENn6bxkbI9ObMBLebUAhqNLP+xpnIAtaTxvIQjhlQC2MTG9KrYOIhV99nKCqiuDNBpj0rb/lo6fY307C+cZQAgvx0t+diGANKOByA4ygKhR6GKngJoyEHwa8F0vEmWBsjExvOgwwXeiFn8xULkZd0cvA8DYi4CYXGPU8/wCOWFVHuXMptAAAAABJRU5ErkJggg==">
+  <link rel="alternate icon" type="image/svg+xml" href="favicon.svg">
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
@@ -823,23 +825,25 @@
 
   <!-- Interactive Legal & Support Modal (Zero 404s) -->
   <div id="legalModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="max-w-lg w-full bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+    <div class="max-w-lg w-full bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in fade-in zoom-in-95 duration-150">
+      <div class="p-5 px-6 border-b border-slate-100 flex items-center justify-between flex-shrink-0 bg-white">
         <div>
           <span id="legalModalBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Legal Disclosure</span>
           <h3 id="legalModalTitle" class="font-bold text-lg text-slate-900 mt-1">Privacy Policy</h3>
         </div>
-        <button onclick="closeLegalModal()" class="text-slate-400 hover:text-slate-700 cursor-pointer p-1 rounded-lg hover:bg-slate-100">
+        <button onclick="closeLegalModal()" class="text-slate-400 hover:text-slate-700 cursor-pointer p-1.5 rounded-xl hover:bg-slate-100 transition">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
-      <div id="legalModalContent" class="text-xs text-slate-600 leading-relaxed space-y-3">
-        <!-- Injected via openLegalModal() -->
+      <div class="p-6 overflow-y-auto flex-1 modal-scroll">
+        <div id="legalModalContent" class="text-xs text-slate-600 leading-relaxed space-y-3">
+          <!-- Injected via openLegalModal() -->
+        </div>
       </div>
 
-      <div class="flex items-center justify-end pt-3 border-t border-slate-100">
-        <button onclick="closeLegalModal()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold cursor-pointer">
+      <div class="p-4 px-6 bg-slate-50 border-t border-slate-100 flex items-center justify-end flex-shrink-0">
+        <button onclick="closeLegalModal()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition cursor-pointer">
           Understood & Close
         </button>
       </div>
@@ -848,10 +852,10 @@
 
   <!-- Interactive Plan Checkout & Payment Modal -->
   <div id="checkoutModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="max-w-lg w-full bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl flex flex-col gap-4 max-h-[92vh] overflow-y-auto">
+    <div class="max-w-lg w-full bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-150">
       
-      <!-- Modal Header -->
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+      <!-- Pinned Modal Header -->
+      <div class="p-5 px-6 border-b border-slate-100 flex items-center justify-between flex-shrink-0 bg-white">
         <div>
           <span id="checkoutModalTier" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Selected: Starter SDR ($34/mo)</span>
           <h3 id="checkoutModalTitle" class="font-bold text-lg text-slate-900 mt-1">Start 7-Day Free Trial</h3>
@@ -861,226 +865,238 @@
         </button>
       </div>
 
-      <!-- State 1: Checkout & Payment Form -->
-      <div id="checkoutFormState" class="space-y-4">
+      <!-- Scrollable Modal Body (Contains forms & inputs, scrollbar cleanly contained) -->
+      <div class="p-6 overflow-y-auto flex-1 space-y-4 modal-scroll">
         
-        <!-- Payment Mode Selector: Direct Payment (Pay Now) vs 7-Day Trial -->
-        <div class="p-1 bg-slate-100 rounded-2xl grid grid-cols-2 gap-1 text-xs font-bold">
-          <button onclick="setCheckoutPaymentMode('pay')" id="tabModePay" class="py-2 rounded-xl bg-white text-slate-900 shadow-2xs transition cursor-pointer flex items-center justify-center gap-1.5">
-            <i data-lucide="credit-card" class="w-3.5 h-3.5 text-emerald-600"></i>
-            <span>Pay Now (Direct)</span>
-          </button>
-          <button onclick="setCheckoutPaymentMode('trial')" id="tabModeTrial" class="py-2 rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center justify-center gap-1.5">
-            <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i>
-            <span>7-Day Free Trial</span>
-          </button>
-        </div>
-
-        <div id="modeBannerPay" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-1">
-          <div class="font-bold flex items-center gap-1.5 text-slate-900">
-            <i data-lucide="zap" class="w-4 h-4 text-emerald-600"></i>
-            <span>Instant Subscription Activation</span>
-          </div>
-          <p class="text-[11px] text-slate-500 leading-relaxed">Immediate full access to autonomous scouting, 300+ monthly verified leads, and CRM sync. Cancel anytime.</p>
-        </div>
-
-        <div id="modeBannerTrial" class="hidden p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200 text-xs text-emerald-800 space-y-1">
-          <div class="font-bold flex items-center gap-1.5 text-emerald-900">
-            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-            <span>Zero Upfront Billing</span>
-          </div>
-          <p class="text-[11px] text-emerald-700 leading-relaxed">Test autonomous recon and pipeline CRM for 7 days before paying anything. Cancel anytime in 1 click.</p>
-        </div>
-
-        <!-- Account Info -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-          <div>
-            <label class="text-[11px] font-bold text-slate-700 block mb-1">Work Email</label>
-            <input id="checkoutEmail" type="email" placeholder="you@company.com" value="venkata@company.com" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
-          </div>
-          <div>
-            <label class="text-[11px] font-bold text-slate-700 block mb-1">Company / Agency Name</label>
-            <input id="checkoutCompany" type="text" placeholder="Your Agency or Business" value="Siva Outbound Agency" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
-          </div>
-        </div>
-
-        <!-- Billing Cycle Selector -->
-        <div class="text-xs">
-          <label class="text-[11px] font-bold text-slate-700 block mb-1">Billing Cycle</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="setBillingCycle('monthly')" id="btnCycleMonthly" class="py-2.5 rounded-xl text-xs font-bold border-2 border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer flex flex-col items-center">
-              <span>Monthly Billing</span>
-              <span class="text-[10px] font-normal text-emerald-600" id="summaryMonthlySub">$34/mo</span>
+        <!-- State 1: Checkout & Payment Form -->
+        <div id="checkoutFormState" class="space-y-4">
+          
+          <!-- Payment Mode Selector: Direct Payment (Pay Now) vs 7-Day Trial -->
+          <div class="p-1 bg-slate-100 rounded-2xl grid grid-cols-2 gap-1 text-xs font-bold">
+            <button onclick="setCheckoutPaymentMode('pay')" id="tabModePay" class="py-2 rounded-xl bg-white text-slate-900 shadow-2xs transition cursor-pointer flex items-center justify-center gap-1.5">
+              <i data-lucide="credit-card" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>Pay Now (Direct)</span>
             </button>
-            <button onclick="setBillingCycle('annual')" id="btnCycleAnnual" class="py-2.5 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-600 cursor-pointer flex flex-col items-center">
-              <span>Annual (Save 20%)</span>
-              <span class="text-[10px] font-normal text-slate-500" id="summaryAnnualSub">$27/mo billed yearly</span>
+            <button onclick="setCheckoutPaymentMode('trial')" id="tabModeTrial" class="py-2 rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center justify-center gap-1.5">
+              <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i>
+              <span>7-Day Free Trial</span>
             </button>
           </div>
-        </div>
 
-        <!-- Payment Method Section -->
-        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 text-xs">
-          <div class="flex items-center justify-between pb-2 border-b border-slate-200/60">
-            <span class="font-bold text-slate-800 flex items-center gap-1.5">
-              <i data-lucide="credit-card" class="w-4 h-4 text-emerald-600"></i>
-              <span>Secure Payment Method</span>
-            </span>
-            <div class="flex items-center gap-1.5 text-[10px] font-semibold text-slate-500">
-              <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200">Visa</span>
-              <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200">Mastercard</span>
-              <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200">Amex</span>
+          <div id="modeBannerPay" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-1">
+            <div class="font-bold flex items-center gap-1.5 text-slate-900">
+              <i data-lucide="zap" class="w-4 h-4 text-emerald-600"></i>
+              <span>Instant Subscription Activation</span>
             </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">Immediate full access to autonomous scouting, 300+ monthly verified leads, and CRM sync. Cancel anytime.</p>
           </div>
 
-          <!-- Alternative Fast Payment Buttons -->
-          <div class="grid grid-cols-3 gap-2 pb-2 border-b border-slate-200/60">
-            <button onclick="triggerFastPay('Google Pay')" class="py-1.5 px-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-[11px] font-bold text-slate-700 flex items-center justify-center gap-1 shadow-2xs transition cursor-pointer">
-              <span>GPay</span>
-            </button>
-            <button onclick="triggerFastPay('Apple Pay')" class="py-1.5 px-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-[11px] font-bold text-slate-700 flex items-center justify-center gap-1 shadow-2xs transition cursor-pointer">
-              <span>Apple Pay</span>
-            </button>
-            <button onclick="triggerFastPay('PayPal')" class="py-1.5 px-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-[11px] font-bold text-blue-700 flex items-center justify-center gap-1 shadow-2xs transition cursor-pointer">
-              <span>PayPal</span>
-            </button>
+          <div id="modeBannerTrial" class="hidden p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200 text-xs text-emerald-800 space-y-1">
+            <div class="font-bold flex items-center gap-1.5 text-emerald-900">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+              <span>Zero Upfront Billing</span>
+            </div>
+            <p class="text-[11px] text-emerald-700 leading-relaxed">Test autonomous recon and pipeline CRM for 7 days before paying anything. Cancel anytime in 1 click.</p>
           </div>
 
-          <!-- Card Details Input with Real-Time Inline Validation -->
-          <div class="space-y-2.5">
+          <!-- Account Info -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div>
-              <label class="text-[10px] font-semibold text-slate-600 block mb-1">Cardholder Name</label>
-              <input id="payCardName" type="text" value="Venkata Siva" placeholder="Name on card" oninput="validateCheckoutCardForm()" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500">
+              <label class="text-[11px] font-bold text-slate-700 block mb-1">Work Email</label>
+              <input id="checkoutEmail" type="email" placeholder="rahul@xx.com" value="rahul@xx.com" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
             </div>
-
             <div>
-              <div class="flex items-center justify-between">
-                <label class="text-[10px] font-semibold text-slate-600 block mb-1">Card Number</label>
-                <span id="errCardNumber" class="hidden text-[10px] text-rose-600 font-bold">Must be 16 digits</span>
-              </div>
-              <div class="relative">
-                <input id="payCardNumber" type="text" value="4242 4242 4242 4242" placeholder="•••• •••• •••• ••••" maxlength="19" oninput="formatAndValidateCardNumber(this)" class="w-full pl-3 pr-10 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 mono focus:outline-none focus:border-emerald-500">
-                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-emerald-600 font-bold text-[10px]">
-                  VISA
-                </div>
-              </div>
+              <label class="text-[11px] font-bold text-slate-700 block mb-1">Company / Agency Name</label>
+              <input id="checkoutCompany" type="text" placeholder="Your Agency or Business" value="XX" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
             </div>
+          </div>
 
+          <!-- Billing Cycle Selector -->
+          <div class="text-xs">
+            <label class="text-[11px] font-bold text-slate-700 block mb-1">Billing Cycle</label>
             <div class="grid grid-cols-2 gap-2">
-              <div>
-                <div class="flex items-center justify-between">
-                  <label class="text-[10px] font-semibold text-slate-600 block mb-1">Expiration Date</label>
-                  <span id="errCardExp" class="hidden text-[10px] text-rose-600 font-bold">MM/YY</span>
-                </div>
-                <input id="payCardExp" type="text" value="12/28" placeholder="MM/YY" maxlength="5" oninput="formatAndValidateExp(this)" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 mono focus:outline-none focus:border-emerald-500">
+              <button onclick="setBillingCycle('monthly')" id="btnCycleMonthly" class="py-2.5 rounded-xl text-xs font-bold border-2 border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer flex flex-col items-center">
+                <span>Monthly Billing</span>
+                <span class="text-[10px] font-normal text-emerald-600" id="summaryMonthlySub">$34/mo</span>
+              </button>
+              <button onclick="setBillingCycle('annual')" id="btnCycleAnnual" class="py-2.5 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-600 cursor-pointer flex flex-col items-center">
+                <span>Annual (Save 20%)</span>
+                <span class="text-[10px] font-normal text-slate-500" id="summaryAnnualSub">$27/mo billed yearly</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Payment Method Section -->
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 text-xs">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-200/60">
+              <span class="font-bold text-slate-800 flex items-center gap-1.5">
+                <i data-lucide="credit-card" class="w-4 h-4 text-emerald-600"></i>
+                <span>Secure Payment Method</span>
+              </span>
+              <div class="flex items-center gap-1.5 text-[10px] font-semibold text-slate-500">
+                <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200">Visa</span>
+                <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200">Mastercard</span>
+                <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200">Amex</span>
               </div>
+            </div>
+
+            <!-- Alternative Fast Payment Buttons -->
+            <div class="grid grid-cols-3 gap-2 pb-2 border-b border-slate-200/60">
+              <button onclick="triggerFastPay('Google Pay')" class="py-1.5 px-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-[11px] font-bold text-slate-700 flex items-center justify-center gap-1 shadow-2xs transition cursor-pointer">
+                <span>GPay</span>
+              </button>
+              <button onclick="triggerFastPay('Apple Pay')" class="py-1.5 px-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-[11px] font-bold text-slate-700 flex items-center justify-center gap-1 shadow-2xs transition cursor-pointer">
+                <span>Apple Pay</span>
+              </button>
+              <button onclick="triggerFastPay('PayPal')" class="py-1.5 px-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-[11px] font-bold text-blue-700 flex items-center justify-center gap-1 shadow-2xs transition cursor-pointer">
+                <span>PayPal</span>
+              </button>
+            </div>
+
+            <!-- Card Details Input with Real-Time Inline Validation -->
+            <div class="space-y-2.5">
+              <div>
+                <label class="text-[10px] font-semibold text-slate-600 block mb-1">Cardholder Name</label>
+                <input id="payCardName" type="text" value="Rahul" placeholder="Name on card" oninput="validateCheckoutCardForm()" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500">
+              </div>
+
               <div>
                 <div class="flex items-center justify-between">
-                  <label class="text-[10px] font-semibold text-slate-600 block mb-1">CVC / CVV</label>
-                  <span id="errCardCvc" class="hidden text-[10px] text-rose-600 font-bold">3-4 digits</span>
+                  <label class="text-[10px] font-semibold text-slate-600 block mb-1">Card Number</label>
+                  <span id="errCardNumber" class="hidden text-[10px] text-rose-600 font-bold">Must be 16 digits</span>
                 </div>
                 <div class="relative">
-                  <input id="payCardCvc" type="password" value="842" placeholder="CVC" maxlength="4" oninput="validateCheckoutCardForm()" class="w-full pl-3 pr-8 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 mono focus:outline-none focus:border-emerald-500">
-                  <div class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none text-slate-400">
-                    <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                  <input id="payCardNumber" type="text" value="4242 4242 4242 4242" placeholder="•••• •••• •••• ••••" maxlength="19" oninput="formatAndValidateCardNumber(this)" class="w-full pl-3 pr-10 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 mono focus:outline-none focus:border-emerald-500">
+                  <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-emerald-600 font-bold text-[10px]">
+                    VISA
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <div class="flex items-center justify-between">
+                    <label class="text-[10px] font-semibold text-slate-600 block mb-1">Expiration Date</label>
+                    <span id="errCardExp" class="hidden text-[10px] text-rose-600 font-bold">MM/YY</span>
+                  </div>
+                  <input id="payCardExp" type="text" value="12/28" placeholder="MM/YY" maxlength="5" oninput="formatAndValidateExp(this)" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 mono focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                  <div class="flex items-center justify-between">
+                    <label class="text-[10px] font-semibold text-slate-600 block mb-1">CVC / CVV</label>
+                    <span id="errCardCvc" class="hidden text-[10px] text-rose-600 font-bold">3-4 digits</span>
+                  </div>
+                  <div class="relative">
+                    <input id="payCardCvc" type="password" value="842" placeholder="CVC" maxlength="4" oninput="validateCheckoutCardForm()" class="w-full pl-3 pr-8 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 mono focus:outline-none focus:border-emerald-500">
+                    <div class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none text-slate-400">
+                      <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Coupon / Promo Code Box -->
-          <div class="pt-2 border-t border-slate-200/60">
-            <div class="flex items-center gap-2">
-              <div class="relative flex-1">
-                <input id="inputCouponCode" type="text" placeholder="Promo code (e.g. WELCOME10)" class="w-full px-3 py-1.5 uppercase bg-white border border-slate-200 rounded-xl text-xs text-slate-800 uppercase focus:outline-none focus:border-emerald-500">
+            <!-- Coupon / Promo Code Box -->
+            <div class="pt-2 border-t border-slate-200/60">
+              <div class="flex items-center gap-2">
+                <div class="relative flex-1">
+                  <input id="inputCouponCode" type="text" placeholder="Promo code (e.g. WELCOME10)" class="w-full px-3 py-1.5 uppercase bg-white border border-slate-200 rounded-xl text-xs text-slate-800 uppercase focus:outline-none focus:border-emerald-500">
+                </div>
+                <button onclick="applyCouponCode()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition cursor-pointer">
+                  Apply
+                </button>
               </div>
-              <button onclick="applyCouponCode()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition cursor-pointer">
-                Apply
-              </button>
+              <p id="couponFeedback" class="hidden text-[10px] mt-1 font-semibold"></p>
             </div>
-            <p id="couponFeedback" class="hidden text-[10px] mt-1 font-semibold"></p>
+
+            <!-- Order Summary Breakdown -->
+            <div class="pt-2 border-t border-slate-200/60 space-y-1 text-[11px]">
+              <div class="flex justify-between text-slate-600">
+                <span id="summaryTierLabel">Starter SDR Plan (Monthly)</span>
+                <span id="summaryTierPrice" class="font-semibold text-slate-800">$34.00</span>
+              </div>
+              <div id="rowSummaryDiscount" class="hidden flex justify-between text-emerald-700">
+                <span id="labelSummaryDiscount">Promo Discount</span>
+                <span id="summaryDiscount" class="font-bold">-$0.00</span>
+              </div>
+              <div class="flex justify-between text-xs font-extrabold text-slate-900 pt-1 border-t border-dashed border-slate-200">
+                <span>Total Due Today</span>
+                <span id="summaryDueToday" class="text-emerald-700 font-bold text-sm">$34.00</span>
+              </div>
+            </div>
           </div>
 
-          <!-- Order Summary Breakdown -->
-          <div class="pt-2 border-t border-slate-200/60 space-y-1 text-[11px]">
-            <div class="flex justify-between text-slate-600">
-              <span id="summaryTierLabel">Starter SDR Plan (Monthly)</span>
-              <span id="summaryTierPrice" class="font-semibold text-slate-800">$34.00</span>
+          <div class="flex items-center justify-between text-[10px] text-slate-400">
+            <div class="flex items-center gap-1">
+              <i data-lucide="shield" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>256-Bit TLS Bank Encryption</span>
             </div>
-            <div id="rowSummaryDiscount" class="hidden flex justify-between text-emerald-700">
-              <span id="labelSummaryDiscount">Promo Discount</span>
-              <span id="summaryDiscount" class="font-bold">-$0.00</span>
+            <span>Powered by Stripe</span>
+          </div>
+
+        </div>
+
+        <!-- State 2: Invoice & Receipt Confirmation (Revealed after payment) -->
+        <div id="checkoutSuccessState" class="hidden space-y-4 py-2">
+          <div class="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 flex flex-col items-center text-center gap-2">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-emerald-600/20">
+              <i data-lucide="check" class="w-6 h-6"></i>
             </div>
-            <div class="flex justify-between text-xs font-extrabold text-slate-900 pt-1 border-t border-dashed border-slate-200">
-              <span>Total Due Today</span>
-              <span id="summaryDueToday" class="text-emerald-700 font-bold text-sm">$34.00</span>
+            <h4 class="font-extrabold text-base text-emerald-950 mt-1">Payment Method Verified & Plan Active!</h4>
+            <p class="text-xs text-emerald-800 max-w-sm leading-relaxed">
+              Your 7-day trial has started. 300 verified autonomous lead credits have been loaded into your account.
+            </p>
+          </div>
+
+          <!-- Invoice Receipt Card -->
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-200/60 font-semibold text-slate-700">
+              <span class="text-slate-500">Transaction Receipt</span>
+              <span id="receiptTxId" class="mono text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">INV-2026-94821</span>
             </div>
+            <div class="flex justify-between py-1 border-b border-slate-200/60">
+              <span class="text-slate-500">Active Plan</span>
+              <span id="receiptPlanName" class="font-bold text-slate-800">Starter SDR ($34/mo)</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-slate-200/60">
+              <span class="text-slate-500">Payment Card</span>
+              <span class="font-semibold text-slate-800">Visa ending in 4242</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-slate-200/60">
+              <span class="text-slate-500">Amount Charged Today</span>
+              <span class="font-bold text-emerald-700">$0.00 (Trial Active)</span>
+            </div>
+            <div class="flex justify-between py-1">
+              <span class="text-slate-500">First Renewal Date</span>
+              <span id="receiptRenewalDate" class="font-semibold text-slate-800">Nov 12, 2026 ($34.00)</span>
+            </div>
+          </div>
+
+          <!-- Success Actions -->
+          <div class="flex items-center justify-between gap-3 pt-2">
+            <button onclick="downloadInvoiceMock()" class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs cursor-pointer">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Download Invoice PDF</span>
+            </button>
+            <button onclick="closeCheckoutModal(); navigate('agent');" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
+              <span>Open AI SDR Studio ➔</span>
+            </button>
           </div>
         </div>
 
-        <div class="flex items-center justify-between text-[10px] text-slate-400">
-          <div class="flex items-center gap-1">
-            <i data-lucide="shield" class="w-3.5 h-3.5 text-emerald-600"></i>
-            <span>256-Bit TLS Bank Encryption</span>
-          </div>
-          <span>Powered by Stripe</span>
-        </div>
+      </div>
 
-        <!-- Footer Actions -->
-        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-          <button onclick="closeCheckoutModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-medium cursor-pointer">Cancel</button>
+      <!-- Pinned Sticky Footer (Fixed at the bottom of the modal for State 1) -->
+      <div id="checkoutModalFooter" class="p-4 px-6 bg-slate-50 border-t border-slate-100 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+          <span>256-Bit TLS • Stripe Secured</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="closeCheckoutModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-semibold cursor-pointer transition hover:bg-slate-200/50">Cancel</button>
           <button onclick="confirmPlanActivation()" id="btnConfirmPlan" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
             <i data-lucide="zap" class="w-3.5 h-3.5"></i>
             <span id="btnConfirmPlanText">Activate 7-Day Free Trial</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- State 2: Invoice & Receipt Confirmation (Revealed after payment) -->
-      <div id="checkoutSuccessState" class="hidden space-y-4 py-2">
-        <div class="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 flex flex-col items-center text-center gap-2">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-emerald-600/20">
-            <i data-lucide="check" class="w-6 h-6"></i>
-          </div>
-          <h4 class="font-extrabold text-base text-emerald-950 mt-1">Payment Method Verified & Plan Active!</h4>
-          <p class="text-xs text-emerald-800 max-w-sm leading-relaxed">
-            Your 7-day trial has started. 300 verified autonomous lead credits have been loaded into your account.
-          </p>
-        </div>
-
-        <!-- Invoice Receipt Card -->
-        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
-          <div class="flex justify-between items-center pb-2 border-b border-slate-200/60 font-semibold text-slate-700">
-            <span class="text-slate-500">Transaction Receipt</span>
-            <span id="receiptTxId" class="mono text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">INV-2026-94821</span>
-          </div>
-          <div class="flex justify-between py-1 border-b border-slate-200/60">
-            <span class="text-slate-500">Active Plan</span>
-            <span id="receiptPlanName" class="font-bold text-slate-800">Starter SDR ($34/mo)</span>
-          </div>
-          <div class="flex justify-between py-1 border-b border-slate-200/60">
-            <span class="text-slate-500">Payment Card</span>
-            <span class="font-semibold text-slate-800">Visa ending in 4242</span>
-          </div>
-          <div class="flex justify-between py-1 border-b border-slate-200/60">
-            <span class="text-slate-500">Amount Charged Today</span>
-            <span class="font-bold text-emerald-700">$0.00 (Trial Active)</span>
-          </div>
-          <div class="flex justify-between py-1">
-            <span class="text-slate-500">First Renewal Date</span>
-            <span id="receiptRenewalDate" class="font-semibold text-slate-800">Nov 12, 2026 ($34.00)</span>
-          </div>
-        </div>
-
-        <!-- Success Actions -->
-        <div class="flex items-center justify-between gap-3 pt-2">
-          <button onclick="downloadInvoiceMock()" class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs cursor-pointer">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i>
-            <span>Download Invoice PDF</span>
-          </button>
-          <button onclick="closeCheckoutModal(); navigate('agent');" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
-            <span>Open AI SDR Studio ➔</span>
           </button>
         </div>
       </div>
@@ -1238,8 +1254,8 @@
           </div>
           <div class="text-right">
             <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Billed To</span>
-            <div class="font-bold text-sm text-slate-900 mt-0.5">Venkata Siva</div>
-            <div class="text-[11px] text-slate-500 mt-0.5">Administrator & Growth Engineer</div>
+            <div id="invBilledName" class="font-bold text-sm text-slate-900 mt-0.5">Rahul</div>
+            <div id="invBilledCompany" class="text-[11px] text-slate-500 mt-0.5">XX • rahul@xx.com</div>
             <div class="text-[11px] text-slate-400 mt-1">Payment: Visa ending in 4242</div>
           </div>
         </div>
@@ -1877,7 +1893,7 @@
                   tech: p.tech ? p.tech.split(',').map(t => t.trim()) : ['HubSpot CRM', 'AWS Cloud'],
                   linkedinNote: `Saw ${comp}'s recent growth—congrats ${p.name.split(' ')[0]}. Typically during footprint expansion, onboarding bottlenecks emerge before staffing catches up. Open to seeing how teams automate this?`,
                   emailSubj: `${comp}'s scaling & operational workflows`,
-                  emailBody: `Hi ${p.name.split(' ')[0]},\n\nNoticed ${comp}'s expansion: ${p.signal}.\n\nTypically during rapid growth phases, manual intake pipelines become a major operational drag before team hiring stabilizes.\n\nWe built an autonomous research and outreach agent that streamlines intake and books verified meetings.\n\nOpen to a brief 2-minute workflow breakdown?\n\nBest,\nVenkata Siva`,
+                  emailBody: `Hi ${p.name.split(' ')[0]},\n\nNoticed ${comp}'s expansion: ${p.signal}.\n\nTypically during rapid growth phases, manual intake pipelines become a major operational drag before team hiring stabilizes.\n\nWe built an autonomous research and outreach agent that streamlines intake and books verified meetings.\n\nOpen to a brief 2-minute workflow breakdown?\n\nBest,\nRahul`,
                   charCount: "218 / 250 Chars",
                   wordCount: "72 Words (Under 85)"
                 };
@@ -2174,6 +2190,8 @@
       const successState = document.getElementById('checkoutSuccessState');
       if (formState) formState.classList.remove('hidden');
       if (successState) successState.classList.add('hidden');
+      const footer = document.getElementById('checkoutModalFooter');
+      if (footer) footer.classList.remove('hidden');
 
       setCheckoutPaymentMode(currentPaymentMode);
 
@@ -2312,6 +2330,8 @@
         const successState = document.getElementById('checkoutSuccessState');
         if (formState) formState.classList.add('hidden');
         if (successState) successState.classList.remove('hidden');
+        const footer = document.getElementById('checkoutModalFooter');
+        if (footer) footer.classList.add('hidden');
 
         try { lucide.createIcons(); } catch(e) {}
         showToast(`Payment Method Verified! ${planName} is now active.`);
@@ -2434,9 +2454,9 @@ PAYMENT STATUS:   ${d.statusText.toUpperCase()} (Visa ending in 4242)
 TRANSACTION REF:  tx_pulse_${Date.now().toString().slice(-8)}
 
 BILL TO:
-Venkata Siva
-Administrator & Growth Engineer
-admin@prospectpulse.io
+${localStorage.getItem('prospectpulse_user_name') || 'Rahul'}
+${localStorage.getItem('prospectpulse_user_company') || 'XX'}
+${localStorage.getItem('prospectpulse_user_email') || 'rahul@xx.com'}
 
 LINE ITEMS:
 --------------------------------------------------------------------------------
@@ -2645,7 +2665,7 @@ Thank you for building high-converting outbound pipelines with ProspectPulse!
             tech: ["AWS Cloud", "PostgreSQL", "HubSpot CRM", "Docker"],
             linkedinNote: `Saw ${compName}'s recent growth—congrats ${contactInput ? contactInput.split(' ')[0] : ''}. Typically during footprint expansion, onboarding bottlenecks develop before team hiring catches up. Open to seeing how teams automate this?`,
             emailSubj: `${compName}'s operational scaling & workflows`,
-            emailBody: `Hi ${contactInput ? contactInput.split(' ')[0] : 'there'},\n\nNoticed ${compName}'s recent scaling across ${sectorInput}.\n\nTypically during rapid expansion phases, manual pipeline management creates bottlenecks before team hiring stabilizes.\n\nWe built an autonomous agent that streamlines this workflow completely.\n\nOpen to a brief 2-minute workflow breakdown?\n\nBest,\nVenkata Siva`,
+            emailBody: `Hi ${contactInput ? contactInput.split(' ')[0] : 'there'},\n\nNoticed ${compName}'s recent scaling across ${sectorInput}.\n\nTypically during rapid expansion phases, manual pipeline management creates bottlenecks before team hiring stabilizes.\n\nWe built an autonomous agent that streamlines this workflow completely.\n\nOpen to a brief 2-minute workflow breakdown?\n\nBest,\nRahul`,
             charCount: "216 / 250 Chars",
             wordCount: "74 Words (Under 85)"
           };
@@ -3291,7 +3311,7 @@ KICKOFF MEETING:    Thursday, Nov 12, 2026 @ 10:00 AM EST (Google Meet)
         },
         metadata: {
           platform: "ProspectPulse AI SDR Engine",
-          author: "Venkata Siva - Growth Engineer"
+          author: "Rahul - Growth Lead (XX)"
         }
       };
       const jsonEl = document.getElementById('webhookPayloadJson');
@@ -3568,7 +3588,7 @@ KICKOFF MEETING:    Thursday, Nov 12, 2026 @ 10:00 AM EST (Google Meet)
           tech: tech,
           linkedinNote: `Saw ${company}'s recent growth—congrats ${name.split(' ')[0]}. Typically during footprint expansion, onboarding bottlenecks emerge before staffing catches up. Open to seeing how teams automate this?`,
           emailSubj: `${company}'s scaling & operational workflows`,
-          emailBody: `Hi ${name.split(' ')[0]},\n\nNoticed ${company}'s expansion: ${signal}.\n\nTypically during rapid growth phases, manual intake pipelines become a major operational drag before team hiring stabilizes.\n\nWe built an autonomous research and outreach agent that streamlines intake and books verified meetings.\n\nOpen to a brief 2-minute workflow breakdown?\n\nBest,\nVenkata Siva`,
+          emailBody: `Hi ${name.split(' ')[0]},\n\nNoticed ${company}'s expansion: ${signal}.\n\nTypically during rapid growth phases, manual intake pipelines become a major operational drag before team hiring stabilizes.\n\nWe built an autonomous research and outreach agent that streamlines intake and books verified meetings.\n\nOpen to a brief 2-minute workflow breakdown?\n\nBest,\nRahul`,
           charCount: "218 / 250 Chars",
           wordCount: "72 Words (Under 85)"
         };
@@ -3719,21 +3739,53 @@ KICKOFF MEETING:    Thursday, Nov 12, 2026 @ 10:00 AM EST (Google Meet)
 
     // Init
     window.addEventListener('DOMContentLoaded', () => {
-      // Restore user registration profile if persisted
+      // Restore user registration profile if persisted (Default to Rahul @ XX)
       try {
-        const savedName = localStorage.getItem('prospectpulse_user_name');
-        const savedEmail = localStorage.getItem('prospectpulse_user_email');
-        const savedCompany = localStorage.getItem('prospectpulse_user_company');
-        if (savedName) {
-          const profileName = document.getElementById('profileName');
-          if (profileName) profileName.innerText = savedName;
-          const profileRole = document.getElementById('profileRole');
-          if (profileRole) profileRole.innerText = `${savedCompany || 'XX'} • ${savedEmail || 'rahul@xx.com'}`;
-          const initials = savedName.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || 'RH';
-          const headerAvatar = document.getElementById('headerAvatar');
-          if (headerAvatar) headerAvatar.innerText = initials;
-          const profileAvatar = document.getElementById('profileAvatar');
-          if (profileAvatar) profileAvatar.innerText = initials;
+        let savedName = localStorage.getItem('prospectpulse_user_name');
+        let savedEmail = localStorage.getItem('prospectpulse_user_email');
+        let savedCompany = localStorage.getItem('prospectpulse_user_company');
+
+        // Ensure user is seeded as Rahul @ XX if unconfigured or legacy
+        if (!savedName || savedName === 'Venkata Siva') {
+          savedName = 'Rahul';
+          savedEmail = 'rahul@xx.com';
+          savedCompany = 'XX';
+          localStorage.setItem('prospectpulse_user_name', savedName);
+          localStorage.setItem('prospectpulse_user_email', savedEmail);
+          localStorage.setItem('prospectpulse_user_company', savedCompany);
+        }
+
+        const profileName = document.getElementById('profileName');
+        if (profileName) profileName.innerText = savedName;
+        const profileRole = document.getElementById('profileRole');
+        if (profileRole) profileRole.innerText = `${savedCompany} • ${savedEmail}`;
+        const initials = savedName.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || 'RH';
+        const headerAvatar = document.getElementById('headerAvatar');
+        if (headerAvatar) headerAvatar.innerText = initials;
+        const profileAvatar = document.getElementById('profileAvatar');
+        if (profileAvatar) profileAvatar.innerText = initials;
+
+        // Sync inputs if on checkout
+        const emailInput = document.getElementById('checkoutEmail');
+        if (emailInput && (!emailInput.value || emailInput.value === 'venkata@company.com')) emailInput.value = savedEmail;
+        const compInput = document.getElementById('checkoutCompany');
+        if (compInput && (!compInput.value || compInput.value === 'Siva Outbound Agency')) compInput.value = savedCompany;
+        const nameInput = document.getElementById('payCardName');
+        if (nameInput && (!nameInput.value || nameInput.value === 'Venkata Siva')) nameInput.value = savedName;
+
+        // Also sync invoice modal billed info
+        const invBilledName = document.getElementById('invBilledName');
+        if (invBilledName) invBilledName.innerText = savedName;
+        const invBilledCompany = document.getElementById('invBilledCompany');
+        if (invBilledCompany) invBilledCompany.innerText = `${savedCompany} • ${savedEmail}`;
+      } catch(e) {}
+
+      // Guarantee tab favicon is set even on file:/// local browser sessions
+      try {
+        let favLink = document.querySelector("link[rel*='icon']");
+        if (favLink) {
+          favLink.type = 'image/png';
+          favLink.href = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAyklEQVR4nM2XUQrDMAxDG7H1ru2B2rtmHxsuFMKIaapozvSZgJ9kWidJk6PntrwnoV7rnmrr6dfgKyOIhNcYiITXWFDB87JRJtALZuClENn6bxkbI9ObMBLebUAhqNLP+xpnIAtaTxvIQjhlQC2MTG9KrYOIhV99nKCqiuDNBpj0rb/lo6fY307C+cZQAgvx0t+diGANKOByA4ygKhR6GKngJoyEHwa8F0vEmWBsjExvOgwwXeiFn8xULkZd0cvA8DYi4CYXGPU8/wCOWFVHuXMptAAAAABJRU5ErkJggg==';
         }
       } catch(e) {}
 

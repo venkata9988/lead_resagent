@@ -130,26 +130,26 @@
 
       <!-- Feature Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 w-full text-left">
-        <div onclick="navigate('agent')" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition cursor-pointer">
+        <div onclick="navigate('agent'); selectLead('acme'); showToast('Loaded Live Signal Prospecting: Acme Health Partners');" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition cursor-pointer">
           <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-4">
             <i data-lucide="flame" class="w-5 h-5"></i>
           </div>
           <h3 class="font-bold text-base text-slate-900">Signal-Driven Prospecting</h3>
           <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-            Targets buyers when they are actively hiring or raising capital, yielding 4x higher response rates than cold blast emails.
+            Targets buyers when they are actively hiring or raising capital (e.g. Acme Health's $15M Series B expansion), yielding 4x higher response rates.
           </p>
-          <span class="inline-flex items-center gap-1 text-xs text-emerald-600 font-bold mt-4">Try Live Recon ➔</span>
+          <span class="inline-flex items-center gap-1 text-xs text-emerald-600 font-bold mt-4">Try Live Recon (Acme) ➔</span>
         </div>
 
-        <div onclick="navigate('agent')" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition cursor-pointer">
+        <div onclick="navigate('agent'); selectLead('fintech'); showToast('Loaded Zero-Cliché Copywriting: NovaPay Solutions');" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition cursor-pointer">
           <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600 mb-4">
             <i data-lucide="shield-check" class="w-5 h-5"></i>
           </div>
           <h3 class="font-bold text-base text-slate-900">Zero-Cliché Copywriting</h3>
           <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-            Strict algorithmic gates reject generic AI templates. Pitches reference actual tools and milestones in under 85 words.
+            Strict algorithmic gates reject generic AI templates. Pitches reference actual tools (Stripe, MuleSoft) and milestones in under 85 words.
           </p>
-          <span class="inline-flex items-center gap-1 text-xs text-teal-600 font-bold mt-4">View Pitches ➔</span>
+          <span class="inline-flex items-center gap-1 text-xs text-teal-600 font-bold mt-4">View Pitches (NovaPay) ➔</span>
         </div>
 
         <div onclick="navigate('crm')" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition cursor-pointer">
@@ -465,6 +465,29 @@
               <button onclick="approveAndDispatch()" id="btnDispatch" class="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
                 <i data-lucide="send" class="w-3.5 h-3.5"></i>
                 <span>Approve & Dispatch</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dispatch Next Steps & Conversion Tracker Banner -->
+          <div id="dispatchSuccessBanner" class="hidden mt-4 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex flex-col md:flex-row items-center justify-between gap-3 animate-in fade-in">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                <i data-lucide="check" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-xs text-emerald-950">Outreach Approved & Dispatched to Staging Queue!</h4>
+                <p id="dispatchSuccessSubtext" class="text-[11px] text-emerald-800">Synced to CRM Stage 3: Contacted. You can now track meeting conversion or review the next prospect.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="navigate('crm')" class="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="kanban" class="w-3.5 h-3.5"></i>
+                <span>Track in Pipeline CRM ➔</span>
+              </button>
+              <button onclick="selectNextLeadInQueue()" class="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                <span>Review Next Prospect ➔</span>
               </button>
             </div>
           </div>
@@ -1064,6 +1087,23 @@
   <script>
     // Lead Database
     const LEADS = {
+      apex: {
+        id: "apex",
+        company: "Apex Logistics Co.",
+        domain: "apexlogistics.io",
+        contactName: "Marcus Sterling",
+        contactRole: "VP of Operations",
+        sector: "Logistics & Supply Chain",
+        target: "Marcus Sterling (VP of Freight Operations)",
+        score: "97 / 100 PASS",
+        trigger: "Hiring 5 Regional Fleet Dispatchers across Midwest terminals to handle +40% route volume growth.",
+        tech: ["McLeod LoadMaster", "Geotab Telematics", "AWS Cloud", "EDI 204/214"],
+        linkedinNote: "Saw Apex Logistics is expanding fleet ops across Midwest terminals—congrats Marcus. When dispatcher headcount ramps quickly, freight tender exceptions usually spike before workflow tooling catches up. Curious how your team currently automates EDI load reconciliation?",
+        emailSubj: "Apex Logistics: Midwest dispatch expansion & load exceptions",
+        emailBody: `Hi Marcus,\n\nSaw Apex is adding 5 regional dispatchers to manage the Midwest terminal expansion—congrats on the route volume growth.\n\nTypically when fleet capacity scales this quickly, EDI tender acceptance delays and tracking exceptions rise before dispatcher teams settle in.\n\nWe built an automated freight exception triage agent that flags delayed pickup events in real-time within McLeod.\n\nOpen to reviewing our 2-minute carrier workflow benchmark?\n\nBest,\n[Your Name]`,
+        charCount: "224 / 250 Chars",
+        wordCount: "75 Words (Under 85)"
+      },
       acme: {
         id: "acme",
         company: "Acme Health Partners",
@@ -1400,6 +1440,18 @@
         selected.classList.add('border-2', 'border-emerald-500');
       }
 
+      // Synchronize Next Steps Action Banner
+      const banner = document.getElementById('dispatchSuccessBanner');
+      if (banner) {
+        if (LEAD_DISPATCH_STATUS[id]) {
+          banner.classList.remove('hidden');
+          const subText = document.getElementById('dispatchSuccessSubtext');
+          if (subText) subText.innerText = `${data.company} is dispatched to Staging Queue! Synced to CRM Stage 3: Contacted. Track deal conversion or review next lead.`;
+        } else {
+          banner.classList.add('hidden');
+        }
+      }
+
       // Update Dossier View
       document.getElementById('dossierCompany').innerText = data.company;
       document.getElementById('dossierDomain').innerText = data.domain;
@@ -1636,7 +1688,7 @@
 
     // Reactive Kanban Data Store
     let KANBAN_DEALS = [
-      { id: 'deal-1', company: 'Apex Logistics Co.', contact: 'Marcus Sterling • VP Ops', val: '$18,000', valNum: 18000, stage: 'discovered', leadId: 'acme', signal: 'Hiring 5 Dispatch Coordinators', pill: 'Series A Hiring', pillColor: 'text-emerald-700 bg-emerald-50' },
+      { id: 'deal-1', company: 'Apex Logistics Co.', contact: 'Marcus Sterling • VP Ops', val: '$18,000', valNum: 18000, stage: 'discovered', leadId: 'apex', signal: 'Hiring 5 Dispatch Coordinators', pill: 'Series A Hiring', pillColor: 'text-emerald-700 bg-emerald-50' },
       { id: 'deal-2', company: 'NovaPay Solutions', contact: 'Julian Scott • VP Payments', val: '$24,000', valNum: 24000, stage: 'enriched', leadId: 'fintech', signal: 'ISO 20022 Ledger Migration', pill: 'ISO 20022 Pitch Ready', pillColor: 'text-blue-700 bg-blue-50' },
       { id: 'deal-3', company: 'Acme Health Partners', contact: 'Dr. Marcus Vance • COO', val: '$38,000', valNum: 38000, stage: 'contacted', leadId: 'acme', signal: 'Opening 8 urgent care sites', pill: 'LinkedIn Note Sent', pillColor: 'text-amber-700 bg-amber-50' },
       { id: 'deal-4', company: 'Kestrel Outdoor Goods', contact: 'Elena Rostova • Head Commerce', val: '$45,000', valNum: 45000, stage: 'booked', leadId: 'retail', signal: '3,000 SKU catalog expansion', pill: 'Demo Call: Thu 2:30 PM', pillColor: 'text-emerald-700 bg-emerald-50' },
@@ -1688,13 +1740,13 @@
           </div>
           <p class="text-[11px] text-slate-500">${deal.contact}</p>
           <div class="flex items-center justify-between pt-1">
-            <span onclick="event.stopPropagation(); jumpDirectlyToDossier('${deal.leadId}')" class="text-[10px] px-2 py-0.5 rounded font-semibold ${deal.pillColor || 'text-slate-600 bg-slate-100'} hover:opacity-80 transition cursor-pointer" title="Click to view winning dossier in AI SDR Studio">${deal.pill || 'Active Deal'}</span>
+            <span class="text-[10px] px-2 py-0.5 rounded font-semibold ${deal.pillColor || 'text-slate-600 bg-slate-100'} hover:opacity-80 transition cursor-pointer" title="Click to inspect deal details & pitch formula">${deal.pill || 'Active Deal'}</span>
             ${canAdvance ? `
               <button onclick="event.stopPropagation(); advanceDeal('${deal.id}')" class="text-[10px] text-emerald-600 hover:text-emerald-700 hover:underline font-bold cursor-pointer flex items-center gap-0.5">
                 <span>${btnLabel}</span>
               </button>
             ` : `
-              <span onclick="event.stopPropagation(); jumpDirectlyToDossier('${deal.leadId}')" class="text-[10px] text-purple-700 font-bold flex items-center gap-0.5 hover:underline cursor-pointer" title="Click to view winning dossier in AI SDR Studio">Won ✓</span>
+              <span class="text-[10px] text-purple-700 font-bold flex items-center gap-0.5 hover:underline cursor-pointer" title="Closed Won Deal - Click card to inspect">Won ✓</span>
             `}
           </div>
         `;
@@ -1813,7 +1865,8 @@
         currentModalDealLeadId = leadId;
       } else {
         const compLower = (company || '').toLowerCase();
-        if (compLower.includes('nova')) currentModalDealLeadId = 'fintech';
+        if (compLower.includes('apex')) currentModalDealLeadId = 'apex';
+        else if (compLower.includes('nova')) currentModalDealLeadId = 'fintech';
         else if (compLower.includes('kestrel')) currentModalDealLeadId = 'retail';
         else if (compLower.includes('aether')) currentModalDealLeadId = 'middleware';
         else currentModalDealLeadId = 'acme';
@@ -1856,6 +1909,14 @@
         showToast(`Loaded Executive Dossier & Pitch for ${lead.company}!`);
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectNextLeadInQueue() {
+      const queueKeys = ['acme', 'fintech', 'retail', 'middleware'];
+      const curIdx = queueKeys.indexOf(currentActiveLeadId);
+      const nextKey = (curIdx >= 0 && curIdx < queueKeys.length - 1) ? queueKeys[curIdx + 1] : queueKeys[0];
+      selectLead(nextKey);
+      showToast(`Switched to next prospect: ${LEADS[nextKey].company}!`);
     }
 
     function jumpFromDealToLead() {
@@ -1958,6 +2019,15 @@
       }
 
       renderKanban();
+      
+      // Reveal the Next Steps Action Banner
+      const banner = document.getElementById('dispatchSuccessBanner');
+      if (banner) {
+        banner.classList.remove('hidden');
+        const subText = document.getElementById('dispatchSuccessSubtext');
+        if (subText) subText.innerText = `Outreach for ${lead.company} is dispatched to Staging Queue! Deal moved to CRM Stage 3: Contacted. Track deal conversion or advance to the next prospect.`;
+      }
+
       try { lucide.createIcons(); } catch(e) {}
       showToast(`Outreach approved for ${lead.company}! Synced to CRM Stage 3: Contacted.`);
     }

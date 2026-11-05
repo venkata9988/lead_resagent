@@ -567,7 +567,7 @@
         <div class="flex items-center gap-2">
           <button id="btnBulkEnrich" onclick="bulkEnrichCurrentList()" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-xs cursor-pointer">
             <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-            <span>Enrich Entire List (42)</span>
+            <span id="btnBulkEnrichText">Enrich Entire List (42)</span>
           </button>
         </div>
       </div>
@@ -1156,6 +1156,87 @@
     };
 
     let selectedCheckoutTier = 'starter';
+    let currentActiveListKey = 'healthcare';
+
+    function saveCustomListToStorage(key, listObj) {
+      try {
+        const saved = JSON.parse(localStorage.getItem('prospectpulse_custom_lists') || '{}');
+        saved[key] = listObj;
+        localStorage.setItem('prospectpulse_custom_lists', JSON.stringify(saved));
+        localStorage.setItem('prospectpulse_active_list', key);
+      } catch(e) {}
+    }
+
+    function renderCustomListCard(key, listObj) {
+      const grid = document.getElementById('leadListsGrid');
+      if (!grid) return;
+      if (document.getElementById('card-list-' + key)) return; // already rendered
+
+      const card = document.createElement('div');
+      card.id = 'card-list-' + key;
+      card.className = "p-6 rounded-2xl bg-white border-2 border-emerald-500 shadow-md flex flex-col justify-between hover:shadow-lg transition cursor-pointer ring-2 ring-emerald-100 animate-in fade-in duration-300";
+      card.onclick = () => openListDetails(key);
+      card.innerHTML = `
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">${listObj.category || 'CSV Ingest'}</span>
+            <span class="text-xs text-slate-400 font-medium">${listObj.prospects.length} Leads</span>
+          </div>
+          <h3 class="font-bold text-base text-slate-900 mt-3">${listObj.title.split('(')[0].trim()}</h3>
+          <p class="text-xs text-slate-600 mt-1">Uploaded file with verified domains and buying signals.</p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+          <span class="text-emerald-600 font-bold flex items-center gap-1">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+            <span>Ingested & Validated</span>
+          </span>
+          <button onclick="event.stopPropagation(); openListDetails('${key}')" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold flex items-center gap-1 transition cursor-pointer">
+            <span>Open List</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      `;
+      grid.prepend(card);
+    }
+
+    function restoreCustomListsFromStorage() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('prospectpulse_custom_lists') || '{}');
+        for (const key in saved) {
+          if (!LIST_DATA[key]) {
+            LIST_DATA[key] = saved[key];
+            saved[key].prospects.forEach(p => {
+              if (!LEADS[p.leadId]) {
+                const comp = p.company || 'Enterprise Corp';
+                const dom = p.domain || (comp.toLowerCase().replace(/[^a-z0-9]/g, '') + '.com');
+                LEADS[p.leadId] = {
+                  id: p.leadId,
+                  company: comp,
+                  domain: dom,
+                  contactName: p.name,
+                  contactRole: p.title,
+                  sector: saved[key].category || 'Enterprise B2B',
+                  target: `${p.name} (${p.title})`,
+                  score: "98 / 100 PASS",
+                  trigger: p.signal,
+                  tech: p.tech ? p.tech.split(',').map(t => t.trim()) : ['HubSpot CRM', 'AWS Cloud'],
+                  linkedinNote: `Saw ${comp}'s recent growth—congrats ${p.name.split(' ')[0]}. Typically during footprint expansion, onboarding bottlenecks emerge before staffing catches up. Open to seeing how teams automate this?`,
+                  emailSubj: `${comp}'s scaling & operational workflows`,
+                  emailBody: `Hi ${p.name.split(' ')[0]},\n\nNoticed ${comp}'s expansion: ${p.signal}.\n\nTypically during rapid growth phases, manual intake pipelines become a major operational drag before team hiring stabilizes.\n\nWe built an autonomous research and outreach agent that streamlines intake and books verified meetings.\n\nOpen to a brief 2-minute workflow breakdown?\n\nBest,\nVenkata Siva`,
+                  charCount: "218 / 250 Chars",
+                  wordCount: "72 Words (Under 85)"
+                };
+              }
+            });
+            renderCustomListCard(key, saved[key]);
+          }
+        }
+        const lastActive = localStorage.getItem('prospectpulse_active_list');
+        if (lastActive && LIST_DATA[lastActive]) {
+          currentActiveListKey = lastActive;
+        }
+      } catch(e) {}
+    }
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -1190,7 +1271,7 @@
       if (viewName === 'agent') document.getElementById('viewAgent').classList.remove('hidden');
       if (viewName === 'lists') {
         document.getElementById('viewLists').classList.remove('hidden');
-        openListDetails('healthcare');
+        openListDetails(currentActiveListKey || 'healthcare');
       }
       if (viewName === 'crm') { document.getElementById('viewCRM').classList.remove('hidden'); renderKanban(); }
 
@@ -1352,11 +1433,20 @@
     }
 
     function openListDetails(listKey) {
+      currentActiveListKey = listKey;
+      try { localStorage.setItem('prospectpulse_active_list', listKey); } catch(e) {}
+
       const data = LIST_DATA[listKey];
       if (!data) return;
 
       document.getElementById('detailListCategory').innerText = data.category;
       document.getElementById('detailListTitle').innerText = data.title;
+
+      // Dynamically update the count in the bulk enrich button
+      const enrichBtnText = document.getElementById('btnBulkEnrichText');
+      if (enrichBtnText) {
+        enrichBtnText.innerText = `Enrich Entire List (${data.prospects.length})`;
+      }
 
       // Scroll smoothly to the prospect table container
       const container = document.getElementById('listDetailContainer');
@@ -1889,13 +1979,17 @@
       }
 
       // Store in LIST_DATA
-      LIST_DATA[importKey] = {
+      const listObject = {
         category: "CSV Ingest",
         title: `${fileName || 'Imported Leads'} (${prospects.length} Leads)`,
         prospects: prospects
       };
+      LIST_DATA[importKey] = listObject;
+      currentActiveListKey = importKey;
+      saveCustomListToStorage(importKey, listObject);
 
       // Add segment card to top grid
+      renderCustomListCard(importKey, listObject);
       const grid = document.getElementById('leadListsGrid');
       if (grid) {
         const card = document.createElement('div');
@@ -2029,6 +2123,7 @@
 
     // Init
     window.addEventListener('DOMContentLoaded', () => {
+      restoreCustomListsFromStorage();
       renderKanban();
       selectLead('acme');
       try { lucide.createIcons(); } catch(e) {}

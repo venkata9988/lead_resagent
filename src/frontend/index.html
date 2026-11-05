@@ -1371,8 +1371,39 @@
         </p>
       </div>
 
-      <!-- Actions -->
-      <div class="flex items-center justify-between gap-3 pt-3 border-t border-slate-100">
+      <!-- Stage 5: Closed Won Victory & Hand-off Actions -->
+      <div id="modalDealWonActions" class="hidden flex flex-col gap-3 pt-3 border-t border-slate-100 text-xs">
+        <div class="p-3 bg-purple-50 border border-purple-200 rounded-xl flex items-center justify-between text-purple-900">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-purple-600"></span>
+            <span class="font-bold">Deal Closed & Contract Signed</span>
+          </div>
+          <span class="text-[11px] font-semibold text-purple-700">Outbound Complete</span>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <button onclick="downloadSignedContractMock()" class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold transition flex items-center gap-1.5 shadow-2xs cursor-pointer">
+            <i data-lucide="file-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <span>Download Signed Agreement (PDF)</span>
+          </button>
+          
+          <button onclick="handoffToCustomerSuccess()" class="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md shadow-purple-600/20 transition flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="users" class="w-3.5 h-3.5"></i>
+            <span>Hand Off to Customer Success ➔</span>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] pt-1">
+          <button onclick="closeDealModal()" class="text-slate-400 hover:text-slate-700 font-medium cursor-pointer">Close Window</button>
+          <button onclick="jumpFromDealToLead()" class="text-emerald-700 hover:underline font-bold cursor-pointer flex items-center gap-1">
+            <span>Inspect Historical Outbound Copy</span>
+            <i data-lucide="arrow-right" class="w-3 h-3"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pre-Closing Stages (1-4): Active Studio Actions -->
+      <div id="modalDealPreCloseActions" class="flex items-center justify-between gap-3 pt-3 border-t border-slate-100">
         <button onclick="closeDealModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-medium cursor-pointer">Close</button>
         <button onclick="jumpFromDealToLead()" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
           <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
@@ -2538,8 +2569,33 @@
         pitchBox.innerText = (lead && lead.linkedinNote) ? `"${lead.linkedinNote}"` : `"Saw ${company}'s operational expansion. Typically scaling workflows create bottlenecks before hiring stabilizes. Open to seeing how teams automate this?"`;
       }
 
+      // Stage-Aware Action Handling: Closed Won vs Pipeline Deal
+      const isClosedWon = (stage.includes('5') || stage.toLowerCase().includes('won'));
+      const wonActions = document.getElementById('modalDealWonActions');
+      const preCloseActions = document.getElementById('modalDealPreCloseActions');
+
+      if (isClosedWon) {
+        if (wonActions) wonActions.classList.remove('hidden');
+        if (preCloseActions) preCloseActions.classList.add('hidden');
+      } else {
+        if (wonActions) wonActions.classList.add('hidden');
+        if (preCloseActions) preCloseActions.classList.remove('hidden');
+      }
+
       document.getElementById('dealModal').classList.remove('hidden');
       try { lucide.createIcons(); } catch(e) {}
+    }
+
+    function downloadSignedContractMock() {
+      const comp = document.getElementById('modalDealCompany').innerText;
+      const val = document.getElementById('modalDealValue').innerText;
+      showToast(`Downloaded signed enterprise contract agreement for ${comp} (${val})!`);
+    }
+
+    function handoffToCustomerSuccess() {
+      const comp = document.getElementById('modalDealCompany').innerText;
+      closeDealModal();
+      showToast(`Account ${comp} successfully handed off to Customer Success & Onboarding!`);
     }
 
     function jumpDirectlyToDossier(leadId) {

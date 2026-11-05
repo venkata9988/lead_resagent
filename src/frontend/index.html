@@ -700,7 +700,7 @@
           <span id="badge-won" class="px-2 py-0.5 rounded text-[10px] bg-purple-50 text-purple-700 font-bold">$32k</span>
         </div>
         <div id="cards-won" class="flex flex-col gap-2.5">
-          <div class="p-3.5 rounded-xl bg-slate-50 border border-purple-200 flex flex-col gap-1.5 shadow-2xs hover:border-purple-300 transition cursor-pointer" onclick="openDealModal('Aether Telecom Systems', 'Tariq Patel • Chief Architect', '$32,000', 'Closed Won', 'Signed Annual Contract')">
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-purple-200 flex flex-col gap-1.5 shadow-2xs hover:border-purple-300 transition cursor-pointer" onclick="openDealModal('Aether Telecom Systems', 'Tariq Patel • Chief Architect', '$32,000', 'Closed Won', 'Signed Annual Contract', 'middleware')">
             <div class="flex items-center justify-between">
               <h4 class="font-bold text-xs text-slate-900">Aether Telecom</h4>
               <span class="text-[10px] font-bold text-purple-700 font-bold">$32k</span>
@@ -1002,7 +1002,7 @@
 
       <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
         <button onclick="closeDealModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-medium cursor-pointer">Close</button>
-        <button onclick="closeDealModal(); navigate('agent'); selectLead('acme');" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
+        <button onclick="jumpFromDealToLead()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-xs transition cursor-pointer flex items-center gap-1.5">
           <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
           <span>Inspect AI Dossier</span>
         </button>
@@ -1451,20 +1451,20 @@
 
     // Reactive Kanban Data Store
     let KANBAN_DEALS = [
-      { id: 'deal-1', company: 'Apex Logistics Co.', contact: 'Marcus Sterling • VP Ops', val: '$18,000', valNum: 18000, stage: 'discovered', signal: 'Hiring 5 Dispatch Coordinators', pill: 'Series A Hiring', pillColor: 'text-emerald-700 bg-emerald-50' },
-      { id: 'deal-2', company: 'NovaPay Solutions', contact: 'Julian Scott • VP Payments', val: '$24,000', valNum: 24000, stage: 'enriched', signal: 'ISO 20022 Ledger Migration', pill: 'ISO 20022 Pitch Ready', pillColor: 'text-blue-700 bg-blue-50' },
-      { id: 'deal-3', company: 'Acme Health Partners', contact: 'Dr. Marcus Vance • COO', val: '$38,000', valNum: 38000, stage: 'contacted', signal: 'Opening 8 urgent care sites', pill: 'LinkedIn Note Sent', pillColor: 'text-amber-700 bg-amber-50' },
-      { id: 'deal-4', company: 'Kestrel Outdoor Goods', contact: 'Elena Rostova • Head Commerce', val: '$45,000', valNum: 45000, stage: 'booked', signal: '3,000 SKU catalog expansion', pill: 'Demo Call: Thu 2:30 PM', pillColor: 'text-emerald-700 bg-emerald-50' },
-      { id: 'deal-5', company: 'Aether Telecom', contact: 'Tariq Patel • Chief Architect', val: '$32,000', valNum: 32000, stage: 'closed', signal: 'Decoupling mainframe to Kafka', pill: 'Signed via Agent Pitch', pillColor: 'text-purple-700 bg-purple-50' }
+      { id: 'deal-1', company: 'Apex Logistics Co.', contact: 'Marcus Sterling • VP Ops', val: '$18,000', valNum: 18000, stage: 'discovered', leadId: 'acme', signal: 'Hiring 5 Dispatch Coordinators', pill: 'Series A Hiring', pillColor: 'text-emerald-700 bg-emerald-50' },
+      { id: 'deal-2', company: 'NovaPay Solutions', contact: 'Julian Scott • VP Payments', val: '$24,000', valNum: 24000, stage: 'enriched', leadId: 'fintech', signal: 'ISO 20022 Ledger Migration', pill: 'ISO 20022 Pitch Ready', pillColor: 'text-blue-700 bg-blue-50' },
+      { id: 'deal-3', company: 'Acme Health Partners', contact: 'Dr. Marcus Vance • COO', val: '$38,000', valNum: 38000, stage: 'contacted', leadId: 'acme', signal: 'Opening 8 urgent care sites', pill: 'LinkedIn Note Sent', pillColor: 'text-amber-700 bg-amber-50' },
+      { id: 'deal-4', company: 'Kestrel Outdoor Goods', contact: 'Elena Rostova • Head Commerce', val: '$45,000', valNum: 45000, stage: 'booked', leadId: 'retail', signal: '3,000 SKU catalog expansion', pill: 'Demo Call: Thu 2:30 PM', pillColor: 'text-emerald-700 bg-emerald-50' },
+      { id: 'deal-5', company: 'Aether Telecom Systems', contact: 'Tariq Patel • Chief Architect', val: '$32,000', valNum: 32000, stage: 'won', leadId: 'middleware', signal: 'Decoupling mainframe to Kafka', pill: 'Signed via Agent Pitch', pillColor: 'text-purple-700 bg-purple-50' }
     ];
 
-    const STAGE_ORDER = ['discovered', 'enriched', 'contacted', 'booked', 'closed'];
+    const STAGE_ORDER = ['discovered', 'enriched', 'contacted', 'booked', 'won'];
     const STAGE_NAMES = {
       discovered: '1. Discovered',
       enriched: '2. AI Enriched',
       contacted: '3. Contacted',
       booked: '4. Meeting Booked',
-      closed: '5. Closed Won'
+      won: '5. Closed Won'
     };
 
     function renderKanban() {
@@ -1490,7 +1490,7 @@
 
         const card = document.createElement('div');
         card.className = "p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5 shadow-2xs hover:border-slate-300 transition cursor-pointer";
-        card.onclick = () => openDealModal(deal.company, deal.contact, deal.val, STAGE_NAMES[deal.stage], deal.signal);
+        card.onclick = () => openDealModal(deal.company, deal.contact, deal.val, STAGE_NAMES[deal.stage], deal.signal, deal.leadId);
 
         const currIdx = STAGE_ORDER.indexOf(deal.stage);
         const canAdvance = currIdx < STAGE_ORDER.length - 1;
@@ -1547,8 +1547,8 @@
         } else if (nextStage === 'booked') {
           deal.pill = 'Demo Call Scheduled';
           deal.pillColor = 'text-emerald-700 bg-emerald-50';
-        } else if (nextStage === 'closed') {
-          deal.pill = 'Annual Contract Signed';
+        } else if (nextStage === 'won') {
+          deal.pill = 'Signed via Agent Pitch';
           deal.pillColor = 'text-purple-700 bg-purple-50';
         }
         renderKanban();
@@ -1620,14 +1620,38 @@
       navigate('crm');
     }
 
-    function openDealModal(company, contact, val, stage, signal) {
+    let currentModalDealLeadId = 'acme';
+
+    function openDealModal(company, contact, val, stage, signal, leadId) {
+      // Intelligently map to the exact lead ID if not directly provided
+      if (leadId) {
+        currentModalDealLeadId = leadId;
+      } else {
+        const compLower = (company || '').toLowerCase();
+        if (compLower.includes('nova')) currentModalDealLeadId = 'fintech';
+        else if (compLower.includes('kestrel')) currentModalDealLeadId = 'retail';
+        else if (compLower.includes('aether')) currentModalDealLeadId = 'middleware';
+        else currentModalDealLeadId = 'acme';
+      }
+
       document.getElementById('modalDealCompany').innerText = company;
       document.getElementById('modalDealContact').innerText = contact;
-      document.getElementById('modalDealValue').innerText = val + " / yr";
-      document.getElementById('modalDealStage').innerText = "Stage: " + stage;
+      document.getElementById('modalDealValue').innerText = val.includes('/ yr') ? val : (val + " / yr");
+      document.getElementById('modalDealStage').innerText = stage.startsWith('Stage:') ? stage : ("Stage: " + stage);
       document.getElementById('modalDealSignal').innerText = signal;
       document.getElementById('dealModal').classList.remove('hidden');
       try { lucide.createIcons(); } catch(e) {}
+    }
+
+    function jumpFromDealToLead() {
+      closeDealModal();
+      navigate('agent');
+      selectLead(currentModalDealLeadId);
+      const lead = LEADS[currentModalDealLeadId];
+      if (lead) {
+        showToast(`Loaded Executive Dossier & Outreach for ${lead.company}!`);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function closeDealModal() {

@@ -97,7 +97,7 @@
         Upgrade: $34/mo
       </button>
       <div id="headerAvatar" class="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center font-bold text-xs text-emerald-700 cursor-pointer select-none" onclick="openProfileModal()" title="View Profile & Workspace Settings">
-        VS
+        RH
       </div>
     </div>
   </header>
@@ -133,7 +133,7 @@
 
       <!-- Feature Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 w-full text-left">
-        <div onclick="navigate('agent'); selectLead('acme'); showToast('Loaded Live Signal Prospecting: Acme Health Partners');" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition cursor-pointer">
+        <div onclick="navigate('agent'); selectLead('reliance'); showToast('Loaded Live Signal Prospecting: Acme Health Partners');" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition cursor-pointer">
           <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-4">
             <i data-lucide="flame" class="w-5 h-5"></i>
           </div>
@@ -271,8 +271,8 @@
           <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
             <i data-lucide="globe" class="w-4 h-4"></i>
           </div>
-          <input id="inputDomain" type="text" placeholder="Enter target domain or company (e.g. novapay.io or acmehealth.com)"
-            value="acmehealth.com"
+          <input id="inputDomain" type="text" placeholder="Enter target domain or company (e.g. reliancesolutions.com or novapay.io)"
+            value="reliancesolutions.com"
             class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
         </div>
 
@@ -281,7 +281,7 @@
             <i data-lucide="user" class="w-4 h-4"></i>
           </div>
           <input id="inputContact" type="text" placeholder="Contact Name"
-            value="Dr. Marcus Vance"
+            value="Anil Mehta"
             class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
         </div>
 
@@ -290,7 +290,7 @@
             <i data-lucide="briefcase" class="w-4 h-4"></i>
           </div>
           <input id="inputRole" type="text" placeholder="Contact Role"
-            value="Chief Operating Officer"
+            value="VP Infrastructure"
             class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
         </div>
 
@@ -368,6 +368,22 @@
               <span class="px-2 py-0.5 bg-slate-100 rounded text-slate-700 font-medium">Headless Mobile Surge</span>
               <span class="text-slate-300">•</span>
               <span class="text-slate-500">Retail</span>
+            </div>
+          </div>
+
+          <!-- Reliance Item (New Company Searched & Radar Active) -->
+          <div onclick="selectLead('reliance')" id="item-reliance" class="lead-item p-4 rounded-xl bg-white border-2 border-emerald-500 shadow-xs hover:shadow cursor-pointer transition">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="font-bold text-sm text-slate-900">Reliance Solutions</h3>
+                <p class="text-xs text-slate-500 mt-0.5">Anil Mehta • VP Infrastructure</p>
+              </div>
+              <span id="badge-queue-reliance" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">Verified Radar ✓</span>
+            </div>
+            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-600">
+              <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded font-semibold">ERP to Kafka Mesh</span>
+              <span class="text-slate-300">•</span>
+              <span class="text-slate-500">18 Data Centers</span>
             </div>
           </div>
 
@@ -1078,11 +1094,11 @@
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
         <div class="flex items-center gap-3">
           <div id="profileAvatar" class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-extrabold text-base shadow-md shadow-emerald-500/20">
-            VS
+            RH
           </div>
           <div>
-            <h3 id="profileName" class="font-bold text-base text-slate-900">Venkata Siva</h3>
-            <p id="profileRole" class="text-xs text-slate-500">Administrator & Growth Engineer</p>
+            <h3 id="profileName" class="font-bold text-base text-slate-900">Rahul</h3>
+            <p id="profileRole" class="text-xs text-slate-500">XX • rahul@xx.com</p>
           </div>
         </div>
         <button onclick="closeProfileModal()" class="text-slate-400 hover:text-slate-700 cursor-pointer">
@@ -2610,7 +2626,7 @@ Thank you for building high-converting outbound pipelines with ProspectPulse!
           selectLead('middleware');
           showToast(`Recon complete! Loaded Aether Telecom dossier.`);
         } else if (domainInput.includes('acme')) {
-          selectLead('acme');
+          selectLead('reliance');
           showToast(`Recon complete! Loaded Acme Health Partners dossier.`);
         } else {
           // Custom lead: Synthesize a dedicated new lead record
@@ -2773,7 +2789,8 @@ Thank you for building high-converting outbound pipelines with ProspectPulse!
       { id: 'deal-2', company: 'NovaPay Solutions', contact: 'Julian Scott • VP Payments', val: '$24,000', valNum: 24000, stage: 'enriched', leadId: 'fintech', signal: 'ISO 20022 Ledger Migration', pill: 'ISO 20022 Pitch Ready', pillColor: 'text-blue-700 bg-blue-50' },
       { id: 'deal-3', company: 'Acme Health Partners', contact: 'Dr. Marcus Vance • COO', val: '$38,000', valNum: 38000, stage: 'contacted', leadId: 'acme', signal: 'Opening 8 urgent care sites', pill: 'LinkedIn Note Sent', pillColor: 'text-amber-700 bg-amber-50' },
       { id: 'deal-4', company: 'Kestrel Outdoor Goods', contact: 'Elena Rostova • Head Commerce', val: '$45,000', valNum: 45000, stage: 'booked', leadId: 'retail', signal: '3,000 SKU catalog expansion', pill: 'Demo Call: Thu 2:30 PM', pillColor: 'text-emerald-700 bg-emerald-50' },
-      { id: 'deal-5', company: 'Aether Telecom Systems', contact: 'Tariq Patel • Chief Architect', val: '$32,000', valNum: 32000, stage: 'won', leadId: 'middleware', signal: 'Decoupling mainframe to Kafka', pill: 'Signed via Agent Pitch', pillColor: 'text-purple-700 bg-purple-50' }
+      { id: 'deal-5', company: 'Aether Telecom Systems', contact: 'Tariq Patel • Chief Architect', val: '$32,000', valNum: 32000, stage: 'won', leadId: 'middleware', signal: 'Decoupling mainframe to Kafka', pill: 'CS Onboarding Active ✓', pillColor: 'text-emerald-800 bg-emerald-100 font-bold border border-emerald-300', csHandedOff: true },
+      { id: 'deal-reliance', company: 'Reliance Solutions', contact: 'Anil Mehta • VP Infrastructure', val: '$52,000', valNum: 52000, stage: 'won', leadId: 'reliance', signal: 'ERP to Kafka cloud mesh modernization', pill: 'CS Onboarding Active ✓', pillColor: 'text-emerald-800 bg-emerald-100 font-bold border border-emerald-300', csHandedOff: true }
     ];
 
     const STAGE_ORDER = ['discovered', 'enriched', 'contacted', 'booked', 'won'];
@@ -3722,7 +3739,7 @@ KICKOFF MEETING:    Thursday, Nov 12, 2026 @ 10:00 AM EST (Google Meet)
 
       restoreCustomListsFromStorage();
       renderKanban();
-      selectLead('acme');
+      selectLead('reliance');
 
       // Automated E2E Test & Deep Link Hash Router
       function checkUrlHash() {

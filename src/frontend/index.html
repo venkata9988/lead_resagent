@@ -603,9 +603,9 @@
       </div>
 
       <div class="flex items-center gap-4 text-xs">
-        <div class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 shadow-2xs">Total Pipeline: <strong class="text-slate-900 font-bold">$184,000</strong></div>
-        <div class="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 shadow-2xs">Active Meetings: <strong class="font-bold">7 Booked</strong></div>
-        <button onclick="promptNewDeal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+        <div class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 shadow-2xs">Total Pipeline: <strong id="totalPipelineText" class="text-slate-900 font-bold">$184,000</strong></div>
+        <div class="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 shadow-2xs">Active Meetings: <strong id="activeMeetingsText" class="font-bold">1 Booked</strong></div>
+        <button onclick="openAddDealModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-xs cursor-pointer">
           <i data-lucide="plus" class="w-3.5 h-3.5"></i>
           <span>Add Deal</span>
         </button>
@@ -674,7 +674,7 @@
         </div>
       </div>
 
-      <div id="col-booked" class="p-4 rounded-2xl bg-white border-2 border-emerald-400 shadow-xs flex flex-col gap-3">
+      <div id="col-booked" class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-3 hover:border-slate-300 transition">
         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
           <span class="font-bold text-xs text-emerald-700">4. Meeting Booked</span>
           <span id="badge-booked" class="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 font-extrabold">1</span>
@@ -917,6 +917,61 @@
     </div>
   </div>
 
+
+  <!-- Add Deal Modal -->
+  <div id="addDealModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 class="font-bold text-lg text-slate-900">Add Deal to Pipeline</h3>
+          <p class="text-xs text-slate-500">Track an active target account in your outbound sales CRM</p>
+        </div>
+        <button onclick="closeAddDealModal()" class="text-slate-400 hover:text-slate-700 cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="text-[11px] font-bold text-slate-700 block mb-1">Company Name</label>
+          <input id="inputDealCompany" type="text" placeholder="e.g. Skyline Retailers" value="Skyline Retailers" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 block mb-1">Target Contact</label>
+            <input id="inputDealContact" type="text" placeholder="e.g. David Miller • VP Ops" value="David Miller • VP Ops" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white">
+          </div>
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 block mb-1">Deal Value ($/yr)</label>
+            <input id="inputDealValue" type="number" placeholder="28000" value="28000" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white">
+          </div>
+        </div>
+        <div>
+          <label class="text-[11px] font-bold text-slate-700 block mb-1">Pipeline Stage</label>
+          <select id="selectDealStage" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white">
+            <option value="discovered">1. Discovered (Autonomous Scout)</option>
+            <option value="enriched">2. AI Enriched (Dossier Ready)</option>
+            <option value="contacted">3. Contacted (Outreach Dispatched)</option>
+            <option value="booked">4. Meeting Booked (Sales Demo)</option>
+            <option value="closed">5. Closed Won (Signed Contract)</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[11px] font-bold text-slate-700 block mb-1">Buying Trigger / Note</label>
+          <input id="inputDealSignal" type="text" placeholder="e.g. Expanding 3 distribution warehouses" value="Expanding 3 distribution warehouses" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white">
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+        <button onclick="closeAddDealModal()" class="px-4 py-2 text-xs font-semibold text-slate-500 hover:text-slate-800 cursor-pointer">Cancel</button>
+        <button onclick="submitNewDeal()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+          <span>Create Deal</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Deal Details Modal -->
   <div id="dealModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
@@ -1137,7 +1192,7 @@
         document.getElementById('viewLists').classList.remove('hidden');
         openListDetails('healthcare');
       }
-      if (viewName === 'crm') document.getElementById('viewCRM').classList.remove('hidden');
+      if (viewName === 'crm') { document.getElementById('viewCRM').classList.remove('hidden'); renderKanban(); }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
       try { lucide.createIcons(); } catch(e) {}
@@ -1385,18 +1440,175 @@
       if (name) showToast(`List "${name}" created! Ready for import.`);
     }
 
+    // Reactive Kanban Data Store
+    let KANBAN_DEALS = [
+      { id: 'deal-1', company: 'Apex Logistics Co.', contact: 'Marcus Sterling • VP Ops', val: '$18,000', valNum: 18000, stage: 'discovered', signal: 'Hiring 5 Dispatch Coordinators', pill: 'Series A Hiring', pillColor: 'text-emerald-700 bg-emerald-50' },
+      { id: 'deal-2', company: 'NovaPay Solutions', contact: 'Julian Scott • VP Payments', val: '$24,000', valNum: 24000, stage: 'enriched', signal: 'ISO 20022 Ledger Migration', pill: 'ISO 20022 Pitch Ready', pillColor: 'text-blue-700 bg-blue-50' },
+      { id: 'deal-3', company: 'Acme Health Partners', contact: 'Dr. Marcus Vance • COO', val: '$38,000', valNum: 38000, stage: 'contacted', signal: 'Opening 8 urgent care sites', pill: 'LinkedIn Note Sent', pillColor: 'text-amber-700 bg-amber-50' },
+      { id: 'deal-4', company: 'Kestrel Outdoor Goods', contact: 'Elena Rostova • Head Commerce', val: '$45,000', valNum: 45000, stage: 'booked', signal: '3,000 SKU catalog expansion', pill: 'Demo Call: Thu 2:30 PM', pillColor: 'text-emerald-700 bg-emerald-50' },
+      { id: 'deal-5', company: 'Aether Telecom', contact: 'Tariq Patel • Chief Architect', val: '$32,000', valNum: 32000, stage: 'closed', signal: 'Decoupling mainframe to Kafka', pill: 'Signed via Agent Pitch', pillColor: 'text-purple-700 bg-purple-50' }
+    ];
+
+    const STAGE_ORDER = ['discovered', 'enriched', 'contacted', 'booked', 'closed'];
+    const STAGE_NAMES = {
+      discovered: '1. Discovered',
+      enriched: '2. AI Enriched',
+      contacted: '3. Contacted',
+      booked: '4. Meeting Booked',
+      closed: '5. Closed Won'
+    };
+
+    function renderKanban() {
+      // Clear all stage containers
+      STAGE_ORDER.forEach(s => {
+        const container = document.getElementById('cards-' + s);
+        if (container) container.innerHTML = '';
+        const badge = document.getElementById('badge-' + s);
+        if (badge) badge.innerText = '0';
+      });
+
+      let totalVal = 0;
+      let bookedCount = 0;
+      const stageCounts = { discovered: 0, enriched: 0, contacted: 0, booked: 0, closed: 0 };
+
+      KANBAN_DEALS.forEach(deal => {
+        totalVal += deal.valNum || 0;
+        if (deal.stage === 'booked') bookedCount++;
+        stageCounts[deal.stage] = (stageCounts[deal.stage] || 0) + 1;
+
+        const container = document.getElementById('cards-' + deal.stage);
+        if (!container) return;
+
+        const card = document.createElement('div');
+        card.className = "p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5 shadow-2xs hover:border-slate-300 transition cursor-pointer";
+        card.onclick = () => openDealModal(deal.company, deal.contact, deal.val, STAGE_NAMES[deal.stage], deal.signal);
+
+        const currIdx = STAGE_ORDER.indexOf(deal.stage);
+        const canAdvance = currIdx < STAGE_ORDER.length - 1;
+        const btnLabel = deal.stage === 'booked' ? 'Close Deal ➔' : 'Advance ➔';
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-xs text-slate-900">${deal.company}</h4>
+            <span class="text-[10px] font-bold text-slate-500">${deal.val}</span>
+          </div>
+          <p class="text-[11px] text-slate-500">${deal.contact}</p>
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-[10px] px-2 py-0.5 rounded font-semibold ${deal.pillColor || 'text-slate-600 bg-slate-100'}">${deal.pill || 'Active Deal'}</span>
+            ${canAdvance ? `
+              <button onclick="event.stopPropagation(); advanceDeal('${deal.id}')" class="text-[10px] text-emerald-600 hover:text-emerald-700 hover:underline font-bold cursor-pointer flex items-center gap-0.5">
+                <span>${btnLabel}</span>
+              </button>
+            ` : `
+              <span class="text-[10px] text-purple-700 font-bold flex items-center gap-0.5">Won ✓</span>
+            `}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Update column badges
+      STAGE_ORDER.forEach(s => {
+        const badge = document.getElementById('badge-' + s);
+        if (badge) badge.innerText = stageCounts[s] || '0';
+      });
+
+      // Update total pipeline and meetings
+      const totalEl = document.getElementById('totalPipelineText');
+      if (totalEl) totalEl.innerText = '$' + totalVal.toLocaleString();
+      const meetingsEl = document.getElementById('activeMeetingsText');
+      if (meetingsEl) meetingsEl.innerText = bookedCount + ' Booked';
+
+      try { lucide.createIcons(); } catch(e) {}
+    }
+
+    function advanceDeal(dealId) {
+      const deal = KANBAN_DEALS.find(d => d.id === dealId);
+      if (!deal) return;
+      const currIdx = STAGE_ORDER.indexOf(deal.stage);
+      if (currIdx < STAGE_ORDER.length - 1) {
+        const nextStage = STAGE_ORDER[currIdx + 1];
+        deal.stage = nextStage;
+        if (nextStage === 'enriched') {
+          deal.pill = 'ISO 20022 Pitch Ready';
+          deal.pillColor = 'text-blue-700 bg-blue-50';
+        } else if (nextStage === 'contacted') {
+          deal.pill = 'Outreach Note Sent';
+          deal.pillColor = 'text-amber-700 bg-amber-50';
+        } else if (nextStage === 'booked') {
+          deal.pill = 'Demo Call Scheduled';
+          deal.pillColor = 'text-emerald-700 bg-emerald-50';
+        } else if (nextStage === 'closed') {
+          deal.pill = 'Annual Contract Signed';
+          deal.pillColor = 'text-purple-700 bg-purple-50';
+        }
+        renderKanban();
+        showToast(`Moved ${deal.company} ➔ ${STAGE_NAMES[nextStage]}!`);
+      }
+    }
+
+    function openAddDealModal() {
+      document.getElementById('addDealModal').classList.remove('hidden');
+      try { lucide.createIcons(); } catch(e) {}
+    }
+
+    function closeAddDealModal() {
+      document.getElementById('addDealModal').classList.add('hidden');
+    }
+
+    function submitNewDeal() {
+      const company = document.getElementById('inputDealCompany').value.trim() || 'New Client Corp';
+      const contact = document.getElementById('inputDealContact').value.trim() || 'Executive Lead';
+      const valNum = parseInt(document.getElementById('inputDealValue').value) || 25000;
+      const stage = document.getElementById('selectDealStage').value || 'discovered';
+      const signal = document.getElementById('inputDealSignal').value.trim() || 'Active Business Expansion';
+
+      const newDeal = {
+        id: 'deal-' + Date.now(),
+        company: company,
+        contact: contact,
+        val: '$' + valNum.toLocaleString(),
+        valNum: valNum,
+        stage: stage,
+        signal: signal,
+        pill: stage === 'discovered' ? 'Newly Discovered' :
+              stage === 'enriched' ? 'AI Enriched' :
+              stage === 'contacted' ? 'Contacted' :
+              stage === 'booked' ? 'Meeting Booked' : 'Closed Won',
+        pillColor: stage === 'discovered' ? 'text-slate-700 bg-slate-100' :
+                   stage === 'enriched' ? 'text-blue-700 bg-blue-50' :
+                   stage === 'contacted' ? 'text-amber-700 bg-amber-50' :
+                   stage === 'booked' ? 'text-emerald-700 bg-emerald-50' : 'text-purple-700 bg-purple-50'
+      };
+
+      KANBAN_DEALS.push(newDeal);
+      closeAddDealModal();
+      renderKanban();
+      showToast(`Deal for ${company} ($${valNum.toLocaleString()}) added to Pipeline!`);
+    }
+
     function addCurrentLeadToCRM() {
-      showToast('Lead successfully added to CRM Pipeline: Approved!');
+      const company = document.getElementById('dossierCompany').innerText;
+      const contact = document.getElementById('inputContact').value || 'Decision Maker';
+      const role = document.getElementById('inputRole').value || 'Executive';
+      const signal = document.getElementById('dossierTrigger').innerText;
+
+      const newDeal = {
+        id: 'deal-' + Date.now(),
+        company: company,
+        contact: `${contact} • ${role}`,
+        val: '$35,000',
+        valNum: 35000,
+        stage: 'enriched',
+        signal: signal,
+        pill: 'AI Enriched Dossier',
+        pillColor: 'text-blue-700 bg-blue-50'
+      };
+
+      KANBAN_DEALS.push(newDeal);
+      renderKanban();
+      showToast(`${company} successfully moved to CRM: 2. AI Enriched!`);
       navigate('crm');
-    }
-
-    function advanceDeal(company, currentStage) {
-      showToast(`Advanced ${company} to next stage in Sales Pipeline!`);
-    }
-
-    function promptNewDeal() {
-      const name = prompt('Enter company name for new deal:', 'Skyline Retailers');
-      if (name) showToast(`Deal for ${name} created in Stage 1: Discovered`);
     }
 
     function openDealModal(company, contact, val, stage, signal) {
@@ -1712,6 +1924,7 @@
 
     // Init
     window.addEventListener('DOMContentLoaded', () => {
+      renderKanban();
       selectLead('acme');
       try { lucide.createIcons(); } catch(e) {}
     });

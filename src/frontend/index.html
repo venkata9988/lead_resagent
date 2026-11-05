@@ -497,7 +497,7 @@
     </div>
 
     <!-- Lists Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div id="leadListsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div onclick="openListDetails('healthcare')" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between hover:border-emerald-400 hover:shadow-md transition cursor-pointer">
         <div>
           <div class="flex items-center justify-between">
@@ -1088,6 +1088,15 @@
           { name: "Liam O'Connor", title: "VP Digital", company: "NorthPeak Apparel", signal: "Mobile checkout dropoff issue", tech: "Next.js, Klaviyo", leadId: "retail" },
           { name: "Maya Patel", title: "Director of Growth", company: "Glow Skin Naturals", signal: "Doubling ad spend for Q4", tech: "Shopify, Gorgias", leadId: "retail" }
         ]
+      },
+      middleware: {
+        category: "Enterprise IT",
+        title: "Cloud Infrastructure & Kafka (34 Leads)",
+        prospects: [
+          { name: "Tariq Patel", title: "Chief Architect", company: "Aether Telecom Systems", signal: "Mainframe decoupling to Kafka", tech: "Kafka, Kubernetes, Go", leadId: "middleware" },
+          { name: "Siddharth Rao", title: "VP Platform Engineering", company: "DataFlow Systems", signal: "Microservices lag monitoring", tech: "Oracle DB, Docker", leadId: "middleware" },
+          { name: "Jessica Barnes", title: "Head of DevOps", company: "OmniCore Networks", signal: "Active cloud migration surge", tech: "Golang, AWS EKS", leadId: "middleware" }
+        ]
       }
     };
 
@@ -1285,6 +1294,12 @@
       document.getElementById('detailListCategory').innerText = data.category;
       document.getElementById('detailListTitle').innerText = data.title;
 
+      // Scroll smoothly to the prospect table container
+      const container = document.getElementById('listDetailContainer');
+      if (container) {
+        container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
       const tbody = document.getElementById('listDetailTableBody');
       tbody.innerHTML = '';
 
@@ -1469,12 +1484,67 @@
     }
 
     function submitNewList() {
-      const name = document.getElementById('inputNewListName').value.trim() || 'New Enterprise Segment';
+      const name = document.getElementById('inputNewListName').value.trim() || 'Q4 Enterprise Cloud Infrastructure';
       const sector = document.getElementById('selectNewListSector').value;
-      const signal = document.getElementById('inputNewListSignal').value.trim() || 'Active Infrastructure Expansion';
+      const signal = document.getElementById('inputNewListSignal').value.trim() || 'Legacy database modernization & event streaming';
       closeCreateListModal();
-      showToast(`Target segment "${name}" created! Ready for enrichment.`);
-      openListDetails('middleware');
+
+      const newKey = 'custom_' + Date.now();
+      LIST_DATA[newKey] = {
+        category: sector,
+        title: `${name} (50 Leads)`,
+        prospects: [
+          { name: "Tariq Patel", title: "Chief Architect", company: "Aether Telecom Systems", signal: signal, tech: "Kafka, Kubernetes, Golang", leadId: "middleware" },
+          { name: "Siddharth Rao", title: "VP Platform Engineering", company: "DataFlow Cloud", signal: signal, tech: "AWS, Docker, PostgreSQL", leadId: "middleware" },
+          { name: "Elena Weber", title: "Director of Systems", company: "Apex Enterprise Systems", signal: signal, tech: "Golang, Microservices", leadId: "middleware" }
+        ]
+      };
+
+      // Visually create and append the new segment card into the grid
+      const grid = document.getElementById('leadListsGrid');
+      if (grid) {
+        const card = document.createElement('div');
+        const badgeColor = sector === 'Healthcare' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                           sector === 'FinTech' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                           sector === 'Retail' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                           'bg-purple-50 text-purple-700 border-purple-200';
+        const accentText = sector === 'Healthcare' ? 'text-emerald-600' :
+                           sector === 'FinTech' ? 'text-blue-600' :
+                           sector === 'Retail' ? 'text-amber-600' :
+                           'text-purple-600';
+        const btnBg = sector === 'Healthcare' ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700' :
+                      sector === 'FinTech' ? 'bg-blue-50 hover:bg-blue-100 text-blue-700' :
+                      sector === 'Retail' ? 'bg-amber-50 hover:bg-amber-100 text-amber-700' :
+                      'bg-purple-50 hover:bg-purple-100 text-purple-700';
+
+        card.className = `p-6 rounded-2xl bg-white border-2 border-purple-400 shadow-md flex flex-col justify-between hover:shadow-lg transition cursor-pointer ring-2 ring-purple-100 animate-in fade-in duration-300`;
+        card.onclick = () => openListDetails(newKey);
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded-md text-[10px] font-bold ${badgeColor} border">${sector}</span>
+              <span class="text-xs text-slate-400 font-medium">50 Leads</span>
+            </div>
+            <h3 class="font-bold text-base text-slate-900 mt-3">${name}</h3>
+            <p class="text-xs text-slate-600 mt-1">${signal}</p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+            <span class="${accentText} font-bold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-ping"></span>
+              <span>Ready for Scout</span>
+            </span>
+            <button onclick="event.stopPropagation(); openListDetails('${newKey}')" class="px-3 py-1.5 rounded-lg ${btnBg} font-bold flex items-center gap-1 transition cursor-pointer">
+              <span>Open List</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        `;
+        grid.prepend(card);
+      }
+
+      showToast(`Target segment "${name}" created! 50 leads added.`);
+      openListDetails(newKey);
+      try { lucide.createIcons(); } catch(e) {}
     }
 
     // Init

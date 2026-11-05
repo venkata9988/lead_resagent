@@ -736,57 +736,191 @@
     </div>
   </main>
 
-  <!-- Interactive Plan Checkout & Activation Modal -->
+  <!-- Interactive Plan Checkout & Payment Modal -->
   <div id="checkoutModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl flex flex-col gap-4">
+    <div class="max-w-lg w-full bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl flex flex-col gap-4 max-h-[92vh] overflow-y-auto">
+      
+      <!-- Modal Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
         <div>
           <span id="checkoutModalTier" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Selected: Starter SDR ($34/mo)</span>
-          <h3 class="font-bold text-lg text-slate-900 mt-1">Start 7-Day Free Trial</h3>
+          <h3 id="checkoutModalTitle" class="font-bold text-lg text-slate-900 mt-1">Start 7-Day Free Trial</h3>
         </div>
-        <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-slate-700 cursor-pointer">
+        <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-slate-700 cursor-pointer p-1 rounded-lg hover:bg-slate-100 transition">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
-      <div class="p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200 text-xs text-emerald-800 space-y-1">
-        <div class="font-bold flex items-center gap-1.5">
-          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-          <span>100% Risk Free • Zero Upfront Billing</span>
+      <!-- State 1: Checkout & Payment Form -->
+      <div id="checkoutFormState" class="space-y-4">
+        <div class="p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200 text-xs text-emerald-800 space-y-1">
+          <div class="font-bold flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+            <span>100% Risk Free • Zero Upfront Billing</span>
+          </div>
+          <p class="text-[11px] text-emerald-700 leading-relaxed">Test autonomous scouting, generate 300 lead dossiers, and book meetings for 7 days before paying anything.</p>
         </div>
-        <p class="text-[11px] text-emerald-700">Test autonomous scouting, generate 300 lead dossiers, and book meetings for 7 days before paying anything.</p>
-      </div>
 
-      <!-- Account Info Form -->
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="text-[11px] font-bold text-slate-700 block mb-1">Work Email</label>
-          <input id="checkoutEmail" type="email" placeholder="you@company.com" value="venkata@company.com" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white">
-        </div>
-        <div>
-          <label class="text-[11px] font-bold text-slate-700 block mb-1">Company / Agency Name</label>
-          <input id="checkoutCompany" type="text" placeholder="Your Agency or Business" value="Siva Outbound Agency" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white">
-        </div>
-        <div>
-          <label class="text-[11px] font-bold text-slate-700 block mb-1">Billing Cycle</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="setBillingCycle('monthly')" id="btnCycleMonthly" class="py-2 rounded-xl text-xs font-bold border-2 border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer">Monthly Billing</button>
-            <button onclick="setBillingCycle('annual')" id="btnCycleAnnual" class="py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-600 cursor-pointer">Annual (Save 20%)</button>
+        <!-- Account Info -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 block mb-1">Work Email</label>
+            <input id="checkoutEmail" type="email" placeholder="you@company.com" value="venkata@company.com" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
+          </div>
+          <div>
+            <label class="text-[11px] font-bold text-slate-700 block mb-1">Company / Agency Name</label>
+            <input id="checkoutCompany" type="text" placeholder="Your Agency or Business" value="Siva Outbound Agency" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
           </div>
         </div>
+
+        <!-- Billing Cycle Selector -->
+        <div class="text-xs">
+          <label class="text-[11px] font-bold text-slate-700 block mb-1">Billing Cycle</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setBillingCycle('monthly')" id="btnCycleMonthly" class="py-2.5 rounded-xl text-xs font-bold border-2 border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer flex flex-col items-center">
+              <span>Monthly Billing</span>
+              <span class="text-[10px] font-normal text-emerald-600" id="summaryMonthlySub">$34/mo</span>
+            </button>
+            <button onclick="setBillingCycle('annual')" id="btnCycleAnnual" class="py-2.5 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-600 cursor-pointer flex flex-col items-center">
+              <span>Annual (Save 20%)</span>
+              <span class="text-[10px] font-normal text-slate-500" id="summaryAnnualSub">$27/mo billed yearly</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Payment Method Section -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 text-xs">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-200/60">
+            <span class="font-bold text-slate-800 flex items-center gap-1.5">
+              <i data-lucide="credit-card" class="w-4 h-4 text-emerald-600"></i>
+              <span>Secure Payment Method</span>
+            </span>
+            <div class="flex items-center gap-1.5 text-[10px] font-semibold text-slate-500">
+              <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200">Visa</span>
+              <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200">Mastercard</span>
+              <span class="px-1.5 py-0.5 rounded bg-white border border-slate-200">Amex</span>
+            </div>
+          </div>
+
+          <!-- Card Details Input -->
+          <div class="space-y-2.5">
+            <div>
+              <label class="text-[10px] font-semibold text-slate-600 block mb-1">Cardholder Name</label>
+              <input id="payCardName" type="text" value="Venkata Siva" placeholder="Name on card" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <div>
+              <label class="text-[10px] font-semibold text-slate-600 block mb-1">Card Number</label>
+              <div class="relative">
+                <input id="payCardNumber" type="text" value="4242 4242 4242 4242" placeholder="•••• •••• •••• ••••" maxlength="19" class="w-full pl-3 pr-10 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 mono focus:outline-none focus:border-emerald-500">
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-emerald-600 font-bold text-[10px]">
+                  VISA
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="text-[10px] font-semibold text-slate-600 block mb-1">Expiration Date</label>
+                <input id="payCardExp" type="text" value="12/28" placeholder="MM/YY" maxlength="5" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 mono focus:outline-none focus:border-emerald-500">
+              </div>
+              <div>
+                <label class="text-[10px] font-semibold text-slate-600 block mb-1">CVC / CVV</label>
+                <div class="relative">
+                  <input id="payCardCvc" type="password" value="842" placeholder="CVC" maxlength="4" class="w-full pl-3 pr-8 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 mono focus:outline-none focus:border-emerald-500">
+                  <div class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none text-slate-400">
+                    <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Summary Breakdown -->
+          <div class="pt-2 border-t border-slate-200/60 space-y-1 text-[11px]">
+            <div class="flex justify-between text-slate-600">
+              <span id="summaryTierLabel">Starter SDR Plan (Monthly)</span>
+              <span id="summaryTierPrice" class="font-semibold text-slate-800">$34.00</span>
+            </div>
+            <div class="flex justify-between text-emerald-700">
+              <span>7-Day Free Trial Promo</span>
+              <span id="summaryDiscount" class="font-bold">-$34.00</span>
+            </div>
+            <div class="flex justify-between text-xs font-extrabold text-slate-900 pt-1 border-t border-dashed border-slate-200">
+              <span>Due Today</span>
+              <span class="text-emerald-700 font-bold text-sm">$0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-[10px] text-slate-400">
+          <div class="flex items-center gap-1">
+            <i data-lucide="shield" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <span>256-Bit TLS Bank Encryption</span>
+          </div>
+          <span>Powered by Stripe</span>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <button onclick="closeCheckoutModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-medium cursor-pointer">Cancel</button>
+          <button onclick="confirmPlanActivation()" id="btnConfirmPlan" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+            <span id="btnConfirmPlanText">Activate 7-Day Free Trial</span>
+          </button>
+        </div>
       </div>
 
-      <!-- Footer Actions -->
-      <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-        <button onclick="closeCheckoutModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-medium cursor-pointer">Cancel</button>
-        <button onclick="confirmPlanActivation()" id="btnConfirmPlan" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
-          <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-          <span id="btnConfirmPlanText">Activate Free Trial Now</span>
-        </button>
+      <!-- State 2: Invoice & Receipt Confirmation (Revealed after payment) -->
+      <div id="checkoutSuccessState" class="hidden space-y-4 py-2">
+        <div class="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 flex flex-col items-center text-center gap-2">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-emerald-600/20">
+            <i data-lucide="check" class="w-6 h-6"></i>
+          </div>
+          <h4 class="font-extrabold text-base text-emerald-950 mt-1">Payment Method Verified & Plan Active!</h4>
+          <p class="text-xs text-emerald-800 max-w-sm leading-relaxed">
+            Your 7-day trial has started. 300 verified autonomous lead credits have been loaded into your account.
+          </p>
+        </div>
+
+        <!-- Invoice Receipt Card -->
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
+          <div class="flex justify-between items-center pb-2 border-b border-slate-200/60 font-semibold text-slate-700">
+            <span class="text-slate-500">Transaction Receipt</span>
+            <span id="receiptTxId" class="mono text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">INV-2026-94821</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-200/60">
+            <span class="text-slate-500">Active Plan</span>
+            <span id="receiptPlanName" class="font-bold text-slate-800">Starter SDR ($34/mo)</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-200/60">
+            <span class="text-slate-500">Payment Card</span>
+            <span class="font-semibold text-slate-800">Visa ending in 4242</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-200/60">
+            <span class="text-slate-500">Amount Charged Today</span>
+            <span class="font-bold text-emerald-700">$0.00 (Trial Active)</span>
+          </div>
+          <div class="flex justify-between py-1">
+            <span class="text-slate-500">First Renewal Date</span>
+            <span id="receiptRenewalDate" class="font-semibold text-slate-800">Nov 12, 2026 ($34.00)</span>
+          </div>
+        </div>
+
+        <!-- Success Actions -->
+        <div class="flex items-center justify-between gap-3 pt-2">
+          <button onclick="downloadInvoiceMock()" class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs cursor-pointer">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Download Invoice PDF</span>
+          </button>
+          <button onclick="closeCheckoutModal(); navigate('agent');" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
+            <span>Open AI SDR Studio ➔</span>
+          </button>
+        </div>
       </div>
+
     </div>
   </div>
-
 
   <!-- User Profile & Workspace Settings Modal -->
   <div id="profileModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
@@ -1346,18 +1480,45 @@
       }, 100);
     }
 
-    // Checkout Modal Handlers
-    function openCheckoutModal(tier) {
-      selectedCheckoutTier = tier;
-      const tierBadge = document.getElementById('checkoutModalTier');
-      const confirmBtnText = document.getElementById('btnConfirmPlanText');
+    // Checkout & Payment Handlers
+    let currentBillingCycle = 'monthly';
 
-      if (tier === 'agency') {
-        tierBadge.innerText = "Selected: Agency & Scale ($99/mo)";
-        confirmBtnText.innerText = "Activate Agency Plan ($99/mo)";
+    function openCheckoutModal(tier) {
+      selectedCheckoutTier = tier || 'starter';
+      
+      // Reset view to form state
+      const formState = document.getElementById('checkoutFormState');
+      const successState = document.getElementById('checkoutSuccessState');
+      if (formState) formState.classList.remove('hidden');
+      if (successState) successState.classList.add('hidden');
+
+      const tierBadge = document.getElementById('checkoutModalTier');
+      const modalTitle = document.getElementById('checkoutModalTitle');
+      const confirmBtnText = document.getElementById('btnConfirmPlanText');
+      const summaryTierLabel = document.getElementById('summaryTierLabel');
+      const summaryTierPrice = document.getElementById('summaryTierPrice');
+      const summaryDiscount = document.getElementById('summaryDiscount');
+      const monthlySub = document.getElementById('summaryMonthlySub');
+      const annualSub = document.getElementById('summaryAnnualSub');
+
+      if (selectedCheckoutTier === 'agency') {
+        if (tierBadge) tierBadge.innerText = "Selected: Agency & Scale ($99/mo)";
+        if (modalTitle) modalTitle.innerText = "Activate Agency Plan ($99/mo)";
+        if (confirmBtnText) confirmBtnText.innerText = "Authorize & Activate Agency Plan";
+        if (summaryTierLabel) summaryTierLabel.innerText = "Agency & Scale Plan";
+        if (summaryTierPrice) summaryTierPrice.innerText = currentBillingCycle === 'annual' ? "$950.40 / yr" : "$99.00 / mo";
+        if (summaryDiscount) summaryDiscount.innerText = currentBillingCycle === 'annual' ? "-$237.60 (Save 20%)" : "-$99.00 (7-Day Trial)";
+        if (monthlySub) monthlySub.innerText = "$99/mo";
+        if (annualSub) annualSub.innerText = "$79/mo billed yearly";
       } else {
-        tierBadge.innerText = "Selected: Starter SDR ($34/mo)";
-        confirmBtnText.innerText = "Activate 7-Day Free Trial";
+        if (tierBadge) tierBadge.innerText = "Selected: Starter SDR ($34/mo)";
+        if (modalTitle) modalTitle.innerText = "Start 7-Day Free Trial";
+        if (confirmBtnText) confirmBtnText.innerText = "Activate 7-Day Free Trial";
+        if (summaryTierLabel) summaryTierLabel.innerText = "Starter SDR Plan";
+        if (summaryTierPrice) summaryTierPrice.innerText = currentBillingCycle === 'annual' ? "$326.40 / yr" : "$34.00 / mo";
+        if (summaryDiscount) summaryDiscount.innerText = currentBillingCycle === 'annual' ? "-$81.60 (Save 20%)" : "-$34.00 (7-Day Trial)";
+        if (monthlySub) monthlySub.innerText = "$34/mo";
+        if (annualSub) annualSub.innerText = "$27/mo billed yearly";
       }
 
       document.getElementById('checkoutModal').classList.remove('hidden');
@@ -1369,24 +1530,64 @@
     }
 
     function setBillingCycle(cycle) {
+      currentBillingCycle = cycle;
       const btnM = document.getElementById('btnCycleMonthly');
       const btnA = document.getElementById('btnCycleAnnual');
+      const summaryTierPrice = document.getElementById('summaryTierPrice');
+      const summaryDiscount = document.getElementById('summaryDiscount');
+
       if (cycle === 'annual') {
-        btnA.className = "py-2 rounded-xl text-xs font-bold border-2 border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer";
-        btnM.className = "py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-600 cursor-pointer";
+        btnA.className = "py-2.5 rounded-xl text-xs font-bold border-2 border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer flex flex-col items-center";
+        btnM.className = "py-2.5 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-600 cursor-pointer flex flex-col items-center";
+        if (summaryTierPrice) summaryTierPrice.innerText = selectedCheckoutTier === 'agency' ? "$950.40 / yr" : "$326.40 / yr";
+        if (summaryDiscount) summaryDiscount.innerText = selectedCheckoutTier === 'agency' ? "-$237.60 (Save 20%)" : "-$81.60 (Save 20%)";
       } else {
-        btnM.className = "py-2 rounded-xl text-xs font-bold border-2 border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer";
-        btnA.className = "py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-600 cursor-pointer";
+        btnM.className = "py-2.5 rounded-xl text-xs font-bold border-2 border-emerald-500 bg-emerald-50 text-emerald-800 cursor-pointer flex flex-col items-center";
+        btnA.className = "py-2.5 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-600 cursor-pointer flex flex-col items-center";
+        if (summaryTierPrice) summaryTierPrice.innerText = selectedCheckoutTier === 'agency' ? "$99.00 / mo" : "$34.00 / mo";
+        if (summaryDiscount) summaryDiscount.innerText = selectedCheckoutTier === 'agency' ? "-$99.00 (7-Day Trial)" : "-$34.00 (7-Day Trial)";
       }
     }
 
     function confirmPlanActivation() {
-      closeCheckoutModal();
-      const planName = selectedCheckoutTier === 'agency' ? 'Agency Tier ($99/mo)' : 'Starter Pro ($34/mo)';
-      document.getElementById('headerPlanBadge').innerText = planName + ' Active';
-      document.getElementById('headerPricingBtn').innerText = 'Plan: Active';
-      showToast(`Congratulations! ${planName} successfully activated.`);
-      navigate('agent');
+      const btn = document.getElementById('btnConfirmPlan');
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Authorizing Payment Method...</span>`;
+      try { lucide.createIcons(); } catch(e) {}
+
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        const planName = selectedCheckoutTier === 'agency' ? 'Agency Tier ($99/mo)' : 'Starter Pro ($34/mo)';
+        
+        // Update headers & profile
+        document.getElementById('headerPlanBadge').innerText = planName + ' Active';
+        document.getElementById('headerPricingBtn').innerText = 'Plan: Active';
+        document.getElementById('profilePlanText').innerText = planName + ' (Stripe Verified)';
+
+        // Populate and switch to invoice state
+        const receiptTxId = document.getElementById('receiptTxId');
+        if (receiptTxId) receiptTxId.innerText = 'INV-2026-' + Math.floor(10000 + Math.random() * 90000);
+        const receiptPlanName = document.getElementById('receiptPlanName');
+        if (receiptPlanName) receiptPlanName.innerText = planName + ' (' + (currentBillingCycle === 'annual' ? 'Annual 20% Off' : 'Monthly') + ')';
+        const receiptRenewalDate = document.getElementById('receiptRenewalDate');
+        if (receiptRenewalDate) {
+          const priceStr = selectedCheckoutTier === 'agency' ? (currentBillingCycle === 'annual' ? '$950.40/yr' : '$99.00/mo') : (currentBillingCycle === 'annual' ? '$326.40/yr' : '$34.00/mo');
+          receiptRenewalDate.innerText = `Nov 12, 2026 (${priceStr})`;
+        }
+
+        const formState = document.getElementById('checkoutFormState');
+        const successState = document.getElementById('checkoutSuccessState');
+        if (formState) formState.classList.add('hidden');
+        if (successState) successState.classList.remove('hidden');
+
+        try { lucide.createIcons(); } catch(e) {}
+        showToast(`Payment Method Verified! ${planName} is now active.`);
+      }, 1000);
+    }
+
+    function downloadInvoiceMock() {
+      const tx = document.getElementById('receiptTxId') ? document.getElementById('receiptTxId').innerText : 'INV-2026-94821';
+      showToast(`Downloaded official receipt PDF for ${tx}!`);
     }
 
     let currentActiveLeadId = 'acme';

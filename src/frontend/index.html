@@ -86,11 +86,11 @@
 
     <!-- Right Controls -->
     <div class="flex items-center gap-3">
-      <button onclick="openWebhookModal()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition flex items-center gap-2 shadow-2xs">
+      <button onclick="openWebhookModal()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition flex items-center gap-2 shadow-2xs cursor-pointer">
         <i data-lucide="share-2" class="w-3.5 h-3.5 text-blue-600"></i>
         <span class="hidden sm:inline">n8n Export</span>
       </button>
-      <button onclick="scrollToPricing()" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 transition shadow-2xs">
+      <button onclick="scrollToPricing()" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 transition shadow-2xs cursor-pointer">
         Pricing: $34/mo
       </button>
       <div class="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center font-bold text-xs text-emerald-700 cursor-pointer" onclick="showToast('Logged in as Venkata Siva (Pro Tier)')">
@@ -223,14 +223,14 @@
   <!-- VIEW 2: AI SDR AGENT & RECON WORKSPACE    -->
   <!-- ========================================== -->
   <main id="viewAgent" class="flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
-    <!-- Ingestion & Search Bar -->
+    <!-- Ingestion & Search Bar (Dynamic Two-Way Synced) -->
     <section class="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs">
       <div class="flex flex-col lg:flex-row gap-4 items-center">
         <div class="flex-1 relative w-full">
           <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
             <i data-lucide="globe" class="w-4 h-4"></i>
           </div>
-          <input id="inputDomain" type="text" placeholder="Enter target domain or LinkedIn URL (e.g. acmehealth.com)"
+          <input id="inputDomain" type="text" placeholder="Enter target domain or company (e.g. novapay.io or acmehealth.com)"
             value="acmehealth.com"
             class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
         </div>
@@ -239,7 +239,7 @@
           <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
             <i data-lucide="user" class="w-4 h-4"></i>
           </div>
-          <input id="inputContact" type="text" placeholder="Contact (e.g. Sarah Vance)"
+          <input id="inputContact" type="text" placeholder="Contact Name"
             value="Dr. Marcus Vance"
             class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
         </div>
@@ -248,7 +248,7 @@
           <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
             <i data-lucide="briefcase" class="w-4 h-4"></i>
           </div>
-          <input id="inputRole" type="text" placeholder="Role (e.g. COO, VP Eng)"
+          <input id="inputRole" type="text" placeholder="Contact Role"
             value="Chief Operating Officer"
             class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition">
         </div>
@@ -278,10 +278,11 @@
             <h2 class="font-bold text-sm text-slate-800">Prospect Review Queue</h2>
             <span id="queueBadge" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">4 Ready</span>
           </div>
-          <span class="text-xs text-slate-400">Auto-Refreshed</span>
+          <span class="text-xs text-slate-400">Two-Way Synced</span>
         </div>
 
         <div id="leadQueueFeed" class="flex flex-col gap-3 overflow-y-auto max-h-[720px] pr-1">
+          <!-- Acme Item -->
           <div onclick="selectLead('acme')" id="item-acme" class="lead-item p-4 rounded-xl bg-white border-2 border-emerald-500 shadow-xs hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
@@ -297,6 +298,7 @@
             </div>
           </div>
 
+          <!-- NovaPay Item -->
           <div onclick="selectLead('fintech')" id="item-fintech" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-xs hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
@@ -312,6 +314,7 @@
             </div>
           </div>
 
+          <!-- Kestrel Item -->
           <div onclick="selectLead('retail')" id="item-retail" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-xs hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
@@ -327,6 +330,7 @@
             </div>
           </div>
 
+          <!-- Aether Item -->
           <div onclick="selectLead('middleware')" id="item-middleware" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-xs hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
@@ -410,7 +414,7 @@
             <div class="flex items-center justify-between text-xs">
               <span class="font-bold text-slate-700 flex items-center gap-1.5">
                 <i data-lucide="linkedin" class="w-3.5 h-3.5 text-blue-600"></i>
-                <span>LinkedIn Connection Note</span>
+                <span>LinkedIn Connection Note (For Prospect)</span>
               </span>
               <span id="charCount" class="mono text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">214 / 250 Chars</span>
             </div>
@@ -428,7 +432,7 @@
             <div class="flex items-center justify-between text-xs">
               <span class="font-bold text-slate-700 flex items-center gap-1.5">
                 <i data-lucide="mail" class="w-3.5 h-3.5 text-amber-500"></i>
-                <span>Cold Email Sequence</span>
+                <span>Cold Email Sequence (For Prospect)</span>
               </span>
               <span id="wordCount" class="mono text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">78 Words (Under 85)</span>
             </div>
@@ -492,7 +496,6 @@
 
     <!-- Lists Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Card 1 -->
       <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between hover:shadow-md transition">
         <div>
           <div class="flex items-center justify-between">
@@ -511,7 +514,6 @@
         </div>
       </div>
 
-      <!-- Card 2 -->
       <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between hover:shadow-md transition">
         <div>
           <div class="flex items-center justify-between">
@@ -530,7 +532,6 @@
         </div>
       </div>
 
-      <!-- Card 3 -->
       <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between hover:shadow-md transition">
         <div>
           <div class="flex items-center justify-between">
@@ -550,7 +551,7 @@
       </div>
     </div>
 
-    <!-- Active List Drill-Down View (Shown When "Open List" is clicked) -->
+    <!-- Active List Drill-Down View -->
     <div id="listDetailContainer" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
         <div>
@@ -611,7 +612,6 @@
 
     <!-- Kanban Stages (5 Columns) -->
     <div class="grid grid-cols-1 md:grid-cols-5 gap-4 flex-1">
-      <!-- Col 1: Discovered -->
       <div id="col-discovered" class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-3">
         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
           <span class="font-bold text-xs text-slate-700">1. Discovered</span>
@@ -632,7 +632,6 @@
         </div>
       </div>
 
-      <!-- Col 2: AI Enriched -->
       <div id="col-enriched" class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-3">
         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
           <span class="font-bold text-xs text-blue-700">2. AI Enriched</span>
@@ -653,7 +652,6 @@
         </div>
       </div>
 
-      <!-- Col 3: Contacted -->
       <div id="col-contacted" class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-3">
         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
           <span class="font-bold text-xs text-amber-700">3. Contacted</span>
@@ -674,7 +672,6 @@
         </div>
       </div>
 
-      <!-- Col 4: Meeting Booked -->
       <div id="col-booked" class="p-4 rounded-2xl bg-white border-2 border-emerald-400 shadow-xs flex flex-col gap-3">
         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
           <span class="font-bold text-xs text-emerald-700">4. Meeting Booked</span>
@@ -695,7 +692,6 @@
         </div>
       </div>
 
-      <!-- Col 5: Closed Won -->
       <div id="col-won" class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-3">
         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
           <span class="font-bold text-xs text-purple-700">5. Closed Won</span>
@@ -767,7 +763,7 @@
       </div>
 
       <p class="text-xs text-slate-600 leading-relaxed">
-        Send the current lead dossier and personalized outreach copy directly to your **n8n.io**, **Zapier**, or **Make** webhook URL.
+        Send the current lead dossier and personalized outreach copy directly to your **n8n.io**, **Zapier**, or **Make** webhook URL to automate sending to the prospect.
       </p>
 
       <div>
@@ -792,6 +788,9 @@
         id: "acme",
         company: "Acme Health Partners",
         domain: "acmehealth.com",
+        contactName: "Dr. Marcus Vance",
+        contactRole: "Chief Operating Officer",
+        sector: "Healthcare",
         target: "Dr. Marcus Vance (Chief Operating Officer)",
         score: "98 / 100 PASS",
         trigger: "Announced a $15M Series B expansion to open 8 new regional urgent care centers, with 14 active openings for patient intake coordinators.",
@@ -806,6 +805,9 @@
         id: "fintech",
         company: "NovaPay Solutions",
         domain: "novapay.io",
+        contactName: "Julian Scott",
+        contactRole: "VP of Payments",
+        sector: "Banking & FinTech",
         target: "Julian Scott (VP of Payments)",
         score: "97 / 100 PASS",
         trigger: "Scaling digital payment rails to support ISO 20022 compliance across 4 new European markets.",
@@ -820,6 +822,9 @@
         id: "retail",
         company: "Kestrel Outdoor Goods",
         domain: "kestreloutdoors.com",
+        contactName: "Elena Rostova",
+        contactRole: "Head of Commerce",
+        sector: "Retail & E-Commerce",
         target: "Elena Rostova (Head of Commerce)",
         score: "99 / 100 PASS",
         trigger: "Expanded catalog by 3,000 SKUs ahead of peak season; mobile conversion lagging desktop by 28%.",
@@ -834,6 +839,9 @@
         id: "middleware",
         company: "Aether Telecom Systems",
         domain: "aethertelecom.net",
+        contactName: "Tariq Patel",
+        contactRole: "Chief Architect",
+        sector: "Middleware & Enterprise IT",
         target: "Tariq Patel (Chief Architect)",
         score: "96 / 100 PASS",
         trigger: "Decoupling legacy mainframe billing pipelines to Apache Kafka event streaming.",
@@ -854,8 +862,7 @@
         prospects: [
           { name: "Dr. Marcus Vance", title: "COO", company: "Acme Health Partners", signal: "Series B expansion (8 sites)", tech: "HubSpot, Epic", leadId: "acme" },
           { name: "Rachel Adams", title: "VP Operations", company: "Metro Care Clinics", signal: "Opening 4 clinics in Austin", tech: "Zendesk, Cerner", leadId: "acme" },
-          { name: "David Kim, MD", title: "Medical Director", company: "Pacific Urgent Care", signal: "Hiring 12 nurses & intake staff", tech: "WordPress, AthenaHealth", leadId: "acme" },
-          { name: "Sarah Jenkins", title: "Head of Patient Exp", company: "Summit Health Group", signal: "Phone hold time reduction initiative", tech: "Twilio, Salesforce", leadId: "acme" }
+          { name: "David Kim, MD", title: "Medical Director", company: "Pacific Urgent Care", signal: "Hiring 12 nurses & intake staff", tech: "WordPress, AthenaHealth", leadId: "acme" }
         ]
       },
       fintech: {
@@ -927,6 +934,7 @@
       }, 100);
     }
 
+    // Two-Way Sync Lead Selection
     function selectLead(id) {
       document.querySelectorAll('.lead-item').forEach(el => {
         el.classList.remove('border-2', 'border-emerald-500');
@@ -941,6 +949,7 @@
       const data = LEADS[id];
       if (!data) return;
 
+      // Update Dossier View
       document.getElementById('dossierCompany').innerText = data.company;
       document.getElementById('dossierDomain').innerText = data.domain;
       document.getElementById('dossierDomain').href = "https://" + data.domain;
@@ -963,7 +972,60 @@
       document.getElementById('emailBody').value = data.emailBody;
       document.getElementById('wordCount').innerText = data.wordCount;
 
+      // TWO-WAY SYNC: Update the Search Bar inputs to match!
+      document.getElementById('inputDomain').value = data.domain;
+      document.getElementById('inputContact').value = data.contactName || data.target.split('(')[0].trim();
+      document.getElementById('inputRole').value = data.contactRole || "Decision Maker";
+      if (data.sector) {
+        document.getElementById('selectSector').value = data.sector;
+      }
+
       try { lucide.createIcons(); } catch(e) {}
+    }
+
+    // Dynamic Search & Recon Handler
+    function triggerResearchAgent() {
+      const domainInput = document.getElementById('inputDomain').value.trim().toLowerCase();
+      const contactInput = document.getElementById('inputContact').value.trim();
+      const roleInput = document.getElementById('inputRole').value.trim();
+      const sectorInput = document.getElementById('selectSector').value;
+
+      const btn = document.getElementById('btnSubmit');
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Analyzing Signals...</span>`;
+      try { lucide.createIcons(); } catch(e) {}
+
+      setTimeout(() => {
+        btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Recon Complete</span>`;
+        try { lucide.createIcons(); } catch(e) {}
+
+        // Check which lead was entered:
+        if (domainInput.includes('nova') || domainInput.includes('payment')) {
+          selectLead('fintech');
+          showToast(`Recon complete! Loaded NovaPay dossier.`);
+        } else if (domainInput.includes('kestrel') || domainInput.includes('outdoor')) {
+          selectLead('retail');
+          showToast(`Recon complete! Loaded Kestrel Outdoor Goods dossier.`);
+        } else if (domainInput.includes('aether') || domainInput.includes('telecom')) {
+          selectLead('middleware');
+          showToast(`Recon complete! Loaded Aether Telecom dossier.`);
+        } else {
+          // If custom or acme
+          selectLead('acme');
+          if (domainInput && !domainInput.includes('acme')) {
+            // Apply custom inputs dynamically
+            document.getElementById('dossierCompany').innerText = domainInput.split('.')[0].toUpperCase() + " Corp";
+            document.getElementById('dossierDomain').innerText = domainInput;
+            document.getElementById('dossierDomain').href = "https://" + domainInput;
+            document.getElementById('dossierTarget').innerHTML = `Target Contact: <strong class="text-slate-800">${contactInput || "Leadership"}</strong> (${roleInput || "Executive"})`;
+          }
+          showToast(`Recon complete! Loaded dossier for ${domainInput || 'Acme Health'}`);
+        }
+
+        setTimeout(() => {
+          btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i><span>Run Autonomous Recon</span>`;
+          try { lucide.createIcons(); } catch(e) {}
+        }, 2000);
+      }, 1000);
     }
 
     function openListDetails(listKey) {
@@ -988,7 +1050,7 @@
           <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-medium">${p.signal}</span></td>
           <td class="py-3 px-3 text-slate-500">${p.tech}</td>
           <td class="py-3 px-3 text-right">
-            <button onclick="launchReconForLead('${p.leadId}', '${p.company}', '${p.name}', '${p.title}')" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition shadow-2xs cursor-pointer">
+            <button onclick="launchReconForLead('${p.leadId}')" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition shadow-2xs cursor-pointer">
               Run AI Recon ➔
             </button>
           </td>
@@ -999,13 +1061,13 @@
       try { lucide.createIcons(); } catch(e) {}
     }
 
-    function launchReconForLead(leadId, company, contact, title) {
+    function launchReconForLead(leadId) {
       navigate('agent');
-      document.getElementById('inputDomain').value = company.toLowerCase().replace(/[^a-z0-9]/g, '') + '.com';
-      document.getElementById('inputContact').value = contact;
-      document.getElementById('inputRole').value = title;
       selectLead(leadId);
-      showToast(`Loaded dossier for ${contact} at ${company}`);
+      const lead = LEADS[leadId];
+      if (lead) {
+        showToast(`Loaded dossier for ${lead.contactName} at ${lead.company}`);
+      }
     }
 
     function bulkEnrichCurrentList() {
@@ -1105,22 +1167,6 @@
       btn.classList.add('bg-slate-700', 'text-white');
       try { lucide.createIcons(); } catch(e) {}
       showToast('Outreach approved & dispatched to LinkedIn Staging Queue!');
-    }
-
-    function triggerResearchAgent() {
-      const btn = document.getElementById('btnSubmit');
-      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Analyzing Signals...</span>`;
-      try { lucide.createIcons(); } catch(e) {}
-
-      setTimeout(() => {
-        btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Recon Complete</span>`;
-        selectLead('acme');
-        showToast('Autonomous recon complete! Dossier generated.');
-        setTimeout(() => {
-          btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i><span>Run Autonomous Recon</span>`;
-          try { lucide.createIcons(); } catch(e) {}
-        }, 2000);
-      }, 1200);
     }
 
     // Init

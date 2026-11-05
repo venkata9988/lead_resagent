@@ -2592,10 +2592,52 @@
       showToast(`Downloaded signed enterprise contract agreement for ${comp} (${val})!`);
     }
 
+    let currentCsHandoffCompany = '';
+    let currentCsHandoffDealId = '';
+
     function handoffToCustomerSuccess() {
       const comp = document.getElementById('modalDealCompany').innerText;
+      const val = document.getElementById('modalDealValue').innerText;
+      currentCsHandoffCompany = comp;
+
+      // Find deal in KANBAN_DEALS
+      const deal = KANBAN_DEALS.find(d => d.company.toLowerCase().includes(comp.toLowerCase().split(' ')[0]));
+      if (deal) currentCsHandoffDealId = deal.id;
+
+      // Populate CS modal
+      const sub = document.getElementById('csModalCompanySub');
+      if (sub) sub.innerText = `${comp} • ${val}`;
+      const slack = document.getElementById('csModalSlackChannel');
+      if (slack) slack.innerText = `#client-${comp.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}`;
+
       closeDealModal();
-      showToast(`Account ${comp} successfully handed off to Customer Success & Onboarding!`);
+      document.getElementById('csHandoffModal').classList.remove('hidden');
+      try { lucide.createIcons(); } catch(e) {}
+    }
+
+    function closeCsHandoffModal() {
+      document.getElementById('csHandoffModal').classList.add('hidden');
+    }
+
+    function confirmCsHandoff() {
+      const btn = document.getElementById('btnConfirmCsHandoff');
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Notifying Team...</span>`;
+      try { lucide.createIcons(); } catch(e) {}
+
+      setTimeout(() => {
+        // Update deal pill in KANBAN_DEALS
+        const deal = KANBAN_DEALS.find(d => d.id === currentCsHandoffDealId || d.company.toLowerCase().includes(currentCsHandoffCompany.toLowerCase().split(' ')[0]));
+        if (deal) {
+          deal.pill = 'CS Onboarding Active ✓';
+          deal.pillColor = 'text-emerald-800 bg-emerald-100 font-bold border border-emerald-300';
+          renderKanban();
+        }
+
+        closeCsHandoffModal();
+        btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i><span>Confirm & Launch Onboarding ➔</span>`;
+        try { lucide.createIcons(); } catch(e) {}
+        showToast(`Account ${currentCsHandoffCompany} transitioned to Customer Success! Kickoff scheduled for Nov 12.`);
+      }, 700);
     }
 
     function jumpDirectlyToDossier(leadId) {

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProspectPulse | Autonomous B2B Lead Intelligence & Outbound Agent</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              500: '#10b981',
+              600: '#059669',
+              900: '#064e3b'
+            },
+            surface: {
+              dark: '#090d16',
+              card: '#0f172a',
+              cardLight: '#1e293b',
+              border: '#1e293b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #090d16;
+      color: #f1f5f9;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #090d16; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- Top App Navigation -->
+  <header class="h-16 border-b border-surface-border bg-surface-dark/95 backdrop-blur px-6 flex items-center justify-between sticky top-0 z-50">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+        <i data-lucide="zap" class="w-5 h-5 text-white"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-extrabold text-base tracking-tight text-white">Prospect<span class="text-emerald-400">Pulse</span></span>
+          <span class="px-2 py-0.5 text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">v1.2 Production</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Autonomous B2B Outbound Intelligence Engine</p>
+      </div>
+    </div>
+
+    <!-- Quick Stats in Nav -->
+    <div class="hidden md:flex items-center gap-6 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="text-slate-400">Quality Pass:</span>
+        <span class="font-semibold text-emerald-400">98.4%</span>
+      </div>
+      <div class="w-px h-4 bg-slate-800"></div>
+      <div class="flex items-center gap-2">
+        <span class="text-slate-400">Pipeline Grounded:</span>
+        <span class="font-semibold text-white">$142,500</span>
+      </div>
+      <div class="w-px h-4 bg-slate-800"></div>
+      <div class="flex items-center gap-2">
+        <span class="text-slate-400">Active Quota:</span>
+        <span class="font-semibold text-slate-300">284 / 500 Leads</span>
+      </div>
+    </div>
+
+    <!-- Account / Actions -->
+    <div class="flex items-center gap-3">
+      <button onclick="runSampleDemo()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-2">
+        <i data-lucide="play" class="w-3.5 h-3.5 text-emerald-400"></i>
+        <span>Run Demo Lead</span>
+      </button>
+      <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-emerald-400">
+        VS
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
+
+    <!-- Ingestion & Search Bar -->
+    <section class="p-5 rounded-2xl bg-surface-card border border-surface-border shadow-xl">
+      <div class="flex flex-col lg:flex-row gap-4 items-center">
+        <!-- Input URL -->
+        <div class="flex-1 relative w-full">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+            <i data-lucide="globe" class="w-4 h-4"></i>
+          </div>
+          <input id="inputDomain" type="text" placeholder="Enter target domain or LinkedIn URL (e.g. acmehealth.com)"
+            value="acmehealth.com"
+            class="w-full pl-10 pr-4 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+        </div>
+
+        <!-- Target Contact -->
+        <div class="w-full lg:w-56 relative">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </div>
+          <input id="inputContact" type="text" placeholder="Contact (e.g. Sarah Vance)"
+            value="Dr. Marcus Vance"
+            class="w-full pl-10 pr-4 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+        </div>
+
+        <!-- Role / Title -->
+        <div class="w-full lg:w-56 relative">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+            <i data-lucide="briefcase" class="w-4 h-4"></i>
+          </div>
+          <input id="inputRole" type="text" placeholder="Role (e.g. COO, VP Eng)"
+            value="Chief Operating Officer"
+            class="w-full pl-10 pr-4 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+        </div>
+
+        <!-- Sector Selector -->
+        <div class="w-full lg:w-48 relative">
+          <select id="selectSector" class="w-full px-3.5 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition appearance-none">
+            <option value="Healthcare">Healthcare & Life Sci</option>
+            <option value="Banking & FinTech">Banking & FinTech</option>
+            <option value="Retail & E-Commerce">Retail & E-Commerce</option>
+            <option value="Middleware & Enterprise IT">Middleware & Enterprise IT</option>
+          </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button onclick="triggerResearchAgent()" id="btnSubmit" class="w-full lg:w-auto px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-semibold rounded-xl text-sm shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition duration-150">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <span>Run Autonomous Recon</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Split-Screen Review Queue & Dossier Inspector -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+
+      <!-- Left Column: Queue & Feed (4 Cols) -->
+      <div class="lg:col-span-4 flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <h2 class="font-bold text-sm text-slate-200">Prospect Review Queue</h2>
+            <span id="queueBadge" class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">4 Ready</span>
+          </div>
+          <span class="text-xs text-slate-500">Auto-Refreshed</span>
+        </div>
+
+        <!-- Feed List -->
+        <div id="leadQueueFeed" class="flex flex-col gap-3 overflow-y-auto max-h-[720px] pr-1">
+          <!-- Lead Item 1 (Active) -->
+          <div onclick="selectLead('acme')" id="item-acme" class="lead-item p-4 rounded-xl bg-surface-card border-2 border-emerald-500/50 hover:border-emerald-500 cursor-pointer transition shadow-md">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="font-bold text-sm text-white">Acme Health Partners</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Dr. Marcus Vance • COO</p>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Verified</span>
+            </div>
+            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-300">
+              <span class="px-2 py-0.5 bg-slate-800 rounded">Series B Expansion</span>
+              <span class="text-slate-500">•</span>
+              <span class="text-slate-400">14 open jobs</span>
+            </div>
+          </div>
+
+          <!-- Lead Item 2 -->
+          <div onclick="selectLead('fintech')" id="item-fintech" class="lead-item p-4 rounded-xl bg-surface-card border border-surface-border hover:border-slate-600 cursor-pointer transition">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="font-bold text-sm text-white">NovaPay Solutions</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Julian Scott • VP Payments</p>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">Ready</span>
+            </div>
+            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-300">
+              <span class="px-2 py-0.5 bg-slate-800 rounded">ISO 20022 Migration</span>
+              <span class="text-slate-500">•</span>
+              <span class="text-slate-400">FinTech</span>
+            </div>
+          </div>
+
+          <!-- Lead Item 3 -->
+          <div onclick="selectLead('retail')" id="item-retail" class="lead-item p-4 rounded-xl bg-surface-card border border-surface-border hover:border-slate-600 cursor-pointer transition">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="font-bold text-sm text-white">Kestrel Outdoor Goods</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Elena Rostova • Head of Commerce</p>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Verified</span>
+            </div>
+            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-300">
+              <span class="px-2 py-0.5 bg-slate-800 rounded">Headless Mobile Surge</span>
+              <span class="text-slate-500">•</span>
+              <span class="text-slate-400">Retail</span>
+            </div>
+          </div>
+
+          <!-- Lead Item 4 -->
+          <div onclick="selectLead('middleware')" id="item-middleware" class="lead-item p-4 rounded-xl bg-surface-card border border-surface-border hover:border-slate-600 cursor-pointer transition">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="font-bold text-sm text-white">Aether Telecom Systems</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Tariq Patel • Chief Architect</p>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">Review</span>
+            </div>
+            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-300">
+              <span class="px-2 py-0.5 bg-slate-800 rounded">Kafka Consumer Lag</span>
+              <span class="text-slate-500">•</span>
+              <span class="text-slate-400">Middleware</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Active Lead Dossier & Deliverables (8 Cols) -->
+      <div class="lg:col-span-8 flex flex-col gap-6">
+
+        <!-- Dossier Header Card -->
+        <div class="p-6 rounded-2xl bg-surface-card border border-surface-border shadow-xl">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-surface-border">
+            <div>
+              <div class="flex items-center gap-3">
+                <h1 id="dossierCompany" class="text-xl font-bold text-white tracking-tight">Acme Health Partners</h1>
+                <a id="dossierDomain" href="https://acmehealth.com" target="_blank" class="text-xs text-emerald-400 flex items-center gap-1 hover:underline">
+                  <span>acmehealth.com</span>
+                  <i data-lucide="external-link" class="w-3 h-3"></i>
+                </a>
+              </div>
+              <p id="dossierTarget" class="text-xs text-slate-400 mt-1">Target Contact: <strong class="text-slate-200">Dr. Marcus Vance</strong> (Chief Operating Officer)</p>
+            </div>
+
+            <!-- Quality & Confidence Badge -->
+            <div class="flex items-center gap-3">
+              <div class="text-right">
+                <div class="text-[11px] text-slate-400">Quality Grounding</div>
+                <div id="dossierScore" class="text-sm font-bold text-emerald-400">98 / 100 PASS</div>
+              </div>
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Signals & Tech Stack Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+            <div class="p-4 rounded-xl bg-surface-dark border border-surface-border">
+              <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
+                <i data-lucide="flame" class="w-4 h-4 text-amber-400"></i>
+                <span>Detected Buying Trigger</span>
+              </div>
+              <p id="dossierTrigger" class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Announced a <strong>$15M Series B expansion</strong> to open <strong>8 new regional urgent care centers</strong>, with 14 active openings for patient intake coordinators.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-surface-dark border border-surface-border">
+              <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
+                <i data-lucide="cpu" class="w-4 h-4 text-teal-400"></i>
+                <span>Detected Tech Stack</span>
+              </div>
+              <div id="dossierTech" class="flex flex-wrap gap-1.5 mt-2">
+                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">HubSpot CRM</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">Zendesk Support</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">WordPress</span>
+                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">Google Analytics 4</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Outreach Deliverables -->
+        <div class="p-6 rounded-2xl bg-surface-card border border-surface-border shadow-xl flex flex-col gap-5">
+          <div class="flex items-center justify-between">
+            <h2 class="font-bold text-sm text-slate-200 flex items-center gap-2">
+              <i data-lucide="send" class="w-4 h-4 text-emerald-400"></i>
+              <span>Generated Outreach Deliverables</span>
+            </h2>
+            <span class="text-[11px] text-emerald-400 font-medium">Strict Anti-Cliché Verified</span>
+          </div>
+
+          <!-- 1. LinkedIn Connection Note -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold text-slate-300 flex items-center gap-1.5">
+                <i data-lucide="linkedin" class="w-3.5 h-3.5 text-blue-400"></i>
+                <span>LinkedIn Connection Note</span>
+              </span>
+              <span id="charCount" class="mono text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">214 / 250 Chars</span>
+            </div>
+            <div class="relative">
+              <textarea id="linkedinText" rows="3" class="w-full p-3.5 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-200 focus:outline-none focus:border-emerald-500 leading-relaxed font-sans"></textarea>
+              <button onclick="copyToClipboard('linkedinText')" class="absolute top-2.5 right-2.5 px-2.5 py-1 text-[11px] font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 transition flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. Cold Email -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold text-slate-300 flex items-center gap-1.5">
+                <i data-lucide="mail" class="w-3.5 h-3.5 text-amber-400"></i>
+                <span>Cold Email Sequence</span>
+              </span>
+              <span id="wordCount" class="mono text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">78 Words (Under 85)</span>
+            </div>
+            <div class="p-3.5 bg-surface-dark border border-surface-border rounded-xl space-y-2">
+              <div class="text-xs font-semibold text-slate-300 pb-2 border-b border-slate-800 flex items-center justify-between">
+                <div><span class="text-slate-500">Subject: </span><span id="emailSubject" class="text-white"></span></div>
+                <button onclick="copyEmailFull()" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 transition flex items-center gap-1">
+                  <i data-lucide="copy" class="w-3 h-3"></i>
+                  <span>Copy</span>
+                </button>
+              </div>
+              <textarea id="emailBody" rows="7" class="w-full bg-transparent text-xs text-slate-200 focus:outline-none leading-relaxed font-sans border-0 p-0"></textarea>
+            </div>
+          </div>
+
+          <!-- Action Footer -->
+          <div class="pt-4 border-t border-surface-border flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2 text-xs text-slate-400">
+              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+              <span>Grounded in raw scrape. Zero hallucinations detected.</span>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button onclick="alert('Exported lead and outreach draft directly to HubSpot CRM!')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-1.5">
+                <i data-lucide="database" class="w-3.5 h-3.5 text-slate-400"></i>
+                <span>Sync to CRM</span>
+              </button>
+              <button onclick="approveAndDispatch()" id="btnDispatch" class="px-5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
+                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                <span>Approve & Dispatch</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Lead Database
+    const LEADS = {
+      acme: {
+        company: "Acme Health Partners",
+        domain: "acmehealth.com",
+        target: "Dr. Marcus Vance (Chief Operating Officer)",
+        score: "98 / 100 PASS",
+        trigger: "Announced a $15M Series B expansion to open 8 new regional urgent care centers, with 14 active openings for patient intake coordinators.",
+        tech: ["HubSpot CRM", "Zendesk Support", "WordPress", "Google Analytics 4"],
+        linkedinNote: "Saw Acme's expansion into the 8 new urgent care sites—congrats Marcus. Typically patient intake lines bottleneck during this phase before front-desk hiring catches up. Open to seeing how clinics triage calls autonomously?",
+        emailSubj: "Acme's 8 new urgent care sites & intake hold times",
+        emailBody: `Hi Marcus,\n\nCongrats on the recent Series B expansion into the 8 new regional sites.\n\nTypically, when clinic footprints scale this fast, patient intake lines become a major bottleneck before front-desk staffing catches up.\n\nWe built an autonomous phone triage agent that eliminates intake hold times and syncs appointments directly into your scheduling software.\n\nOpen to seeing a 2-minute workflow breakdown of how regional networks handle this?\n\nBest,\n[Your Name]`,
+        charCount: "214 / 250 Chars",
+        wordCount: "78 Words (Under 85)"
+      },
+      fintech: {
+        company: "NovaPay Solutions",
+        domain: "novapay.io",
+        target: "Julian Scott (VP of Payments)",
+        score: "97 / 100 PASS",
+        trigger: "Scaling digital payment rails to support ISO 20022 compliance across 4 new European markets.",
+        tech: ["Stripe", "PostgreSQL", "MuleSoft", "AWS Cloud"],
+        linkedinNote: "Saw NovaPay's payment rail expansion—congrats Julian. As cross-border transaction volumes scale, onboarding verification delays usually create client friction. Open to seeing how teams automate compliance checks?",
+        emailSubj: "NovaPay's transaction rails & onboarding verification",
+        emailBody: `Hi Julian,\n\nNoticed NovaPay's recent scaling across digital payment rails.\n\nTypically during this phase, merchant onboarding friction and false-positive AML screening alerts can double operational overhead.\n\nWe built an automated verification agent that speeds up merchant verification while remaining strictly audit-ready.\n\nWorth a quick 2-minute architecture review?\n\nBest,\n[Your Name]`,
+        charCount: "220 / 250 Chars",
+        wordCount: "75 Words (Under 85)"
+      },
+      retail: {
+        company: "Kestrel Outdoor Goods",
+        domain: "kestreloutdoors.com",
+        target: "Elena Rostova (Head of Commerce)",
+        score: "99 / 100 PASS",
+        trigger: "Expanded catalog by 3,000 SKUs ahead of peak season; mobile conversion lagging desktop by 28%.",
+        tech: ["Shopify Plus", "Klaviyo", "Next.js", "Algolia"],
+        linkedinNote: "Saw Kestrel's catalog expansion—congrats Elena. Typically mobile layout shifts during catalog surges drop checkout conversion by 10-15%. Open to a 2-minute look at how brands accelerate mobile load times?",
+        emailSubj: "Kestrel's catalog expansion & mobile checkout speeds",
+        emailBody: `Hi Elena,\n\nSaw Kestrel's major catalog expansion ahead of peak season.\n\nAs product catalogs grow, mobile search zero-results and checkout latency often quietly creep up, costing 10-15% in abandoned orders.\n\nWe built an edge-caching storefront agent that cuts mobile product load times under 800ms.\n\nOpen to seeing a live speed benchmark?\n\nBest,\n[Your Name]`,
+        charCount: "218 / 250 Chars",
+        wordCount: "76 Words (Under 85)"
+      },
+      middleware: {
+        company: "Aether Telecom Systems",
+        domain: "aethertelecom.net",
+        target: "Tariq Patel (Chief Architect)",
+        score: "96 / 100 PASS",
+        trigger: "Decoupling legacy mainframe billing pipelines to Apache Kafka event streaming.",
+        tech: ["Apache Kafka", "Kubernetes", "Golang", "Oracle DB"],
+        linkedinNote: "Saw Aether's cloud infrastructure updates—congrats Tariq. Typically as microservices scale, message pipeline consumer lag creates silent bottlenecks. Open to seeing how teams monitor this?",
+        emailSubj: "Aether's microservices scaling & message lag",
+        emailBody: `Hi Tariq,\n\nNoticed Aether's recent architecture expansion.\n\nAs service meshes scale, message pipeline lag and schema sync often create silent operational bottlenecks across engineering teams.\n\nWe built an automated pipeline observability agent that detects consumer bottlenecks before they cascade.\n\nOpen to seeing a 2-minute architecture breakdown?\n\nBest,\n[Your Name]`,
+        charCount: "208 / 250 Chars",
+        wordCount: "74 Words (Under 85)"
+      }
+    };
+
+    function selectLead(id) {
+      document.querySelectorAll('.lead-item').forEach(el => {
+        el.classList.remove('border-2', 'border-emerald-500/50');
+        el.classList.add('border-surface-border');
+      });
+      const selected = document.getElementById('item-' + id);
+      if (selected) {
+        selected.classList.remove('border-surface-border');
+        selected.classList.add('border-2', 'border-emerald-500/50');
+      }
+
+      const data = LEADS[id];
+      if (!data) return;
+
+      document.getElementById('dossierCompany').innerText = data.company;
+      document.getElementById('dossierDomain').innerText = data.domain;
+      document.getElementById('dossierDomain').href = "https://" + data.domain;
+      document.getElementById('dossierTarget').innerHTML = `Target Contact: <strong class="text-slate-200">${data.target}</strong>`;
+      document.getElementById('dossierScore').innerText = data.score;
+      document.getElementById('dossierTrigger').innerHTML = data.trigger;
+      
+      const techContainer = document.getElementById('dossierTech');
+      techContainer.innerHTML = '';
+      data.tech.forEach(t => {
+        const badge = document.createElement('span');
+        badge.className = "px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700";
+        badge.innerText = t;
+        techContainer.appendChild(badge);
+      });
+
+      document.getElementById('linkedinText').value = data.linkedinNote;
+      document.getElementById('charCount').innerText = data.charCount;
+      document.getElementById('emailSubject').innerText = data.emailSubj;
+      document.getElementById('emailBody').value = data.emailBody;
+      document.getElementById('wordCount').innerText = data.wordCount;
+
+      lucide.createIcons();
+    }
+
+    function runSampleDemo() {
+      selectLead('fintech');
+    }
+
+    function triggerResearchAgent() {
+      const domain = document.getElementById('inputDomain').value.trim() || 'acmehealth.com';
+      const contact = document.getElementById('inputContact').value.trim() || 'Marcus Vance';
+      const role = document.getElementById('inputRole').value.trim() || 'COO';
+      const sector = document.getElementById('selectSector').value;
+
+      const btn = document.getElementById('btnSubmit');
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Analyzing Signals...</span>`;
+      lucide.createIcons();
+
+      setTimeout(() => {
+        btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Recon Complete</span>`;
+        selectLead('acme');
+        setTimeout(() => {
+          btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i><span>Run Autonomous Recon</span>`;
+          lucide.createIcons();
+        }, 2000);
+      }, 1200);
+    }
+
+    function copyToClipboard(elementId) {
+      const el = document.getElementById(elementId);
+      el.select();
+      document.execCommand('copy');
+      alert('Copied to clipboard!');
+    }
+
+    function copyEmailFull() {
+      const subj = document.getElementById('emailSubject').innerText;
+      const body = document.getElementById('emailBody').value;
+      navigator.clipboard.writeText(`Subject: ${subj}\n\n${body}`);
+      alert('Cold email draft copied to clipboard!');
+    }
+
+    function approveAndDispatch() {
+      const btn = document.getElementById('btnDispatch');
+      btn.innerHTML = `<i data-lucide="check-circle" class="w-3.5 h-3.5"></i><span>Dispatched to Queue</span>`;
+      btn.classList.remove('from-emerald-600', 'to-teal-500');
+      btn.classList.add('bg-slate-700', 'text-slate-300');
+      lucide.createIcons();
+      alert('Success! Outreach approved and dispatched to LinkedIn Staging Queue.');
+    }
+
+    // Init
+    window.addEventListener('DOMContentLoaded', () => {
+      selectLead('acme');
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

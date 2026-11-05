@@ -1,0 +1,61 @@
+name: Lead Agent CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-and-validate:
+    name: Run Pre-Flight Validation Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-asyncio flake8
+
+      - name: Lint Code
+        run: |
+          flake8 src tests --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Run Validation & Anti-Hallucination Test Suite
+        run: |
+          pytest tests/ -v --maxfail=1
+
+  build-and-deploy:
+    name: Build Container & Deploy
+    needs: test-and-validate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: actions/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        run: |
+          docker build -t lead-researcher-agent:latest -f devops/Dockerfile .
+
+      # Deployment hook (e.g. Render, Fly.io, or AWS ECS webhook)
+      - name: Deploy to Host (Zero-Downtime Webhook)
+        if: env.DEPLOY_HOOK_URL != ''
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.DEPLOY_HOOK_URL }}
+        run: |
+          curl -X POST "$DEPLOY_HOOK_URL"

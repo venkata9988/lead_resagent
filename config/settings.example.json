@@ -1,0 +1,10 @@
+{
+  "app_name": "Lead Researcher Agent",
+  "environment": "development",
+  "gemini_api_key": "YOUR_GEMINI_API_KEY",
+  "supabase_url": "https://your-project.supabase.co",
+  "supabase_anon_key": "YOUR_SUPABASE_ANON_KEY",
+  "max_leads_per_batch": 50,
+  "default_model": "gemini-2.5-flash",
+  "enable_quality_gate": true
+}

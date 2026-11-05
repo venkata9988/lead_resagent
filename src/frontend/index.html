@@ -1734,9 +1734,9 @@
         const btnLabel = deal.stage === 'booked' ? 'Close Deal ➔' : 'Advance ➔';
 
         card.innerHTML = `
-          <div class="flex items-center justify-between">
-            <h4 class="font-bold text-xs text-slate-900">${deal.company}</h4>
-            <span class="text-[10px] font-bold text-slate-500">${deal.val}</span>
+          <div class="flex items-center justify-between gap-2">
+            <h4 class="font-bold text-xs text-slate-900 truncate">${deal.company}</h4>
+            <span class="text-[10px] font-bold text-slate-500 shrink-0">${deal.val}</span>
           </div>
           <p class="text-[11px] text-slate-500">${deal.contact}</p>
           <div class="flex items-center justify-between pt-1">

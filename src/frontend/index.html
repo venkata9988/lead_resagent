@@ -2251,6 +2251,28 @@
       restoreCustomListsFromStorage();
       renderKanban();
       selectLead('acme');
+
+      // Automated E2E Test & Deep Link Hash Router
+      function checkUrlHash() {
+        const hash = window.location.hash.replace('#', '');
+        if (!hash) return;
+        const params = new URLSearchParams(hash);
+        if (params.get('view')) navigate(params.get('view'));
+        if (params.get('lead')) selectLead(params.get('lead'));
+        if (params.get('modal') === 'checkout') openCheckoutModal(params.get('tier') || 'starter');
+        if (params.get('modal') === 'profile') openProfileModal();
+        if (params.get('modal') === 'import') openImportModal();
+        if (params.get('modal') === 'createList') openCreateListModal();
+        if (params.get('modal') === 'addDeal') openAddDealModal();
+        if (params.get('modal') === 'webhook') openWebhookModal();
+        if (params.get('modal') === 'deal') openDealModal('Kestrel Outdoor Goods', 'Elena Rostova • Head Commerce', '$45,000', 'Stage: 5. Closed Won', '3,000 SKU catalog expansion', 'retail');
+        if (params.get('list')) openListDetails(params.get('list'));
+        if (params.get('cycle') === 'annual') setBillingCycle('annual');
+        if (params.get('dispatch') === 'true') approveAndDispatch();
+        if (params.get('scroll')) window.scrollTo(0, parseInt(params.get('scroll')));
+      }
+      checkUrlHash();
+
       try { lucide.createIcons(); } catch(e) {}
     });
   </script>

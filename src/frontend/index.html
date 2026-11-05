@@ -96,7 +96,7 @@
       <button onclick="openCheckoutModal('pro')" id="headerPricingBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 transition shadow-2xs cursor-pointer">
         Upgrade: $34/mo
       </button>
-      <div class="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center font-bold text-xs text-emerald-700 cursor-pointer" onclick="openProfileModal()" title="View Profile & Workspace Settings">
+      <div id="headerAvatar" class="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center font-bold text-xs text-emerald-700 cursor-pointer select-none" onclick="openProfileModal()" title="View Profile & Workspace Settings">
         VS
       </div>
     </div>
@@ -1077,12 +1077,12 @@
     <div class="max-w-md w-full bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl flex flex-col gap-5">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
         <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-extrabold text-base shadow-md shadow-emerald-500/20">
+          <div id="profileAvatar" class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-extrabold text-base shadow-md shadow-emerald-500/20">
             VS
           </div>
           <div>
-            <h3 class="font-bold text-base text-slate-900">Venkata Siva</h3>
-            <p class="text-xs text-slate-500">Administrator & Growth Engineer</p>
+            <h3 id="profileName" class="font-bold text-base text-slate-900">Venkata Siva</h3>
+            <p id="profileRole" class="text-xs text-slate-500">Administrator & Growth Engineer</p>
           </div>
         </div>
         <button onclick="closeProfileModal()" class="text-slate-400 hover:text-slate-700 cursor-pointer">
@@ -2252,10 +2252,34 @@
         btn.innerHTML = originalHTML;
         const planName = selectedCheckoutTier === 'agency' ? 'Agency Tier ($99/mo)' : 'Starter Pro ($34/mo)';
         
+        // Extract registration details (supports custom user signup e.g. Rahul, rahul@xx.com, company XX)
+        const emailInput = document.getElementById('checkoutEmail');
+        const companyInput = document.getElementById('checkoutCompany');
+        const cardNameInput = document.getElementById('payCardName');
+        const userEmail = emailInput && emailInput.value.trim() ? emailInput.value.trim() : 'rahul@xx.com';
+        const userCompany = companyInput && companyInput.value.trim() ? companyInput.value.trim() : 'XX';
+        const userName = cardNameInput && cardNameInput.value.trim() ? cardNameInput.value.trim() : 'Rahul';
+        const initials = userName.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || 'RH';
+
         // Update headers & profile
-        document.getElementById('headerPlanBadge').innerText = planName + ' Active';
+        document.getElementById('headerPlanBadge').innerText = (checkoutPaymentMode === 'trial' ? 'Pro Trial (Active)' : (planName + ' Active'));
         document.getElementById('headerPricingBtn').innerText = 'Plan: Active';
-        document.getElementById('profilePlanText').innerText = planName + ' (Stripe Verified)';
+        document.getElementById('profilePlanText').innerText = (checkoutPaymentMode === 'trial' ? 'Pro 7-Day Trial (Active)' : (planName + ' (Stripe Verified)'));
+
+        const profileName = document.getElementById('profileName');
+        if (profileName) profileName.innerText = userName;
+        const profileRole = document.getElementById('profileRole');
+        if (profileRole) profileRole.innerText = `${userCompany} • ${userEmail}`;
+        const headerAvatar = document.getElementById('headerAvatar');
+        if (headerAvatar) headerAvatar.innerText = initials;
+        const profileAvatar = document.getElementById('profileAvatar');
+        if (profileAvatar) profileAvatar.innerText = initials;
+
+        try {
+          localStorage.setItem('prospectpulse_user_name', userName);
+          localStorage.setItem('prospectpulse_user_email', userEmail);
+          localStorage.setItem('prospectpulse_user_company', userCompany);
+        } catch(e) {}
 
         // Populate and switch to invoice state
         const receiptTxId = document.getElementById('receiptTxId');
@@ -3678,6 +3702,24 @@ KICKOFF MEETING:    Thursday, Nov 12, 2026 @ 10:00 AM EST (Google Meet)
 
     // Init
     window.addEventListener('DOMContentLoaded', () => {
+      // Restore user registration profile if persisted
+      try {
+        const savedName = localStorage.getItem('prospectpulse_user_name');
+        const savedEmail = localStorage.getItem('prospectpulse_user_email');
+        const savedCompany = localStorage.getItem('prospectpulse_user_company');
+        if (savedName) {
+          const profileName = document.getElementById('profileName');
+          if (profileName) profileName.innerText = savedName;
+          const profileRole = document.getElementById('profileRole');
+          if (profileRole) profileRole.innerText = `${savedCompany || 'XX'} • ${savedEmail || 'rahul@xx.com'}`;
+          const initials = savedName.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || 'RH';
+          const headerAvatar = document.getElementById('headerAvatar');
+          if (headerAvatar) headerAvatar.innerText = initials;
+          const profileAvatar = document.getElementById('profileAvatar');
+          if (profileAvatar) profileAvatar.innerText = initials;
+        }
+      } catch(e) {}
+
       restoreCustomListsFromStorage();
       renderKanban();
       selectLead('acme');
@@ -3703,6 +3745,73 @@ KICKOFF MEETING:    Thursday, Nov 12, 2026 @ 10:00 AM EST (Google Meet)
         if (params.get('cycle') === 'annual') setBillingCycle('annual');
         if (params.get('dispatch') === 'true') approveAndDispatch();
         if (params.get('scroll')) window.scrollTo(0, parseInt(params.get('scroll')));
+
+        // Seamless Customer Journey Hooks (Registration, Search & Close Deal)
+        if (params.get('signup') === 'true' || params.get('user')) {
+          const uName = params.get('user') || 'Rahul';
+          const uEmail = params.get('email') || 'rahul@xx.com';
+          const uComp = params.get('company') || 'XX';
+          const profileName = document.getElementById('profileName');
+          if (profileName) profileName.innerText = uName;
+          const profileRole = document.getElementById('profileRole');
+          if (profileRole) profileRole.innerText = `${uComp} • ${uEmail}`;
+          const initials = uName.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || 'RH';
+          const headerAvatar = document.getElementById('headerAvatar');
+          if (headerAvatar) headerAvatar.innerText = initials;
+          const profileAvatar = document.getElementById('profileAvatar');
+          if (profileAvatar) profileAvatar.innerText = initials;
+          const headerBadge = document.getElementById('headerPlanBadge');
+          if (headerBadge) headerBadge.innerText = 'Pro 7-Day Trial (Active)';
+          const profilePlan = document.getElementById('profilePlanText');
+          if (profilePlan) profilePlan.innerText = 'Pro 7-Day Trial (Active)';
+          try {
+            localStorage.setItem('prospectpulse_user_name', uName);
+            localStorage.setItem('prospectpulse_user_email', uEmail);
+            localStorage.setItem('prospectpulse_user_company', uComp);
+          } catch(e) {}
+        }
+
+        if (params.get('searchDomain')) {
+          navigate('agent');
+          const domainInp = document.getElementById('inputDomain');
+          if (domainInp) domainInp.value = params.get('searchDomain');
+          const contactInp = document.getElementById('inputContact');
+          if (contactInp && params.get('searchContact')) contactInp.value = params.get('searchContact');
+          const roleInp = document.getElementById('inputRole');
+          if (roleInp && params.get('searchRole')) roleInp.value = params.get('searchRole');
+          triggerResearchAgent();
+        }
+
+        if (params.get('crmAdvance')) {
+          navigate('crm');
+          const targetComp = params.get('crmAdvance');
+          const toStage = params.get('toStage') || 'won';
+          let targetDeal = KANBAN_DEALS.find(d => d.company.toLowerCase().includes(targetComp.toLowerCase()));
+          if (!targetDeal) {
+            targetDeal = {
+              id: 'deal-reliance',
+              company: 'Reliance Solutions',
+              contact: 'Anil Mehta • VP Infrastructure',
+              val: '$52,000',
+              valNum: 52000,
+              stage: toStage,
+              signal: 'Migrating legacy ERP to Kafka cloud mesh',
+              pill: toStage === 'won' ? 'Signed via Agent Pitch' : (toStage === 'booked' ? 'Demo Call Booked' : 'Outreach Dispatched'),
+              pillColor: toStage === 'won' ? 'text-purple-700 bg-purple-50' : 'text-emerald-700 bg-emerald-50'
+            };
+            KANBAN_DEALS.push(targetDeal);
+          } else {
+            targetDeal.stage = toStage;
+            if (toStage === 'won') {
+              targetDeal.pill = 'Signed via Agent Pitch';
+              targetDeal.pillColor = 'text-purple-700 bg-purple-50';
+            }
+          }
+          renderKanban();
+          if (params.get('openWonDeal') === 'true') {
+            openDealModal(targetDeal.company, targetDeal.contact, targetDeal.val, 'Stage: 5. Closed Won', targetDeal.signal, 'middleware');
+          }
+        }
       }
       checkUrlHash();
 

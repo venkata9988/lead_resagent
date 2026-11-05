@@ -1387,10 +1387,21 @@
             <span>Download Signed Agreement (PDF)</span>
           </button>
           
-          <button onclick="handoffToCustomerSuccess()" class="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md shadow-purple-600/20 transition flex items-center gap-1.5 cursor-pointer">
+          <button id="btnCsHandoffAction" onclick="handoffToCustomerSuccess()" class="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md shadow-purple-600/20 transition flex items-center gap-1.5 cursor-pointer">
             <i data-lucide="users" class="w-3.5 h-3.5"></i>
             <span>Hand Off to Customer Success ➔</span>
           </button>
+
+          <div id="badgeCsAlreadyHandedOff" class="hidden flex flex-wrap items-center gap-2">
+            <div class="px-3 py-2 bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold rounded-xl flex items-center gap-1.5 shadow-2xs">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+              <span>CS Onboarding Active ✓ (Kickoff Nov 12)</span>
+            </div>
+            <button onclick="downloadCsOnboardingPackageMock()" class="px-3 py-2 rounded-xl border border-purple-200 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs transition flex items-center gap-1.5 shadow-2xs cursor-pointer">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Download CS Package</span>
+            </button>
+          </div>
         </div>
 
         <div class="flex items-center justify-between text-[11px] pt-1">
@@ -2057,8 +2068,55 @@
       }, 1000);
     }
 
-    function downloadInvoiceMock() {
-      const tx = document.getElementById('receiptTxId') ? document.getElementById('receiptTxId').innerText : 'INV-2026-94821';
+    function triggerFileDownload(filename, textContent, mimeType = 'text/plain') {
+      try {
+        const blob = new Blob([textContent], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      } catch (err) {
+        console.error('File download failed:', err);
+      }
+    }
+
+    function downloadInvoiceMock(invId) {
+      const tx = invId || (document.getElementById('receiptTxId') ? document.getElementById('receiptTxId').innerText : 'INV-2026-94821');
+      const invoiceText = `================================================================================
+                             OFFICIAL TAX INVOICE
+                          PROSPECTPULSE TECHNOLOGIES
+================================================================================
+
+INVOICE NUMBER:   ${tx}
+DATE OF ISSUE:    November 5, 2026
+PAYMENT STATUS:   PAID IN FULL (VISA ending in 4242)
+TRANSACTION REF:  tx_pulse_${Date.now().toString().slice(-8)}
+
+BILL TO:
+ProspectPulse Workspace Admin
+100 California Street, San Francisco, CA
+admin@prospectpulse.io
+
+LINE ITEMS:
+--------------------------------------------------------------------------------
+1. ProspectPulse Pro Plan (Direct Billing - 1 Year Subscription)
+   Includes: 5,000 Verified Leads/mo, 3 Dedicated AI SDR Agents,
+             Full Pipeline CRM & Two-Way Sync
+   Amount: $324.00 (Annual Discount: 20% Applied)
+--------------------------------------------------------------------------------
+SUBTOTAL:                                                           $324.00
+APPLIED COUPON:                                                     -$32.40
+SALES TAX (0.00% B2B SaaS Software Exemption):                        $0.00
+--------------------------------------------------------------------------------
+TOTAL PAID:                                                         $291.60
+================================================================================
+Thank you for building high-converting outbound pipelines with ProspectPulse!
+`;
+      triggerFileDownload(`Tax_Invoice_${tx}.txt`, invoiceText);
       showToast(`Downloaded official receipt PDF for ${tx}!`);
     }
 
@@ -2577,6 +2635,21 @@
       if (isClosedWon) {
         if (wonActions) wonActions.classList.remove('hidden');
         if (preCloseActions) preCloseActions.classList.add('hidden');
+
+        // Check if this deal was already handed off to Customer Success
+        const dealObj = KANBAN_DEALS.find(d => d.company.toLowerCase().includes(company.toLowerCase().split(' ')[0]));
+        const isHandedOff = dealObj && (dealObj.csHandedOff || (dealObj.pill && dealObj.pill.includes('CS Onboarding Active')));
+        const btnHandoff = document.getElementById('btnCsHandoffAction');
+        const badgeHandoff = document.getElementById('badgeCsAlreadyHandedOff');
+        if (btnHandoff && badgeHandoff) {
+          if (isHandedOff) {
+            btnHandoff.classList.add('hidden');
+            badgeHandoff.classList.remove('hidden');
+          } else {
+            btnHandoff.classList.remove('hidden');
+            badgeHandoff.classList.add('hidden');
+          }
+        }
       } else {
         if (wonActions) wonActions.classList.add('hidden');
         if (preCloseActions) preCloseActions.classList.remove('hidden');
@@ -2587,9 +2660,120 @@
     }
 
     function downloadSignedContractMock() {
-      const comp = document.getElementById('modalDealCompany').innerText;
-      const val = document.getElementById('modalDealValue').innerText;
+      const comp = document.getElementById('modalDealCompany').innerText || 'Enterprise Client';
+      const val = document.getElementById('modalDealValue').innerText || '$32,000 / yr';
+      const contact = document.getElementById('modalDealContact').innerText || 'Primary Signatory';
+
+      const contractText = `================================================================================
+                    ENTERPRISE SOFTWARE SERVICE AGREEMENT
+                            (EXECUTED & SIGNED)
+================================================================================
+
+AGREEMENT ID:       AGR-${Date.now().toString().slice(-6)}
+DATE OF EXECUTION:  November 5, 2026
+EFFECTIVE DATE:     November 5, 2026
+CONTRACT TERM:      12 Months (Annual Subscription)
+RECURRING ARR:      ${val}
+
+PARTIES:
+1. SERVICE PROVIDER:
+   ProspectPulse Technologies Inc.
+   Autonomous B2B Outbound SDR & Pipeline Intelligence Platform
+   100 California Street, Suite 900, San Francisco, CA 94111
+
+2. CLIENT ORGANIZATION:
+   ${comp}
+   Primary Signatory: ${contact}
+
+--------------------------------------------------------------------------------
+1. SCOPE OF SERVICES & PROVISIONED SEATS
+--------------------------------------------------------------------------------
+- Provisioning of Dedicated Autonomous AI SDR Agent Instance (Zero-Cliché Engine)
+- Full Access to Live ICP Intent Signals, Tech Stack Recon & Multi-Touch Outbound
+- Bi-directional CRM Pipeline Synchronization (Stage 1 Discovered to Stage 5 Won)
+- Unlimited Webhook & n8n Automation Triggers with 99.9% Platform SLA
+- Enterprise Data Isolation: 256-Bit TLS 1.3 In-Flight, AES-256 At-Rest Encryption
+
+--------------------------------------------------------------------------------
+2. BILLING & COMMERCIAL TERMS
+--------------------------------------------------------------------------------
+- Annual Platform Fee: ${val} (Invoiced Annually / Net 30 Terms)
+- Direct Payment Mode: Verified Enterprise Credit Card / ACH Wire Transfer
+- Automated Renewal: Renews automatically unless 30-day written cancellation provided.
+
+--------------------------------------------------------------------------------
+3. SIGNATURES & VERIFICATION RECORD
+--------------------------------------------------------------------------------
+CLIENT SIGNATURE:
+Signed by:        ${contact}
+Verification:     Digitally verified via ProspectPulse Closed-Won Pipeline
+IP Address:       192.168.1.104
+Timestamp:        2026-11-05 14:19:23 UTC
+
+PROVIDER COUNTER-SIGNATURE:
+Signed by:        Elena Vance, VP of Global Revenue, ProspectPulse Inc.
+Verification ID:  VERIFIED-AGREEMENT-PROSPECTPULSE-SECURE
+Timestamp:        2026-11-05 14:19:23 UTC
+================================================================================
+`;
+      const sanitizedName = comp.replace(/[^a-zA-Z0-9]/g, '_');
+      triggerFileDownload(`Signed_Agreement_${sanitizedName}.txt`, contractText);
       showToast(`Downloaded signed enterprise contract agreement for ${comp} (${val})!`);
+    }
+
+    function downloadCsOnboardingPackage(compName) {
+      const comp = compName || (document.getElementById('modalDealCompany') ? document.getElementById('modalDealCompany').innerText : 'Client Account');
+      const val = document.getElementById('modalDealValue') ? document.getElementById('modalDealValue').innerText : '$32,000 / yr';
+      const contact = document.getElementById('modalDealContact') ? document.getElementById('modalDealContact').innerText : 'Primary Stakeholder';
+
+      const packageContent = `================================================================================
+              CUSTOMER SUCCESS & CLIENT ONBOARDING BRIEF
+                      PROSPECTPULSE TECHNOLOGIES
+================================================================================
+
+CLIENT ACCOUNT:     ${comp}
+DEAL SIZE:          ${val}
+PRIMARY CONTACT:    ${contact}
+STATUS:             HAND-OFF COMPLETE • ONBOARDING ACTIVE
+ASSIGNED CSM:       Sarah Jenkins (Senior Director of Customer Success)
+SLACK CHANNEL:      #client-${comp.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}
+KICKOFF MEETING:    Thursday, Nov 12, 2026 @ 10:00 AM EST (Google Meet)
+
+--------------------------------------------------------------------------------
+1. ACCOUNT SUMMARY & RECON CONTEXT
+--------------------------------------------------------------------------------
+- Origin: Autonomous AI SDR Agent Outbound Sequence
+- Closed Date: November 5, 2026
+- Core Value Driver: AI SDR lead enrichment, intent signal extraction, multi-touch copy
+- Tech Stack Highlights: Apache Kafka, Kubernetes, Golang, Enterprise Middleware
+
+--------------------------------------------------------------------------------
+2. ONBOARDING CHECKLIST & MILESTONES (30-DAY GO-LIVE)
+--------------------------------------------------------------------------------
+[x] Day 0: Contract Signed & Closed Won in CRM Board
+[x] Day 0: Customer Success Workspace & Shared Slack Connect channel initiated
+[ ] Day 1: Send Formal Welcome Email & Technical Architecture Questionnaire
+[ ] Day 7: Kickoff Strategy Session with ${contact} & GTM Leads
+[ ] Day 14: CRM & Webhook Pipeline Integration (Salesforce / HubSpot / n8n)
+[ ] Day 21: Cold Outreach Domain Warming & AI Tone Calibration
+[ ] Day 30: First 500 Prospect Autonomous Dispatch Review
+
+--------------------------------------------------------------------------------
+3. EMERGENCY & ESCALATION CONTACTS
+--------------------------------------------------------------------------------
+- CS Support Desk:   support@prospectpulse.io
+- Dedicated Slack:   #client-${comp.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')}
+- Priority Hot-line: 1-800-555-PULSE (Ext. 402)
+================================================================================
+`;
+      const sanitized = comp.replace(/[^a-zA-Z0-9]/g, '_');
+      triggerFileDownload(`CS_Onboarding_Package_${sanitized}.txt`, packageContent);
+    }
+
+    function downloadCsOnboardingPackageMock() {
+      const comp = document.getElementById('modalDealCompany').innerText || 'Client Account';
+      downloadCsOnboardingPackage(comp);
+      showToast(`Downloaded Customer Success Onboarding Package for ${comp}!`);
     }
 
     let currentCsHandoffCompany = '';
@@ -2630,13 +2814,17 @@
         if (deal) {
           deal.pill = 'CS Onboarding Active ✓';
           deal.pillColor = 'text-emerald-800 bg-emerald-100 font-bold border border-emerald-300';
+          deal.csHandedOff = true;
           renderKanban();
         }
+
+        // Trigger automatic package download to satisfy user requirement: "No package is getting downloaded"
+        downloadCsOnboardingPackage(currentCsHandoffCompany);
 
         closeCsHandoffModal();
         btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i><span>Confirm & Launch Onboarding ➔</span>`;
         try { lucide.createIcons(); } catch(e) {}
-        showToast(`Account ${currentCsHandoffCompany} transitioned to Customer Success! Kickoff scheduled for Nov 12.`);
+        showToast(`Account ${currentCsHandoffCompany} transitioned to CS! Onboarding package downloaded & kickoff scheduled for Nov 12.`);
       }, 700);
     }
 

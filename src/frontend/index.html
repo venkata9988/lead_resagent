@@ -41,8 +41,16 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white bg-slate-50 text-slate-900">
 
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="px-4 py-3 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-2xl flex items-center gap-2 border border-slate-700">
+      <i id="toastIcon" data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+      <span id="toastMsg">Action executed successfully</span>
+    </div>
+  </div>
+
   <!-- Top App Navigation -->
-  <header class="h-16 border-b border-slate-200 bg-white/95 backdrop-blur px-6 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+  <header class="h-16 border-b border-slate-200 bg-white/95 backdrop-blur px-6 flex items-center justify-between sticky top-0 z-40 shadow-xs">
     <div class="flex items-center gap-3">
       <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shadow-md shadow-emerald-500/20 cursor-pointer" onclick="navigate('landing')">
         <i data-lucide="zap" class="w-5 h-5 text-white"></i>
@@ -62,7 +70,7 @@
         <i data-lucide="home" class="w-3.5 h-3.5"></i>
         <span>Overview</span>
       </button>
-      <button onclick="navigate('agent')" id="nav-agent" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold bg-white text-emerald-700 shadow-sm border border-slate-200 transition flex items-center gap-1.5">
+      <button onclick="navigate('agent')" id="nav-agent" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold bg-white text-emerald-700 shadow-xs border border-slate-200 transition flex items-center gap-1.5">
         <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i>
         <span>AI SDR Agent</span>
       </button>
@@ -78,14 +86,14 @@
 
     <!-- Right Controls -->
     <div class="flex items-center gap-3">
-      <button onclick="openWebhookModal()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition flex items-center gap-2 shadow-sm">
+      <button onclick="openWebhookModal()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition flex items-center gap-2 shadow-2xs">
         <i data-lucide="share-2" class="w-3.5 h-3.5 text-blue-600"></i>
         <span class="hidden sm:inline">n8n Export</span>
       </button>
-      <button onclick="navigate('landing')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 transition shadow-sm">
+      <button onclick="scrollToPricing()" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 transition shadow-2xs">
         Pricing: $34/mo
       </button>
-      <div class="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-emerald-700">
+      <div class="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center font-bold text-xs text-emerald-700 cursor-pointer" onclick="showToast('Logged in as Venkata Siva (Pro Tier)')">
         VS
       </div>
     </div>
@@ -96,7 +104,7 @@
   <!-- ========================================== -->
   <section id="viewLanding" class="hidden flex-1 flex flex-col bg-gradient-to-b from-white via-slate-50 to-slate-100">
     <div class="relative py-20 px-6 max-w-6xl mx-auto text-center flex flex-col items-center">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold mb-6 shadow-sm">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold mb-6 shadow-2xs">
         <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i>
         <span>Next-Gen Autonomous Sales Development (2026)</span>
       </div>
@@ -110,11 +118,11 @@
       </p>
 
       <div class="mt-8 flex flex-col sm:flex-row gap-4 items-center">
-        <button onclick="navigate('agent')" class="px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm shadow-lg shadow-emerald-600/20 transition flex items-center gap-2">
+        <button onclick="navigate('agent')" class="px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm shadow-lg shadow-emerald-600/20 transition flex items-center gap-2 cursor-pointer">
           <span>Launch AI Agent Workspace</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
-        <button onclick="navigate('crm')" class="px-6 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-sm transition flex items-center gap-2 shadow-sm">
+        <button onclick="navigate('crm')" class="px-6 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-sm transition flex items-center gap-2 shadow-xs cursor-pointer">
           <i data-lucide="kanban" class="w-4 h-4 text-emerald-600"></i>
           <span>View Pipeline CRM Demo</span>
         </button>
@@ -122,7 +130,7 @@
 
       <!-- Feature Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 w-full text-left">
-        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition">
+        <div onclick="navigate('agent')" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition cursor-pointer">
           <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-4">
             <i data-lucide="flame" class="w-5 h-5"></i>
           </div>
@@ -130,9 +138,10 @@
           <p class="text-xs text-slate-600 mt-2 leading-relaxed">
             Targets buyers when they are actively hiring or raising capital, yielding 4x higher response rates than cold blast emails.
           </p>
+          <span class="inline-flex items-center gap-1 text-xs text-emerald-600 font-bold mt-4">Try Live Recon ➔</span>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition">
+        <div onclick="navigate('agent')" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition cursor-pointer">
           <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600 mb-4">
             <i data-lucide="shield-check" class="w-5 h-5"></i>
           </div>
@@ -140,9 +149,10 @@
           <p class="text-xs text-slate-600 mt-2 leading-relaxed">
             Strict algorithmic gates reject generic AI templates. Pitches reference actual tools and milestones in under 85 words.
           </p>
+          <span class="inline-flex items-center gap-1 text-xs text-teal-600 font-bold mt-4">View Pitches ➔</span>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition">
+        <div onclick="navigate('crm')" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition cursor-pointer">
           <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 mb-4">
             <i data-lucide="kanban" class="w-5 h-5"></i>
           </div>
@@ -150,17 +160,18 @@
           <p class="text-xs text-slate-600 mt-2 leading-relaxed">
             Manage your entire sales funnel from discovered leads to approved meetings inside one unified dashboard.
           </p>
+          <span class="inline-flex items-center gap-1 text-xs text-blue-600 font-bold mt-4">Open Kanban CRM ➔</span>
         </div>
       </div>
 
       <!-- Transparent Pricing Tiers -->
-      <div class="mt-20 w-full max-w-4xl">
+      <div id="pricingSection" class="mt-20 w-full max-w-4xl scroll-mt-24">
         <h2 class="text-2xl font-extrabold text-slate-900">Transparent, Credit-Friendly Pricing</h2>
         <p class="text-xs text-slate-500 mt-1">Scale from solo founder to agency without massive upfront commitments.</p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 text-left">
           <!-- Pro Plan ($34/mo) -->
-          <div class="p-8 rounded-3xl bg-white border border-slate-200 flex flex-col justify-between shadow-sm">
+          <div class="p-8 rounded-3xl bg-white border border-slate-200 flex flex-col justify-between shadow-xs">
             <div>
               <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700">Starter SDR</span>
               <div class="mt-4 flex items-baseline gap-2">
@@ -175,7 +186,7 @@
                 <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i><span>Built-in Pipeline CRM</span></li>
               </ul>
             </div>
-            <button onclick="navigate('agent')" class="mt-8 w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition border border-slate-200">
+            <button onclick="navigate('agent'); showToast('Pro Plan selected! Welcome to ProspectPulse.')" class="mt-8 w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition border border-slate-200 cursor-pointer">
               Start Free Trial
             </button>
           </div>
@@ -199,7 +210,7 @@
                 <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-600"></i><span>Multi-Account Pacing & Anti-Ban Protection</span></li>
               </ul>
             </div>
-            <button onclick="navigate('agent')" class="mt-8 w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs transition shadow-md shadow-emerald-600/20">
+            <button onclick="navigate('agent'); showToast('Agency Tier activated!')" class="mt-8 w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs transition shadow-md shadow-emerald-600/20 cursor-pointer">
               Get Started Now
             </button>
           </div>
@@ -213,7 +224,7 @@
   <!-- ========================================== -->
   <main id="viewAgent" class="flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
     <!-- Ingestion & Search Bar -->
-    <section class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+    <section class="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs">
       <div class="flex flex-col lg:flex-row gap-4 items-center">
         <div class="flex-1 relative w-full">
           <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -251,7 +262,7 @@
           </select>
         </div>
 
-        <button onclick="triggerResearchAgent()" id="btnSubmit" class="w-full lg:w-auto px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition duration-150">
+        <button onclick="triggerResearchAgent()" id="btnSubmit" class="w-full lg:w-auto px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition duration-150 cursor-pointer">
           <i data-lucide="sparkles" class="w-4 h-4"></i>
           <span>Run Autonomous Recon</span>
         </button>
@@ -271,7 +282,7 @@
         </div>
 
         <div id="leadQueueFeed" class="flex flex-col gap-3 overflow-y-auto max-h-[720px] pr-1">
-          <div onclick="selectLead('acme')" id="item-acme" class="lead-item p-4 rounded-xl bg-white border-2 border-emerald-500 shadow-sm hover:shadow cursor-pointer transition">
+          <div onclick="selectLead('acme')" id="item-acme" class="lead-item p-4 rounded-xl bg-white border-2 border-emerald-500 shadow-xs hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
                 <h3 class="font-bold text-sm text-slate-900">Acme Health Partners</h3>
@@ -286,7 +297,7 @@
             </div>
           </div>
 
-          <div onclick="selectLead('fintech')" id="item-fintech" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow cursor-pointer transition">
+          <div onclick="selectLead('fintech')" id="item-fintech" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-xs hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
                 <h3 class="font-bold text-sm text-slate-900">NovaPay Solutions</h3>
@@ -301,7 +312,7 @@
             </div>
           </div>
 
-          <div onclick="selectLead('retail')" id="item-retail" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow cursor-pointer transition">
+          <div onclick="selectLead('retail')" id="item-retail" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-xs hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
                 <h3 class="font-bold text-sm text-slate-900">Kestrel Outdoor Goods</h3>
@@ -316,7 +327,7 @@
             </div>
           </div>
 
-          <div onclick="selectLead('middleware')" id="item-middleware" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow cursor-pointer transition">
+          <div onclick="selectLead('middleware')" id="item-middleware" class="lead-item p-4 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-xs hover:shadow cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
                 <h3 class="font-bold text-sm text-slate-900">Aether Telecom Systems</h3>
@@ -335,7 +346,7 @@
 
       <!-- Right Column: Active Lead Dossier & Deliverables (8 Cols) -->
       <div class="lg:col-span-8 flex flex-col gap-6">
-        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
             <div>
               <div class="flex items-center gap-3">
@@ -385,7 +396,7 @@
         </div>
 
         <!-- Outreach Deliverables -->
-        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-5">
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-5">
           <div class="flex items-center justify-between">
             <h2 class="font-bold text-sm text-slate-900 flex items-center gap-2">
               <i data-lucide="send" class="w-4 h-4 text-emerald-600"></i>
@@ -405,7 +416,7 @@
             </div>
             <div class="relative">
               <textarea id="linkedinText" rows="3" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:bg-white leading-relaxed font-sans"></textarea>
-              <button onclick="copyToClipboard('linkedinText')" class="absolute top-2.5 right-2.5 px-2.5 py-1 text-[11px] font-bold bg-white hover:bg-slate-50 text-slate-700 rounded border border-slate-200 transition flex items-center gap-1 shadow-xs">
+              <button onclick="copyToClipboard('linkedinText')" class="absolute top-2.5 right-2.5 px-2.5 py-1 text-[11px] font-bold bg-white hover:bg-slate-50 text-slate-700 rounded border border-slate-200 transition flex items-center gap-1 shadow-2xs cursor-pointer">
                 <i data-lucide="copy" class="w-3 h-3"></i>
                 <span>Copy</span>
               </button>
@@ -424,7 +435,7 @@
             <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
               <div class="text-xs font-bold text-slate-800 pb-2 border-b border-slate-200 flex items-center justify-between">
                 <div><span class="text-slate-400 font-normal">Subject: </span><span id="emailSubject" class="text-slate-900"></span></div>
-                <button onclick="copyEmailFull()" class="px-2.5 py-1 text-[11px] font-bold bg-white hover:bg-slate-50 text-slate-700 rounded border border-slate-200 transition flex items-center gap-1 shadow-xs">
+                <button onclick="copyEmailFull()" class="px-2.5 py-1 text-[11px] font-bold bg-white hover:bg-slate-50 text-slate-700 rounded border border-slate-200 transition flex items-center gap-1 shadow-2xs cursor-pointer">
                   <i data-lucide="copy" class="w-3 h-3"></i>
                   <span>Copy</span>
                 </button>
@@ -441,11 +452,11 @@
             </div>
 
             <div class="flex items-center gap-3">
-              <button onclick="addCurrentLeadToCRM()" class="px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 transition flex items-center gap-1.5 shadow-xs">
+              <button onclick="addCurrentLeadToCRM()" class="px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 transition flex items-center gap-1.5 shadow-2xs cursor-pointer">
                 <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
                 <span>Move to Pipeline CRM</span>
               </button>
-              <button onclick="approveAndDispatch()" id="btnDispatch" class="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5">
+              <button onclick="approveAndDispatch()" id="btnDispatch" class="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
                 <i data-lucide="send" class="w-3.5 h-3.5"></i>
                 <span>Approve & Dispatch</span>
               </button>
@@ -468,11 +479,11 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <button onclick="alert('CSV Lead List uploaded successfully!')" class="px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 transition flex items-center gap-2 shadow-xs">
+        <button onclick="importCsvMock()" class="px-4 py-2 rounded-xl text-xs font-bold bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 transition flex items-center gap-2 shadow-2xs cursor-pointer">
           <i data-lucide="upload" class="w-3.5 h-3.5"></i>
           <span>Import CSV</span>
         </button>
-        <button onclick="createCustomList()" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 transition flex items-center gap-2">
+        <button onclick="createCustomList()" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 transition flex items-center gap-2 cursor-pointer">
           <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i>
           <span>Create New List</span>
         </button>
@@ -481,7 +492,8 @@
 
     <!-- Lists Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+      <!-- Card 1 -->
+      <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between hover:shadow-md transition">
         <div>
           <div class="flex items-center justify-between">
             <span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Healthcare</span>
@@ -492,11 +504,15 @@
         </div>
         <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
           <span class="text-emerald-600 font-bold">100% Enriched</span>
-          <button onclick="navigate('agent')" class="text-slate-600 hover:text-slate-900 font-semibold flex items-center gap-1">Open ➔</button>
+          <button onclick="openListDetails('healthcare')" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold flex items-center gap-1 transition cursor-pointer">
+            <span>Open List</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
         </div>
       </div>
 
-      <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+      <!-- Card 2 -->
+      <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between hover:shadow-md transition">
         <div>
           <div class="flex items-center justify-between">
             <span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">FinTech</span>
@@ -507,11 +523,15 @@
         </div>
         <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
           <span class="text-blue-600 font-bold">92% Enriched</span>
-          <button onclick="navigate('agent')" class="text-slate-600 hover:text-slate-900 font-semibold flex items-center gap-1">Open ➔</button>
+          <button onclick="openListDetails('fintech')" class="px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold flex items-center gap-1 transition cursor-pointer">
+            <span>Open List</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
         </div>
       </div>
 
-      <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+      <!-- Card 3 -->
+      <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between hover:shadow-md transition">
         <div>
           <div class="flex items-center justify-between">
             <span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">Retail</span>
@@ -522,8 +542,49 @@
         </div>
         <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
           <span class="text-amber-600 font-bold">Pending Approval</span>
-          <button onclick="navigate('agent')" class="text-slate-600 hover:text-slate-900 font-semibold flex items-center gap-1">Open ➔</button>
+          <button onclick="openListDetails('retail')" class="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold flex items-center gap-1 transition cursor-pointer">
+            <span>Open List</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Active List Drill-Down View (Shown When "Open List" is clicked) -->
+    <div id="listDetailContainer" class="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+        <div>
+          <div class="flex items-center gap-2 text-xs text-slate-400">
+            <span>Lead Lists</span>
+            <i data-lucide="chevron-right" class="w-3 h-3"></i>
+            <span id="detailListCategory" class="text-slate-700 font-semibold">Healthcare</span>
+          </div>
+          <h3 id="detailListTitle" class="text-lg font-bold text-slate-900 mt-1">Urgent Care & Regional Clinics (42 Leads)</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="bulkEnrichCurrentList()" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            <span>Enrich Entire List (42)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Prospects Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="border-b border-slate-200 text-slate-400 font-bold uppercase text-[10px]">
+              <th class="py-3 px-3">Contact</th>
+              <th class="py-3 px-3">Company</th>
+              <th class="py-3 px-3">Buying Signal</th>
+              <th class="py-3 px-3">Tech Stack</th>
+              <th class="py-3 px-3 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody id="listDetailTableBody" class="divide-y divide-slate-100 text-slate-700">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
       </div>
     </div>
   </main>
@@ -538,81 +599,159 @@
         <p class="text-xs text-slate-500 mt-1">Track every deal stage from autonomous AI reconnaissance to booked sales calls.</p>
       </div>
 
-      <div class="flex items-center gap-6 text-xs">
-        <div>Total Value: <strong class="text-slate-900 font-bold">$184,000</strong></div>
-        <div class="w-px h-4 bg-slate-200"></div>
-        <div>Active Meetings: <strong class="text-emerald-600 font-bold">7 Booked</strong></div>
+      <div class="flex items-center gap-4 text-xs">
+        <div class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 shadow-2xs">Total Pipeline: <strong class="text-slate-900 font-bold">$184,000</strong></div>
+        <div class="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 shadow-2xs">Active Meetings: <strong class="font-bold">7 Booked</strong></div>
+        <button onclick="promptNewDeal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+          <span>Add Deal</span>
+        </button>
       </div>
     </div>
 
     <!-- Kanban Stages (5 Columns) -->
     <div class="grid grid-cols-1 md:grid-cols-5 gap-4 flex-1">
       <!-- Col 1: Discovered -->
-      <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-3">
+      <div id="col-discovered" class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-3">
         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
           <span class="font-bold text-xs text-slate-700">1. Discovered</span>
-          <span class="px-2 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 font-bold">12</span>
+          <span id="badge-discovered" class="px-2 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 font-bold">1</span>
         </div>
-        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5 shadow-2xs">
-          <h4 class="font-bold text-xs text-slate-900">Apex Logistics Co.</h4>
-          <p class="text-[11px] text-slate-500">Marcus Sterling • VP Ops</p>
-          <span class="text-[10px] text-emerald-700 font-semibold mt-1">Series A Hiring</span>
+        <div id="cards-discovered" class="flex flex-col gap-2.5">
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5 shadow-2xs hover:border-slate-300 transition cursor-pointer" onclick="openDealModal('Apex Logistics Co.', 'Marcus Sterling • VP Ops', '$18,000', 'Discovered', 'Hiring 5 Dispatch Coordinators')">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-xs text-slate-900">Apex Logistics Co.</h4>
+              <span class="text-[10px] font-bold text-slate-500">$18k</span>
+            </div>
+            <p class="text-[11px] text-slate-500">Marcus Sterling • VP Ops</p>
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-[10px] text-emerald-700 font-semibold">Series A Hiring</span>
+              <button onclick="event.stopPropagation(); advanceDeal('Apex Logistics Co.', 'discovered')" class="text-[10px] text-emerald-600 hover:underline font-bold">Advance ➔</button>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Col 2: AI Enriched -->
-      <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-3">
+      <div id="col-enriched" class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-3">
         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
           <span class="font-bold text-xs text-blue-700">2. AI Enriched</span>
-          <span class="px-2 py-0.5 rounded text-[10px] bg-blue-50 text-blue-700 font-bold">4</span>
+          <span id="badge-enriched" class="px-2 py-0.5 rounded text-[10px] bg-blue-50 text-blue-700 font-bold">1</span>
         </div>
-        <div class="p-3.5 rounded-xl bg-slate-50 border border-blue-200 flex flex-col gap-1.5 shadow-2xs">
-          <h4 class="font-bold text-xs text-slate-900">NovaPay Solutions</h4>
-          <p class="text-[11px] text-slate-500">Julian Scott • VP Payments</p>
-          <span class="text-[10px] text-blue-700 font-semibold mt-1">ISO 20022 Pitch Ready</span>
+        <div id="cards-enriched" class="flex flex-col gap-2.5">
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-blue-200 flex flex-col gap-1.5 shadow-2xs hover:border-blue-300 transition cursor-pointer" onclick="openDealModal('NovaPay Solutions', 'Julian Scott • VP Payments', '$24,000', 'AI Enriched', 'ISO 20022 Ledger Migration')">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-xs text-slate-900">NovaPay Solutions</h4>
+              <span class="text-[10px] font-bold text-slate-500">$24k</span>
+            </div>
+            <p class="text-[11px] text-slate-500">Julian Scott • VP Payments</p>
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-[10px] text-blue-700 font-semibold">ISO 20022 Pitch Ready</span>
+              <button onclick="event.stopPropagation(); advanceDeal('NovaPay Solutions', 'enriched')" class="text-[10px] text-blue-600 hover:underline font-bold">Advance ➔</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Col 3: Approved & Contacted -->
-      <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-3">
+      <!-- Col 3: Contacted -->
+      <div id="col-contacted" class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-3">
         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
           <span class="font-bold text-xs text-amber-700">3. Contacted</span>
-          <span class="px-2 py-0.5 rounded text-[10px] bg-amber-50 text-amber-700 font-bold">8</span>
+          <span id="badge-contacted" class="px-2 py-0.5 rounded text-[10px] bg-amber-50 text-amber-700 font-bold">1</span>
         </div>
-        <div class="p-3.5 rounded-xl bg-slate-50 border border-amber-200 flex flex-col gap-1.5 shadow-2xs">
-          <h4 class="font-bold text-xs text-slate-900">Acme Health Partners</h4>
-          <p class="text-[11px] text-slate-500">Dr. Marcus Vance • COO</p>
-          <span class="text-[10px] text-amber-700 font-semibold mt-1">LinkedIn Note Sent</span>
+        <div id="cards-contacted" class="flex flex-col gap-2.5">
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-amber-200 flex flex-col gap-1.5 shadow-2xs hover:border-amber-300 transition cursor-pointer" onclick="openDealModal('Acme Health Partners', 'Dr. Marcus Vance • COO', '$38,000', 'Contacted', '14 Clinic Openings')">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-xs text-slate-900">Acme Health Partners</h4>
+              <span class="text-[10px] font-bold text-slate-500">$38k</span>
+            </div>
+            <p class="text-[11px] text-slate-500">Dr. Marcus Vance • COO</p>
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-[10px] text-amber-700 font-semibold">LinkedIn Note Sent</span>
+              <button onclick="event.stopPropagation(); advanceDeal('Acme Health Partners', 'contacted')" class="text-[10px] text-amber-600 hover:underline font-bold">Advance ➔</button>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Col 4: Meeting Booked -->
-      <div class="p-4 rounded-2xl bg-white border-2 border-emerald-400 shadow-sm flex flex-col gap-3">
+      <div id="col-booked" class="p-4 rounded-2xl bg-white border-2 border-emerald-400 shadow-xs flex flex-col gap-3">
         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
           <span class="font-bold text-xs text-emerald-700">4. Meeting Booked</span>
-          <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 font-extrabold">7</span>
+          <span id="badge-booked" class="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 font-extrabold">1</span>
         </div>
-        <div class="p-3.5 rounded-xl bg-emerald-50/50 border border-emerald-200 flex flex-col gap-1.5 shadow-2xs">
-          <h4 class="font-bold text-xs text-slate-900">Kestrel Outdoor Goods</h4>
-          <p class="text-[11px] text-slate-600">Elena Rostova • Head Commerce</p>
-          <span class="text-[10px] text-emerald-700 font-bold mt-1">Demo Call: Thu 2:30 PM</span>
+        <div id="cards-booked" class="flex flex-col gap-2.5">
+          <div class="p-3.5 rounded-xl bg-emerald-50/50 border border-emerald-200 flex flex-col gap-1.5 shadow-2xs hover:border-emerald-300 transition cursor-pointer" onclick="openDealModal('Kestrel Outdoor Goods', 'Elena Rostova • Head Commerce', '$45,000', 'Meeting Booked', 'Demo Scheduled Thu 2:30 PM')">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-xs text-slate-900">Kestrel Outdoor Goods</h4>
+              <span class="text-[10px] font-bold text-emerald-700 font-bold">$45k</span>
+            </div>
+            <p class="text-[11px] text-slate-600">Elena Rostova • Head Commerce</p>
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-[10px] text-emerald-700 font-bold">Demo Call: Thu 2:30 PM</span>
+              <button onclick="event.stopPropagation(); advanceDeal('Kestrel Outdoor Goods', 'booked')" class="text-[10px] text-emerald-600 hover:underline font-bold">Close Deal ➔</button>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Col 5: Closed Won -->
-      <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-3">
+      <div id="col-won" class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col gap-3">
         <div class="flex items-center justify-between pb-2 border-b border-slate-100">
           <span class="font-bold text-xs text-purple-700">5. Closed Won</span>
-          <span class="px-2 py-0.5 rounded text-[10px] bg-purple-50 text-purple-700 font-bold">$32k</span>
+          <span id="badge-won" class="px-2 py-0.5 rounded text-[10px] bg-purple-50 text-purple-700 font-bold">$32k</span>
         </div>
-        <div class="p-3.5 rounded-xl bg-slate-50 border border-purple-200 flex flex-col gap-1.5 shadow-2xs">
-          <h4 class="font-bold text-xs text-slate-900">Aether Telecom</h4>
-          <p class="text-[11px] text-slate-500">Annual Contract: $32,000</p>
-          <span class="text-[10px] text-purple-700 font-semibold mt-1">Signed via Agent Pitch</span>
+        <div id="cards-won" class="flex flex-col gap-2.5">
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-purple-200 flex flex-col gap-1.5 shadow-2xs hover:border-purple-300 transition cursor-pointer" onclick="openDealModal('Aether Telecom Systems', 'Tariq Patel • Chief Architect', '$32,000', 'Closed Won', 'Signed Annual Contract')">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-xs text-slate-900">Aether Telecom</h4>
+              <span class="text-[10px] font-bold text-purple-700 font-bold">$32k</span>
+            </div>
+            <p class="text-[11px] text-slate-500">Annual Contract: $32,000</p>
+            <span class="text-[10px] text-purple-700 font-semibold mt-1">Signed via Agent Pitch</span>
+          </div>
         </div>
       </div>
     </div>
   </main>
+
+  <!-- Deal Details Modal -->
+  <div id="dealModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <span id="modalDealStage" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Stage: Meeting Booked</span>
+          <h3 id="modalDealCompany" class="font-bold text-base text-slate-900 mt-1">Acme Health Partners</h3>
+        </div>
+        <button onclick="closeDealModal()" class="text-slate-400 hover:text-slate-700 cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <div class="flex justify-between py-1 border-b border-slate-50">
+          <span class="text-slate-400">Target Contact:</span>
+          <span id="modalDealContact" class="font-semibold text-slate-800">Dr. Marcus Vance • COO</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-slate-50">
+          <span class="text-slate-400">Deal Value:</span>
+          <span id="modalDealValue" class="font-bold text-emerald-600">$38,000 / yr</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-slate-50">
+          <span class="text-slate-400">Key Signal:</span>
+          <span id="modalDealSignal" class="text-slate-700">14 Clinic Openings</span>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+        <button onclick="closeDealModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-medium cursor-pointer">Close</button>
+        <button onclick="closeDealModal(); navigate('agent'); selectLead('acme');" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5 cursor-pointer">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span>Inspect AI Dossier</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Webhook & n8n Modal -->
   <div id="webhookModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
@@ -622,7 +761,7 @@
           <i data-lucide="share-2" class="w-4 h-4 text-blue-600"></i>
           <span>Dispatch to n8n / Webhook</span>
         </h3>
-        <button onclick="closeWebhookModal()" class="text-slate-400 hover:text-slate-700">
+        <button onclick="closeWebhookModal()" class="text-slate-400 hover:text-slate-700 cursor-pointer">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
@@ -637,8 +776,8 @@
       </div>
 
       <div class="flex items-center justify-end gap-3 pt-2">
-        <button onclick="closeWebhookModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-medium">Cancel</button>
-        <button onclick="dispatchWebhook()" id="btnSendWebhook" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md shadow-blue-600/20 transition flex items-center gap-1.5">
+        <button onclick="closeWebhookModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-medium cursor-pointer">Cancel</button>
+        <button onclick="dispatchWebhook()" id="btnSendWebhook" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md shadow-blue-600/20 transition flex items-center gap-1.5 cursor-pointer">
           <i data-lucide="send" class="w-3.5 h-3.5"></i>
           <span>Send Payload</span>
         </button>
@@ -650,6 +789,7 @@
     // Lead Database
     const LEADS = {
       acme: {
+        id: "acme",
         company: "Acme Health Partners",
         domain: "acmehealth.com",
         target: "Dr. Marcus Vance (Chief Operating Officer)",
@@ -663,6 +803,7 @@
         wordCount: "78 Words (Under 85)"
       },
       fintech: {
+        id: "fintech",
         company: "NovaPay Solutions",
         domain: "novapay.io",
         target: "Julian Scott (VP of Payments)",
@@ -676,6 +817,7 @@
         wordCount: "75 Words (Under 85)"
       },
       retail: {
+        id: "retail",
         company: "Kestrel Outdoor Goods",
         domain: "kestreloutdoors.com",
         target: "Elena Rostova (Head of Commerce)",
@@ -689,6 +831,7 @@
         wordCount: "76 Words (Under 85)"
       },
       middleware: {
+        id: "middleware",
         company: "Aether Telecom Systems",
         domain: "aethertelecom.net",
         target: "Tariq Patel (Chief Architect)",
@@ -703,6 +846,50 @@
       }
     };
 
+    // Lead List Segment Data
+    const LIST_DATA = {
+      healthcare: {
+        category: "Healthcare",
+        title: "Urgent Care & Regional Clinics (42 Leads)",
+        prospects: [
+          { name: "Dr. Marcus Vance", title: "COO", company: "Acme Health Partners", signal: "Series B expansion (8 sites)", tech: "HubSpot, Epic", leadId: "acme" },
+          { name: "Rachel Adams", title: "VP Operations", company: "Metro Care Clinics", signal: "Opening 4 clinics in Austin", tech: "Zendesk, Cerner", leadId: "acme" },
+          { name: "David Kim, MD", title: "Medical Director", company: "Pacific Urgent Care", signal: "Hiring 12 nurses & intake staff", tech: "WordPress, AthenaHealth", leadId: "acme" },
+          { name: "Sarah Jenkins", title: "Head of Patient Exp", company: "Summit Health Group", signal: "Phone hold time reduction initiative", tech: "Twilio, Salesforce", leadId: "acme" }
+        ]
+      },
+      fintech: {
+        category: "FinTech",
+        title: "Payment Rails & ISO 20022 (28 Leads)",
+        prospects: [
+          { name: "Julian Scott", title: "VP Payments", company: "NovaPay Solutions", signal: "ISO 20022 compliance rollout", tech: "MuleSoft, Stripe", leadId: "fintech" },
+          { name: "Claire Dupont", title: "Head of Risk", company: "EuroLedger Tech", signal: "Cross-border payment expansion", tech: "AWS, PostgreSQL", leadId: "fintech" },
+          { name: "Vikram Mehta", title: "Chief Compliance Officer", company: "BharatPay Rails", signal: "Real-time AML verification upgrade", tech: "Kafka, Golang", leadId: "fintech" }
+        ]
+      },
+      retail: {
+        category: "Retail",
+        title: "Shopify Plus Scalebrands (65 Leads)",
+        prospects: [
+          { name: "Elena Rostova", title: "Head of Commerce", company: "Kestrel Outdoor Goods", signal: "Catalog expansion 3k SKUs", tech: "Shopify Plus, Algolia", leadId: "retail" },
+          { name: "Liam O'Connor", title: "VP Digital", company: "NorthPeak Apparel", signal: "Mobile checkout dropoff issue", tech: "Next.js, Klaviyo", leadId: "retail" },
+          { name: "Maya Patel", title: "Director of Growth", company: "Glow Skin Naturals", signal: "Doubling ad spend for Q4", tech: "Shopify, Gorgias", leadId: "retail" }
+        ]
+      }
+    };
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 3000);
+    }
+
     function navigate(viewName) {
       document.getElementById('viewLanding').classList.add('hidden');
       document.getElementById('viewAgent').classList.add('hidden');
@@ -710,22 +897,34 @@
       document.getElementById('viewCRM').classList.add('hidden');
 
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('bg-white', 'text-emerald-700', 'shadow-sm', 'border', 'border-slate-200');
+        btn.classList.remove('bg-white', 'text-emerald-700', 'shadow-xs', 'border', 'border-slate-200');
         btn.classList.add('text-slate-600');
       });
 
       const activeNav = document.getElementById('nav-' + viewName);
       if (activeNav) {
-        activeNav.classList.add('bg-white', 'text-emerald-700', 'shadow-sm', 'border', 'border-slate-200');
+        activeNav.classList.add('bg-white', 'text-emerald-700', 'shadow-xs', 'border', 'border-slate-200');
         activeNav.classList.remove('text-slate-600');
       }
 
       if (viewName === 'landing') document.getElementById('viewLanding').classList.remove('hidden');
       if (viewName === 'agent') document.getElementById('viewAgent').classList.remove('hidden');
-      if (viewName === 'lists') document.getElementById('viewLists').classList.remove('hidden');
+      if (viewName === 'lists') {
+        document.getElementById('viewLists').classList.remove('hidden');
+        openListDetails('healthcare');
+      }
       if (viewName === 'crm') document.getElementById('viewCRM').classList.remove('hidden');
 
-      lucide.createIcons();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      try { lucide.createIcons(); } catch(e) {}
+    }
+
+    function scrollToPricing() {
+      navigate('landing');
+      setTimeout(() => {
+        const pricingEl = document.getElementById('pricingSection');
+        if (pricingEl) pricingEl.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
     }
 
     function selectLead(id) {
@@ -764,22 +963,101 @@
       document.getElementById('emailBody').value = data.emailBody;
       document.getElementById('wordCount').innerText = data.wordCount;
 
-      lucide.createIcons();
+      try { lucide.createIcons(); } catch(e) {}
     }
 
-    function addCurrentLeadToCRM() {
-      alert('Lead successfully added to CRM Pipeline Stage: Approved!');
-      navigate('crm');
+    function openListDetails(listKey) {
+      const data = LIST_DATA[listKey];
+      if (!data) return;
+
+      document.getElementById('detailListCategory').innerText = data.category;
+      document.getElementById('detailListTitle').innerText = data.title;
+
+      const tbody = document.getElementById('listDetailTableBody');
+      tbody.innerHTML = '';
+
+      data.prospects.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition";
+        tr.innerHTML = `
+          <td class="py-3 px-3">
+            <div class="font-bold text-slate-900">${p.name}</div>
+            <div class="text-[11px] text-slate-500">${p.title}</div>
+          </td>
+          <td class="py-3 px-3 font-semibold text-slate-800">${p.company}</td>
+          <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-medium">${p.signal}</span></td>
+          <td class="py-3 px-3 text-slate-500">${p.tech}</td>
+          <td class="py-3 px-3 text-right">
+            <button onclick="launchReconForLead('${p.leadId}', '${p.company}', '${p.name}', '${p.title}')" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition shadow-2xs cursor-pointer">
+              Run AI Recon ➔
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      try { lucide.createIcons(); } catch(e) {}
+    }
+
+    function launchReconForLead(leadId, company, contact, title) {
+      navigate('agent');
+      document.getElementById('inputDomain').value = company.toLowerCase().replace(/[^a-z0-9]/g, '') + '.com';
+      document.getElementById('inputContact').value = contact;
+      document.getElementById('inputRole').value = title;
+      selectLead(leadId);
+      showToast(`Loaded dossier for ${contact} at ${company}`);
+    }
+
+    function bulkEnrichCurrentList() {
+      showToast('Enriching all 42 prospects in parallel via AI workers...');
+    }
+
+    function importCsvMock() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.csv';
+      input.onchange = () => {
+        showToast('CSV uploaded! 50 new leads added to Lead Lists.');
+      };
+      input.click();
     }
 
     function createCustomList() {
       const name = prompt('Enter new lead list name:', 'Q4 Enterprise Targets');
-      if (name) alert(`List "${name}" created! You can now import leads.`);
+      if (name) showToast(`List "${name}" created! Ready for import.`);
+    }
+
+    function addCurrentLeadToCRM() {
+      showToast('Lead successfully added to CRM Pipeline: Approved!');
+      navigate('crm');
+    }
+
+    function advanceDeal(company, currentStage) {
+      showToast(`Advanced ${company} to next stage in Sales Pipeline!`);
+    }
+
+    function promptNewDeal() {
+      const name = prompt('Enter company name for new deal:', 'Skyline Retailers');
+      if (name) showToast(`Deal for ${name} created in Stage 1: Discovered`);
+    }
+
+    function openDealModal(company, contact, val, stage, signal) {
+      document.getElementById('modalDealCompany').innerText = company;
+      document.getElementById('modalDealContact').innerText = contact;
+      document.getElementById('modalDealValue').innerText = val + " / yr";
+      document.getElementById('modalDealStage').innerText = "Stage: " + stage;
+      document.getElementById('modalDealSignal').innerText = signal;
+      document.getElementById('dealModal').classList.remove('hidden');
+      try { lucide.createIcons(); } catch(e) {}
+    }
+
+    function closeDealModal() {
+      document.getElementById('dealModal').classList.add('hidden');
     }
 
     function openWebhookModal() {
       document.getElementById('webhookModal').classList.remove('hidden');
-      lucide.createIcons();
+      try { lucide.createIcons(); } catch(e) {}
     }
 
     function closeWebhookModal() {
@@ -792,17 +1070,17 @@
 
       const btn = document.getElementById('btnSendWebhook');
       btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Sending...</span>`;
-      lucide.createIcons();
+      try { lucide.createIcons(); } catch(e) {}
 
       setTimeout(() => {
         btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i><span>Sent to n8n!</span>`;
-        lucide.createIcons();
+        try { lucide.createIcons(); } catch(e) {}
         setTimeout(() => {
           closeWebhookModal();
           btn.innerHTML = `<i data-lucide="send" class="w-3.5 h-3.5"></i><span>Send Payload</span>`;
-          lucide.createIcons();
-          alert('Lead Dossier successfully dispatched to external webhook!');
-        }, 1000);
+          try { lucide.createIcons(); } catch(e) {}
+          showToast('Lead Dossier successfully dispatched to external webhook!');
+        }, 800);
       }, 1000);
     }
 
@@ -810,14 +1088,14 @@
       const el = document.getElementById(elementId);
       el.select();
       document.execCommand('copy');
-      alert('Copied to clipboard!');
+      showToast('Copied to clipboard!');
     }
 
     function copyEmailFull() {
       const subj = document.getElementById('emailSubject').innerText;
       const body = document.getElementById('emailBody').value;
       navigator.clipboard.writeText(`Subject: ${subj}\n\n${body}`);
-      alert('Cold email draft copied to clipboard!');
+      showToast('Cold email draft copied to clipboard!');
     }
 
     function approveAndDispatch() {
@@ -825,21 +1103,22 @@
       btn.innerHTML = `<i data-lucide="check-circle" class="w-3.5 h-3.5"></i><span>Dispatched to Queue</span>`;
       btn.classList.remove('from-emerald-600', 'to-teal-600');
       btn.classList.add('bg-slate-700', 'text-white');
-      lucide.createIcons();
-      alert('Success! Outreach approved and dispatched to LinkedIn Staging Queue.');
+      try { lucide.createIcons(); } catch(e) {}
+      showToast('Outreach approved & dispatched to LinkedIn Staging Queue!');
     }
 
     function triggerResearchAgent() {
       const btn = document.getElementById('btnSubmit');
       btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Analyzing Signals...</span>`;
-      lucide.createIcons();
+      try { lucide.createIcons(); } catch(e) {}
 
       setTimeout(() => {
         btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Recon Complete</span>`;
         selectLead('acme');
+        showToast('Autonomous recon complete! Dossier generated.');
         setTimeout(() => {
           btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i><span>Run Autonomous Recon</span>`;
-          lucide.createIcons();
+          try { lucide.createIcons(); } catch(e) {}
         }, 2000);
       }, 1200);
     }
@@ -847,7 +1126,7 @@
     // Init
     window.addEventListener('DOMContentLoaded', () => {
       selectLead('acme');
-      lucide.createIcons();
+      try { lucide.createIcons(); } catch(e) {}
     });
   </script>
 </body>

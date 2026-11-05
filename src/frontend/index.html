@@ -1529,34 +1529,135 @@
       </div>
     </div>
   </div>
-<div id="webhookModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-2">
-          <i data-lucide="share-2" class="w-4 h-4 text-blue-600"></i>
-          <span>Dispatch to n8n / Webhook</span>
-        </h3>
-        <button onclick="closeWebhookModal()" class="text-slate-400 hover:text-slate-700 cursor-pointer">
-          <i data-lucide="x" class="w-4 h-4"></i>
+<div id="webhookModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="max-w-2xl w-full bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-150">
+      
+      <!-- Modal Header -->
+      <div class="p-6 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+            <i data-lucide="share-2" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-base text-white">n8n & Webhook Automation Hub</h3>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30">Outbound Bridge</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Automate email dispatch, CRM synchronization & multi-channel campaigns</p>
+          </div>
+        </div>
+        <button onclick="closeWebhookModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <p class="text-xs text-slate-600 leading-relaxed">
-        Send the current lead dossier and personalized outreach copy directly to your **n8n.io**, **Zapier**, or **Make** webhook URL to automate sending to the prospect.
-      </p>
+      <!-- Scrollable Documentation & Purpose Section -->
+      <div class="p-6 overflow-y-auto space-y-5 text-xs text-slate-700 bg-slate-50/50">
+        
+        <!-- Purpose Explainer: Why We Have This -->
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 flex flex-col gap-2">
+          <div class="flex items-center gap-2 text-blue-900 font-extrabold text-xs">
+            <i data-lucide="info" class="w-4 h-4 text-blue-600"></i>
+            <span>Why Do We Need n8n / Webhook Export?</span>
+          </div>
+          <p class="text-slate-600 text-[11px] leading-relaxed">
+            ProspectPulse is your <strong>Autonomous Intelligence & Copywriting Engine</strong>: it discovers target companies, pinpoints buying triggers, and crafts bespoke outreach pitches. The <strong>n8n / Webhook Sync</strong> acts as the execution bridge to your email senders and CRMs so you never have to copy-paste manually.
+          </p>
+        </div>
 
-      <div>
-        <label class="text-[11px] font-bold text-slate-700 block mb-1">Webhook URL</label>
-        <input id="inputWebhookUrl" type="url" placeholder="https://n8n.yourdomain.com/webhook/..." value="https://webhook.site/demo-prospect-pulse" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-blue-500 font-mono">
+        <!-- 3 Core Pillars Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          
+          <!-- Pillar 1 -->
+          <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-2 hover:border-blue-300 transition">
+            <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center font-bold">
+              <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-xs">1. Hands-Free Automated Sending</h4>
+            <p class="text-[11px] text-slate-500 leading-normal">
+              Eliminate manual copy-pasting. Clicking <strong>Send Payload</strong> automatically beams the verified contact details and tailored pitch directly into <strong>Smartlead</strong>, <strong>Instantly</strong>, <strong>Lemlist</strong>, or <strong>Gmail</strong>.
+            </p>
+          </div>
+
+          <!-- Pillar 2 -->
+          <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-2 hover:border-blue-300 transition">
+            <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center font-bold">
+              <i data-lucide="database" class="w-3.5 h-3.5"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-xs">2. Instant CRM & Team Sync</h4>
+            <p class="text-[11px] text-slate-500 leading-normal">
+              Keep your tech stack unified. The webhook logs approved leads straight into <strong>HubSpot</strong>, <strong>Salesforce</strong>, <strong>Pipedrive</strong>, or <strong>Google Sheets</strong>, and posts alerts to your <strong>#sales-leads</strong> Slack channel.
+            </p>
+          </div>
+
+          <!-- Pillar 3 -->
+          <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-2 hover:border-blue-300 transition">
+            <div class="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 border border-purple-200 flex items-center justify-center font-bold">
+              <i data-lucide="workflow" class="w-3.5 h-3.5"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-xs">3. Multi-Channel Workflows</h4>
+            <p class="text-[11px] text-slate-500 leading-normal">
+              Trigger parallel multichannel campaigns with <strong>n8n.io</strong>, <strong>Zapier</strong>, or <strong>Make</strong>: dispatch cold email, send automated LinkedIn connection requests, and schedule CRM follow-ups simultaneously.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Visual Flow Diagram -->
+        <div class="p-3.5 rounded-xl bg-white border border-slate-200 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+          <div class="flex items-center gap-1.5 font-bold text-slate-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span>ProspectPulse Approved Dossier</span>
+          </div>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-400"></i>
+          <div class="flex items-center gap-1.5 font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200">
+            <i data-lucide="zap" class="w-3 h-3"></i>
+            <span>n8n / Webhook Trigger</span>
+          </div>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-400"></i>
+          <div class="flex items-center gap-2 text-slate-600 font-semibold">
+            <span class="px-2 py-0.5 rounded bg-slate-100 border border-slate-200">Email</span>
+            <span class="px-2 py-0.5 rounded bg-slate-100 border border-slate-200">LinkedIn</span>
+            <span class="px-2 py-0.5 rounded bg-slate-100 border border-slate-200">CRM / Slack</span>
+          </div>
+        </div>
+
+        <!-- Webhook Configuration Form -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="text-[11px] font-bold text-slate-800 block">Target Webhook Endpoint URL</label>
+            <button onclick="downloadN8nTemplateJson()" class="text-blue-600 hover:text-blue-800 hover:underline text-[10px] font-bold flex items-center gap-1 cursor-pointer">
+              <i data-lucide="download" class="w-3 h-3"></i>
+              <span>Download n8n Workflow Template (.json)</span>
+            </button>
+          </div>
+          <div class="relative">
+            <input id="inputWebhookUrl" type="url" placeholder="https://n8n.yourdomain.com/webhook/..." value="https://webhook.site/demo-prospect-pulse" class="w-full pl-3 pr-28 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-blue-500 font-mono transition">
+            <button onclick="togglePayloadPreview()" class="absolute right-2 top-2 px-2.5 py-1 rounded-lg bg-slate-200/80 hover:bg-slate-300 text-slate-700 font-bold text-[10px] transition cursor-pointer">
+              Inspect JSON
+            </button>
+          </div>
+
+          <!-- Collapsible JSON Payload Preview -->
+          <div id="webhookPayloadBox" class="hidden mt-2 p-3 bg-slate-900 text-slate-200 rounded-xl font-mono text-[10px] overflow-x-auto border border-slate-800 max-h-40">
+            <pre id="webhookPayloadJson">Loading live payload...</pre>
+          </div>
+        </div>
+
       </div>
 
-      <div class="flex items-center justify-end gap-3 pt-2">
-        <button onclick="closeWebhookModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-medium cursor-pointer">Cancel</button>
-        <button onclick="dispatchWebhook()" id="btnSendWebhook" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md shadow-blue-600/20 transition flex items-center gap-1.5 cursor-pointer">
-          <i data-lucide="send" class="w-3.5 h-3.5"></i>
-          <span>Send Payload</span>
-        </button>
+      <!-- Action Footer -->
+      <div class="p-4 bg-white border-t border-slate-200 flex items-center justify-between">
+        <span class="text-[11px] text-slate-400">Payload formatted as HTTP POST application/json</span>
+        <div class="flex items-center gap-2">
+          <button onclick="closeWebhookModal()" class="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 font-semibold cursor-pointer">Cancel</button>
+          <button onclick="dispatchWebhook()" id="btnSendWebhook" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl text-xs shadow-md shadow-blue-600/20 transition flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            <span>Send Payload Now ➔</span>
+          </button>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -3110,12 +3211,93 @@ KICKOFF MEETING:    Thursday, Nov 12, 2026 @ 10:00 AM EST (Google Meet)
     }
 
     function openWebhookModal() {
+      updateWebhookPayloadPreview();
       document.getElementById('webhookModal').classList.remove('hidden');
       try { lucide.createIcons(); } catch(e) {}
     }
 
     function closeWebhookModal() {
       document.getElementById('webhookModal').classList.add('hidden');
+    }
+
+    function togglePayloadPreview() {
+      const box = document.getElementById('webhookPayloadBox');
+      if (box) box.classList.toggle('hidden');
+    }
+
+    function updateWebhookPayloadPreview() {
+      const lead = LEADS[currentActiveLeadId] || LEADS.acme;
+      const payload = {
+        event: "prospect_approved",
+        timestamp: new Date().toISOString(),
+        prospect: {
+          company: lead.company,
+          domain: lead.domain,
+          contactName: lead.contactName,
+          contactRole: lead.contactRole,
+          sector: lead.sector,
+          buyingSignal: lead.trigger,
+          techStack: lead.tech,
+          score: lead.score
+        },
+        outreach: {
+          linkedinInMail: lead.linkedinNote,
+          emailSubject: lead.emailSubj,
+          emailBody: lead.emailBody
+        },
+        metadata: {
+          platform: "ProspectPulse AI SDR Engine",
+          author: "Venkata Siva - Growth Engineer"
+        }
+      };
+      const jsonEl = document.getElementById('webhookPayloadJson');
+      if (jsonEl) jsonEl.innerText = JSON.stringify(payload, null, 2);
+    }
+
+    function downloadN8nTemplateJson() {
+      const n8nWorkflow = {
+        name: "ProspectPulse to Smartlead, HubSpot & Slack",
+        nodes: [
+          {
+            parameters: { path: "prospect-pulse", responseMode: "onReceived" },
+            name: "Webhook Trigger",
+            type: "n8n-nodes-base.webhook",
+            typeVersion: 1,
+            position: [100, 300]
+          },
+          {
+            parameters: {
+              channel: "#sales-leads",
+              text: "🔥 New AI Prospect Approved: {{ $json.body.prospect.company }} ({{ $json.body.prospect.contactName }})\nSignal: {{ $json.body.prospect.buyingSignal }}"
+            },
+            name: "Slack Alert",
+            type: "n8n-nodes-base.slack",
+            typeVersion: 1,
+            position: [350, 200]
+          },
+          {
+            parameters: {
+              campaignId: "campaign_101",
+              email: "{{ $json.body.prospect.contactName }}@{{ $json.body.prospect.domain }}",
+              customFields: { pitch: "{{ $json.body.outreach.emailBody }}" }
+            },
+            name: "Smartlead / Instantly Dispatch",
+            type: "n8n-nodes-base.httpRequest",
+            typeVersion: 4,
+            position: [350, 400]
+          }
+        ],
+        connections: {
+          "Webhook Trigger": {
+            main: [
+              [{ node: "Slack Alert", type: "main", index: 0 }],
+              [{ node: "Smartlead / Instantly Dispatch", type: "main", index: 0 }]
+            ]
+          }
+        }
+      };
+      triggerFileDownload("ProspectPulse_n8n_Workflow_Template.json", JSON.stringify(n8nWorkflow, null, 2), "application/json");
+      showToast("Downloaded official n8n Workflow Template JSON!");
     }
 
     function dispatchWebhook() {

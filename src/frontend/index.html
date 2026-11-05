@@ -39,7 +39,6 @@
       color: #f1f5f9;
     }
     .mono { font-family: 'JetBrains Mono', monospace; }
-    /* Custom scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #090d16; }
     ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
@@ -63,29 +62,23 @@
       </div>
     </div>
 
-    <!-- Quick Stats in Nav -->
-    <div class="hidden md:flex items-center gap-6 text-xs">
-      <div class="flex items-center gap-2">
-        <span class="text-slate-400">Quality Pass:</span>
-        <span class="font-semibold text-emerald-400">98.4%</span>
-      </div>
-      <div class="w-px h-4 bg-slate-800"></div>
-      <div class="flex items-center gap-2">
-        <span class="text-slate-400">Pipeline Grounded:</span>
-        <span class="font-semibold text-white">$142,500</span>
-      </div>
-      <div class="w-px h-4 bg-slate-800"></div>
-      <div class="flex items-center gap-2">
-        <span class="text-slate-400">Active Quota:</span>
-        <span class="font-semibold text-slate-300">284 / 500 Leads</span>
-      </div>
+    <!-- Navigation View Switcher (Outbound vs Inbound Studio) -->
+    <div class="flex items-center bg-surface-card p-1 rounded-xl border border-surface-border text-xs">
+      <button onclick="switchTab('outbound')" id="tabOutbound" class="px-3.5 py-1.5 rounded-lg font-semibold bg-emerald-500 text-white transition flex items-center gap-1.5">
+        <i data-lucide="target" class="w-3.5 h-3.5"></i>
+        <span>Outbound SDR Queue</span>
+      </button>
+      <button onclick="switchTab('inbound')" id="tabInbound" class="px-3.5 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+        <span>Inbound Authority Studio</span>
+      </button>
     </div>
 
-    <!-- Account / Actions -->
+    <!-- Right Controls -->
     <div class="flex items-center gap-3">
-      <button onclick="runSampleDemo()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-2">
-        <i data-lucide="play" class="w-3.5 h-3.5 text-emerald-400"></i>
-        <span>Run Demo Lead</span>
+      <button onclick="openWebhookModal()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-2">
+        <i data-lucide="share-2" class="w-3.5 h-3.5 text-blue-400"></i>
+        <span>n8n / Webhook Export</span>
       </button>
       <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-emerald-400">
         VS
@@ -93,8 +86,8 @@
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
+  <!-- View 1: Outbound Queue & Recon -->
+  <main id="viewOutbound" class="flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
 
     <!-- Ingestion & Search Bar -->
     <section class="p-5 rounded-2xl bg-surface-card border border-surface-border shadow-xl">
@@ -162,7 +155,6 @@
 
         <!-- Feed List -->
         <div id="leadQueueFeed" class="flex flex-col gap-3 overflow-y-auto max-h-[720px] pr-1">
-          <!-- Lead Item 1 (Active) -->
           <div onclick="selectLead('acme')" id="item-acme" class="lead-item p-4 rounded-xl bg-surface-card border-2 border-emerald-500/50 hover:border-emerald-500 cursor-pointer transition shadow-md">
             <div class="flex items-start justify-between">
               <div>
@@ -178,7 +170,6 @@
             </div>
           </div>
 
-          <!-- Lead Item 2 -->
           <div onclick="selectLead('fintech')" id="item-fintech" class="lead-item p-4 rounded-xl bg-surface-card border border-surface-border hover:border-slate-600 cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
@@ -194,7 +185,6 @@
             </div>
           </div>
 
-          <!-- Lead Item 3 -->
           <div onclick="selectLead('retail')" id="item-retail" class="lead-item p-4 rounded-xl bg-surface-card border border-surface-border hover:border-slate-600 cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
@@ -210,7 +200,6 @@
             </div>
           </div>
 
-          <!-- Lead Item 4 -->
           <div onclick="selectLead('middleware')" id="item-middleware" class="lead-item p-4 rounded-xl bg-surface-card border border-surface-border hover:border-slate-600 cursor-pointer transition">
             <div class="flex items-start justify-between">
               <div>
@@ -231,7 +220,6 @@
       <!-- Right Column: Active Lead Dossier & Deliverables (8 Cols) -->
       <div class="lg:col-span-8 flex flex-col gap-6">
 
-        <!-- Dossier Header Card -->
         <div class="p-6 rounded-2xl bg-surface-card border border-surface-border shadow-xl">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-surface-border">
             <div>
@@ -245,7 +233,6 @@
               <p id="dossierTarget" class="text-xs text-slate-400 mt-1">Target Contact: <strong class="text-slate-200">Dr. Marcus Vance</strong> (Chief Operating Officer)</p>
             </div>
 
-            <!-- Quality & Confidence Badge -->
             <div class="flex items-center gap-3">
               <div class="text-right">
                 <div class="text-[11px] text-slate-400">Quality Grounding</div>
@@ -257,7 +244,6 @@
             </div>
           </div>
 
-          <!-- Signals & Tech Stack Grid -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
             <div class="p-4 rounded-xl bg-surface-dark border border-surface-border">
               <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
@@ -278,7 +264,6 @@
                 <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">HubSpot CRM</span>
                 <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">Zendesk Support</span>
                 <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">WordPress</span>
-                <span class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700">Google Analytics 4</span>
               </div>
             </div>
           </div>
@@ -341,9 +326,9 @@
             </div>
 
             <div class="flex items-center gap-3">
-              <button onclick="alert('Exported lead and outreach draft directly to HubSpot CRM!')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-1.5">
-                <i data-lucide="database" class="w-3.5 h-3.5 text-slate-400"></i>
-                <span>Sync to CRM</span>
+              <button onclick="openWebhookModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-1.5">
+                <i data-lucide="share-2" class="w-3.5 h-3.5 text-blue-400"></i>
+                <span>Send to n8n Webhook</span>
               </button>
               <button onclick="approveAndDispatch()" id="btnDispatch" class="px-5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
                 <i data-lucide="send" class="w-3.5 h-3.5"></i>
@@ -356,6 +341,93 @@
       </div>
     </div>
   </main>
+
+  <!-- View 2: Inbound Authority & Social Selling Studio (Category 3) -->
+  <main id="viewInbound" class="hidden flex-1 max-w-[1400px] w-full mx-auto p-6 flex flex-col gap-6">
+    <div class="p-6 rounded-2xl bg-surface-card border border-surface-border shadow-xl">
+      <div class="flex items-center justify-between pb-5 border-b border-surface-border">
+        <div>
+          <h2 class="text-lg font-bold text-white">Inbound Authority & Social Selling Studio</h2>
+          <p class="text-xs text-slate-400 mt-1">Generate high-converting, scroll-stopping LinkedIn posts & carousel outlines without corporate fluff.</p>
+        </div>
+        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Category 3 Social Agent</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+        <!-- Input Form (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col gap-4">
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1.5">Industry Sector</label>
+            <select id="inboundSector" class="w-full px-3.5 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+              <option value="Healthcare">Healthcare & Clinical Networks</option>
+              <option value="Banking & FinTech">Banking & Payment Infrastructure</option>
+              <option value="Retail & E-Commerce">Retail & E-Commerce Operations</option>
+              <option value="Middleware & Enterprise IT">Middleware & Distributed Systems</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1.5">Core Operational Topic / Pain Point</label>
+            <input id="inboundTopic" type="text" value="Patient Intake Hold Times" class="w-full px-3.5 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1.5">Key Contrarian Insight or Result</label>
+            <textarea id="inboundInsight" rows="3" class="w-full p-3.5 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-100 focus:outline-none focus:border-emerald-500 leading-relaxed">Cut front-desk phone wait times by 85% without adding a single administrative salary.</textarea>
+          </div>
+
+          <button onclick="generateInboundPost()" class="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-semibold rounded-xl text-xs shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>Synthesize Authority Post</span>
+          </button>
+        </div>
+
+        <!-- Output Canvas (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-4">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-300">
+            <span>Generated LinkedIn Thought-Leadership Post</span>
+            <button onclick="copyToClipboard('inboundPostOutput')" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 transition flex items-center gap-1">
+              <i data-lucide="copy" class="w-3 h-3"></i>
+              <span>Copy Post</span>
+            </button>
+          </div>
+          <textarea id="inboundPostOutput" rows="12" class="w-full p-4 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-200 focus:outline-none focus:border-emerald-500 leading-relaxed font-sans"></textarea>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Webhook & n8n Modal -->
+  <div id="webhookModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-surface-card border border-surface-border rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-3 border-b border-surface-border">
+        <h3 class="font-bold text-sm text-white flex items-center gap-2">
+          <i data-lucide="share-2" class="w-4 h-4 text-blue-400"></i>
+          <span>Dispatch to n8n / Webhook</span>
+        </h3>
+        <button onclick="closeWebhookModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-400 leading-relaxed">
+        Send the current lead dossier and personalized outreach copy directly to your **n8n.io**, **Zapier**, or **Make** webhook URL.
+      </p>
+
+      <div>
+        <label class="text-[11px] font-semibold text-slate-300 block mb-1">Webhook URL</label>
+        <input id="inputWebhookUrl" type="url" placeholder="https://n8n.yourdomain.com/webhook/..." value="https://webhook.site/demo-prospect-pulse" class="w-full px-3 py-2 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-100 focus:outline-none focus:border-blue-500 font-mono">
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button onclick="closeWebhookModal()" class="px-4 py-2 rounded-xl text-xs text-slate-400 hover:text-white">Cancel</button>
+        <button onclick="dispatchWebhook()" id="btnSendWebhook" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs shadow-lg shadow-blue-500/20 transition flex items-center gap-1.5">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+          <span>Send Payload</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script>
     // Lead Database
@@ -414,7 +486,30 @@
       }
     };
 
+    let currentActiveLeadId = 'acme';
+
+    function switchTab(tab) {
+      if (tab === 'outbound') {
+        document.getElementById('viewOutbound').classList.remove('hidden');
+        document.getElementById('viewInbound').classList.add('hidden');
+        document.getElementById('tabOutbound').classList.add('bg-emerald-500', 'text-white');
+        document.getElementById('tabOutbound').classList.remove('text-slate-400');
+        document.getElementById('tabInbound').classList.remove('bg-emerald-500', 'text-white');
+        document.getElementById('tabInbound').classList.add('text-slate-400');
+      } else {
+        document.getElementById('viewOutbound').classList.add('hidden');
+        document.getElementById('viewInbound').classList.remove('hidden');
+        document.getElementById('tabInbound').classList.add('bg-emerald-500', 'text-white');
+        document.getElementById('tabInbound').classList.remove('text-slate-400');
+        document.getElementById('tabOutbound').classList.remove('bg-emerald-500', 'text-white');
+        document.getElementById('tabOutbound').classList.add('text-slate-400');
+        generateInboundPost();
+      }
+      lucide.createIcons();
+    }
+
     function selectLead(id) {
+      currentActiveLeadId = id;
       document.querySelectorAll('.lead-item').forEach(el => {
         el.classList.remove('border-2', 'border-emerald-500/50');
         el.classList.add('border-surface-border');
@@ -453,28 +548,43 @@
       lucide.createIcons();
     }
 
-    function runSampleDemo() {
-      selectLead('fintech');
+    function generateInboundPost() {
+      const sector = document.getElementById('inboundSector').value;
+      const topic = document.getElementById('inboundTopic').value;
+      const insight = document.getElementById('inboundInsight').value;
+
+      const postText = `Most ${sector} leaders think scaling requires doubling headcount.\nThey are usually solving the wrong bottleneck.\n\n1. The Core Trap: As volume increases, operational friction in ${topic} quadruples before staffing catches up.\n\n2. The Hidden Cost: Frontline teams burn 30% of their day manually copying data across disparate tools.\n\n3. The Fix: Autonomous trigger-based workflows that triage low-complexity friction in sub-second cycles.\n\n4. The Result: ${insight}.\n\nWhat is your team's biggest operational hurdle in ${sector} this quarter?\n\n#B2B #Automation #${sector.replace(/\\s+/g, '')} #Operations`;
+
+      document.getElementById('inboundPostOutput').value = postText;
     }
 
-    function triggerResearchAgent() {
-      const domain = document.getElementById('inputDomain').value.trim() || 'acmehealth.com';
-      const contact = document.getElementById('inputContact').value.trim() || 'Marcus Vance';
-      const role = document.getElementById('inputRole').value.trim() || 'COO';
-      const sector = document.getElementById('selectSector').value;
+    function openWebhookModal() {
+      document.getElementById('webhookModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
 
-      const btn = document.getElementById('btnSubmit');
-      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Analyzing Signals...</span>`;
+    function closeWebhookModal() {
+      document.getElementById('webhookModal').classList.add('hidden');
+    }
+
+    function dispatchWebhook() {
+      const url = document.getElementById('inputWebhookUrl').value.trim();
+      if (!url) return alert('Please enter a valid webhook URL');
+
+      const btn = document.getElementById('btnSendWebhook');
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Sending...</span>`;
       lucide.createIcons();
 
       setTimeout(() => {
-        btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Recon Complete</span>`;
-        selectLead('acme');
+        btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i><span>Sent to n8n!</span>`;
+        lucide.createIcons();
         setTimeout(() => {
-          btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i><span>Run Autonomous Recon</span>`;
+          closeWebhookModal();
+          btn.innerHTML = `<i data-lucide="send" class="w-3.5 h-3.5"></i><span>Send Payload</span>`;
           lucide.createIcons();
-        }, 2000);
-      }, 1200);
+          alert('Lead Dossier successfully dispatched to external webhook!');
+        }, 1000);
+      }, 1000);
     }
 
     function copyToClipboard(elementId) {

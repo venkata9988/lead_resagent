@@ -11,6 +11,7 @@ from pydantic import BaseModel
 
 from src.models.schema import NormalizedLeadSignal, PlatformSource, SignalType, CompanyInfo, ContactInfo
 from src.tools.connectors.web_scraper import WebDomainConnector
+from src.tools.connectors.webhook_exporter import WebhookExporter
 from src.agents.orchestrator import LeadOrchestratorAgent
 
 app = FastAPI(
@@ -22,12 +23,22 @@ app = FastAPI(
 frontend_dir = os.path.join(os.path.dirname(__file__), "..", "frontend")
 scraper = WebDomainConnector()
 orchestrator = LeadOrchestratorAgent()
+webhook_exporter = WebhookExporter()
 
 class DomainResearchRequest(BaseModel):
     domain: str
     contact_name: str
     contact_title: str
     industry: Optional[str] = "Technology"
+
+class InboundPostRequest(BaseModel):
+    topic: str
+    sector: str
+    key_insight: str
+
+class WebhookExportRequest(BaseModel):
+    webhook_url: str
+    payload: Dict[str, Any]
 
 @app.get("/")
 async def root():
@@ -45,6 +56,21 @@ async def health_check():
         "version": "1.2.0",
         "environment": os.getenv("ENVIRONMENT", "development")
     }
+
+@app.post("/api/v1/content/linkedin-post")
+async def create_inbound_post(req: InboundPostRequest):
+    """Generates an authority-building LinkedIn post and 5-slide carousel outline."""
+    return orchestrator.generate_inbound_post(
+        topic=req.topic,
+        sector=req.sector,
+        key_insight=req.key_insight
+    )
+
+@app.post("/api/v1/export/webhook")
+async def export_to_webhook(req: WebhookExportRequest):
+    """Dispatches lead dossier and generated pitches to an n8n, Zapier, or custom webhook."""
+    result = await webhook_exporter.dispatch(req.webhook_url, req.payload)
+    return result
 
 @app.post("/api/v1/research/domain")
 async def research_domain(req: DomainResearchRequest):

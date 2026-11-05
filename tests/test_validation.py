@@ -1,13 +1,14 @@
 """
 Pre-Flight Unit and Regression Test Suite (Zero-Dependency Python unittest).
-Validates schemas, anti-hallucination checks, and anti-spam constraints
-before execution or deployment.
+Validates schemas, anti-hallucination checks, anti-spam constraints,
+inbound content synthesis, and webhook export payloads.
 """
 import unittest
 from src.models.schema import (
     NormalizedLeadSignal, PlatformSource, SignalType, CompanyInfo, ContactInfo, GeneratedOutreach
 )
 from src.tools.connectors.web_scraper import WebDomainConnector
+from src.agents.orchestrator import LeadOrchestratorAgent
 
 class TestLeadValidation(unittest.TestCase):
 
@@ -54,6 +55,18 @@ class TestLeadValidation(unittest.TestCase):
         
         self.assertIn("$5M", raw_source)
         self.assertNotIn(hallucinated_claim, raw_source)
+
+    def test_inbound_content_generation(self):
+        """Verify that inbound content generates 5 carousel slides and non-empty hook."""
+        orch = LeadOrchestratorAgent()
+        res = orch.generate_inbound_post(
+            topic="Patient Intake Bottlenecks",
+            sector="Healthcare",
+            key_insight="Eliminating hold times without adding payroll"
+        )
+        self.assertEqual(len(res["carousel_slides"]), 5)
+        self.assertTrue(res["hook"].startswith("Most Healthcare leaders"))
+        self.assertGreater(res["word_count"], 40)
 
 if __name__ == '__main__':
     unittest.main()

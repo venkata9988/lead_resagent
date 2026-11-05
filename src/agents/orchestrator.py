@@ -163,3 +163,38 @@ class LeadOrchestratorAgent:
             "dossier": intel["dossier"],
             "outreach": intel["outreach"]
         }
+
+    def generate_inbound_post(self, topic: str, sector: str, key_insight: str) -> Dict[str, Any]:
+        """
+        Inbound Authority & Social Selling Engine (Category 3).
+        Generates scroll-stopping LinkedIn posts, carousels, and contrarian perspectives
+        free of corporate jargon or generic AI clichés.
+        """
+        hook = f"Most {sector} leaders think scaling requires doubling headcount.\nThey are usually solving the wrong bottleneck."
+        
+        body_points = [
+            f"1. The Core Trap: As volume increases, operational friction in {topic} quadruples before staffing catches up.",
+            f"2. The Hidden Cost: Frontline teams burn 30% of their day manually copying data across disparate tools.",
+            f"3. The Fix: Autonomous trigger-based workflows that triage low-complexity friction in sub-second cycles.",
+            f"4. The Result: {key_insight} without ballooning fixed payroll."
+        ]
+        
+        body_text = "\n\n".join(body_points)
+        cta = f"What is your team's biggest operational hurdle in {sector} this quarter?"
+        
+        full_post = f"{hook}\n\n{body_text}\n\n{cta}\n\n#B2B #Automation #{sector.replace(' ', '')} #Operations"
+        
+        carousel_slides = [
+            {"slide": 1, "headline": f"The 2026 {sector} Growth Bottleneck", "subtext": "Why more headcount won't fix throughput."},
+            {"slide": 2, "headline": "The Hidden Time Sink", "subtext": "30% of day lost to repetitive cross-tool triage."},
+            {"slide": 3, "headline": "The Autonomous Pivot", "subtext": "Signal-based routing vs manual busywork."},
+            {"slide": 4, "headline": "Real-World Benchmark", "subtext": key_insight},
+            {"slide": 5, "headline": "Next Steps", "subtext": "Audit your handoffs before adding seats."}
+        ]
+        
+        return {
+            "full_post": full_post,
+            "hook": hook,
+            "word_count": len(full_post.split()),
+            "carousel_slides": carousel_slides
+        }

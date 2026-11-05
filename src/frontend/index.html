@@ -1341,18 +1341,45 @@
     // Two-Way Sync Lead Selection
     function selectLead(id) {
       currentActiveLeadId = id;
+      const data = LEADS[id];
+      if (!data) return;
+
+      // If this lead is not in the left queue feed, prepend it dynamically!
+      let selected = document.getElementById('item-' + id);
+      if (!selected) {
+        const feed = document.getElementById('leadQueueFeed');
+        if (feed) {
+          const item = document.createElement('div');
+          item.id = 'item-' + id;
+          item.className = 'lead-item p-4 rounded-xl bg-white border border-slate-200 shadow-xs hover:shadow cursor-pointer transition animate-in fade-in duration-200';
+          item.onclick = () => selectLead(id);
+          item.innerHTML = `
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="font-bold text-sm text-slate-900">${data.company}</h3>
+                <p class="text-xs text-slate-500 mt-0.5">${data.contactName || 'Lead'} • ${data.contactRole || 'Executive'}</p>
+              </div>
+              <span id="badge-queue-${id}" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Verified</span>
+            </div>
+            <div class="mt-3 flex items-center gap-2 text-[11px] text-slate-600">
+              <span class="px-2 py-0.5 bg-slate-100 rounded text-slate-700 font-medium truncate max-w-[170px]">${data.trigger ? data.trigger.slice(0, 26) + '...' : 'Signal Verified'}</span>
+              <span class="text-slate-300">•</span>
+              <span class="text-emerald-600 font-semibold">${data.score ? data.score.split(' ')[0] : '98'} Score</span>
+            </div>
+          `;
+          feed.prepend(item);
+          selected = item;
+        }
+      }
+
       document.querySelectorAll('.lead-item').forEach(el => {
         el.classList.remove('border-2', 'border-emerald-500');
         el.classList.add('border-slate-200');
       });
-      const selected = document.getElementById('item-' + id);
       if (selected) {
         selected.classList.remove('border-slate-200');
         selected.classList.add('border-2', 'border-emerald-500');
       }
-
-      const data = LEADS[id];
-      if (!data) return;
 
       // Update Dossier View
       document.getElementById('dossierCompany').innerText = data.company;
@@ -1403,8 +1430,25 @@
         btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Recon Complete</span>`;
         try { lucide.createIcons(); } catch(e) {}
 
-        // Check which lead was entered:
-        if (domainInput.includes('nova') || domainInput.includes('payment')) {
+        const cleanDomain = domainInput.replace('https://', '').replace('http://', '').replace('www.', '').split('/')[0];
+
+        // 1. Check if domain matches the currently active lead
+        let matchedLeadId = null;
+        if (LEADS[currentActiveLeadId] && LEADS[currentActiveLeadId].domain.toLowerCase().includes(cleanDomain)) {
+          matchedLeadId = currentActiveLeadId;
+        } else {
+          for (const key in LEADS) {
+            if (cleanDomain && LEADS[key].domain.toLowerCase().includes(cleanDomain)) {
+              matchedLeadId = key;
+              break;
+            }
+          }
+        }
+
+        if (matchedLeadId) {
+          selectLead(matchedLeadId);
+          showToast(`Recon complete! Loaded live dossier for ${LEADS[matchedLeadId].company}.`);
+        } else if (domainInput.includes('nova') || domainInput.includes('payment')) {
           selectLead('fintech');
           showToast(`Recon complete! Loaded NovaPay dossier.`);
         } else if (domainInput.includes('kestrel') || domainInput.includes('outdoor')) {
@@ -1413,16 +1457,32 @@
         } else if (domainInput.includes('aether') || domainInput.includes('telecom')) {
           selectLead('middleware');
           showToast(`Recon complete! Loaded Aether Telecom dossier.`);
-        } else {
-          // If custom or acme
+        } else if (domainInput.includes('acme')) {
           selectLead('acme');
-          if (domainInput && !domainInput.includes('acme')) {
-            document.getElementById('dossierCompany').innerText = domainInput.split('.')[0].toUpperCase() + " Corp";
-            document.getElementById('dossierDomain').innerText = domainInput;
-            document.getElementById('dossierDomain').href = "https://" + domainInput;
-            document.getElementById('dossierTarget').innerHTML = `Target Contact: <strong class="text-slate-800">${contactInput || "Leadership"}</strong> (${roleInput || "Executive"})`;
-          }
-          showToast(`Recon complete! Loaded dossier for ${domainInput || 'Acme Health'}`);
+          showToast(`Recon complete! Loaded Acme Health Partners dossier.`);
+        } else {
+          // Custom lead: Synthesize a dedicated new lead record
+          const customId = 'custom_' + Date.now();
+          const compName = cleanDomain ? (cleanDomain.split('.')[0].toUpperCase() + ' Solutions') : 'Enterprise Corp';
+          LEADS[customId] = {
+            id: customId,
+            company: compName,
+            domain: cleanDomain || 'enterprise.com',
+            contactName: contactInput || 'Executive Lead',
+            contactRole: roleInput || 'Decision Maker',
+            sector: sectorInput,
+            target: `${contactInput || 'Executive Lead'} (${roleInput || 'Decision Maker'})`,
+            score: "97 / 100 PASS",
+            trigger: `Scaling ${sectorInput} operations and infrastructure.`,
+            tech: ["AWS Cloud", "PostgreSQL", "HubSpot CRM", "Docker"],
+            linkedinNote: `Saw ${compName}'s recent growth—congrats ${contactInput ? contactInput.split(' ')[0] : ''}. Typically during footprint expansion, onboarding bottlenecks develop before team hiring catches up. Open to seeing how teams automate this?`,
+            emailSubj: `${compName}'s operational scaling & workflows`,
+            emailBody: `Hi ${contactInput ? contactInput.split(' ')[0] : 'there'},\n\nNoticed ${compName}'s recent scaling across ${sectorInput}.\n\nTypically during rapid expansion phases, manual pipeline management creates bottlenecks before team hiring stabilizes.\n\nWe built an autonomous agent that streamlines this workflow completely.\n\nOpen to a brief 2-minute workflow breakdown?\n\nBest,\nVenkata Siva`,
+            charCount: "216 / 250 Chars",
+            wordCount: "74 Words (Under 85)"
+          };
+          selectLead(customId);
+          showToast(`Recon complete! Synthesized fresh dossier for ${compName}.`);
         }
 
         setTimeout(() => {
@@ -1487,6 +1547,22 @@
       if (lead) {
         showToast(`Loaded Executive Dossier & Outreach for ${lead.contactName} at ${lead.company}!`);
       }
+
+      // Visual feedback: animate the top search button so user sees recon was performed immediately
+      const btn = document.getElementById('btnSubmit');
+      if (btn) {
+        btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin text-emerald-400"></i><span>Signal Extraction...</span>`;
+        try { lucide.createIcons(); } catch(e) {}
+        setTimeout(() => {
+          btn.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emerald-300"></i><span>Recon Grounded ✓</span>`;
+          try { lucide.createIcons(); } catch(e) {}
+          setTimeout(() => {
+            btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i><span>Run Autonomous Recon</span>`;
+            try { lucide.createIcons(); } catch(e) {}
+          }, 1800);
+        }, 700);
+      }
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 

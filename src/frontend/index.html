@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ProspectPulse | Autonomous B2B Lead Intelligence & Outbound Agent</title>
+  <title>ProspectPulse | Autonomous B2B AI Sales Agent & CRM Platform</title>
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
@@ -21,7 +21,7 @@
               900: '#064e3b'
             },
             surface: {
-              dark: '#090d16',
+              dark: '#080c14',
               card: '#0f172a',
               cardLight: '#1e293b',
               border: '#1e293b'
@@ -35,12 +35,12 @@
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #090d16;
+      background-color: #080c14;
       color: #f1f5f9;
     }
     .mono { font-family: 'JetBrains Mono', monospace; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #090d16; }
+    ::-webkit-scrollbar-track { background: #080c14; }
     ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #334155; }
   </style>
@@ -50,35 +50,46 @@
   <!-- Top App Navigation -->
   <header class="h-16 border-b border-surface-border bg-surface-dark/95 backdrop-blur px-6 flex items-center justify-between sticky top-0 z-50">
     <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 cursor-pointer" onclick="navigate('landing')">
         <i data-lucide="zap" class="w-5 h-5 text-white"></i>
       </div>
-      <div>
+      <div onclick="navigate('landing')" class="cursor-pointer">
         <div class="flex items-center gap-2">
           <span class="font-extrabold text-base tracking-tight text-white">Prospect<span class="text-emerald-400">Pulse</span></span>
-          <span class="px-2 py-0.5 text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">v1.2 Production</span>
+          <span class="px-2 py-0.5 text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">AI SDR Platform</span>
         </div>
-        <p class="text-[11px] text-slate-400">Autonomous B2B Outbound Intelligence Engine</p>
+        <p class="text-[11px] text-slate-400">Autonomous B2B Outbound, Lead Lists & Pipeline CRM</p>
       </div>
     </div>
 
-    <!-- Navigation View Switcher (Outbound vs Inbound Studio) -->
-    <div class="flex items-center bg-surface-card p-1 rounded-xl border border-surface-border text-xs">
-      <button onclick="switchTab('outbound')" id="tabOutbound" class="px-3.5 py-1.5 rounded-lg font-semibold bg-emerald-500 text-white transition flex items-center gap-1.5">
-        <i data-lucide="target" class="w-3.5 h-3.5"></i>
-        <span>Outbound SDR Queue</span>
+    <!-- Navigation Bar for All 4 Core Views -->
+    <nav class="hidden md:flex items-center bg-surface-card p-1 rounded-xl border border-surface-border text-xs">
+      <button onclick="navigate('landing')" id="nav-landing" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+        <i data-lucide="home" class="w-3.5 h-3.5"></i>
+        <span>Overview</span>
       </button>
-      <button onclick="switchTab('inbound')" id="tabInbound" class="px-3.5 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+      <button onclick="navigate('agent')" id="nav-agent" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold bg-emerald-500 text-white transition flex items-center gap-1.5">
         <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-        <span>Inbound Authority Studio</span>
+        <span>AI SDR Agent</span>
       </button>
-    </div>
+      <button onclick="navigate('lists')" id="nav-lists" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+        <i data-lucide="list-filter" class="w-3.5 h-3.5"></i>
+        <span>Lead Lists</span>
+      </button>
+      <button onclick="navigate('crm')" id="nav-crm" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+        <i data-lucide="kanban" class="w-3.5 h-3.5"></i>
+        <span>Pipeline CRM</span>
+      </button>
+    </nav>
 
     <!-- Right Controls -->
     <div class="flex items-center gap-3">
       <button onclick="openWebhookModal()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-2">
         <i data-lucide="share-2" class="w-3.5 h-3.5 text-blue-400"></i>
-        <span>n8n / Webhook Export</span>
+        <span class="hidden sm:inline">n8n Export</span>
+      </button>
+      <button onclick="navigate('landing')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 transition">
+        Pricing: $34/mo
       </button>
       <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-emerald-400">
         VS
@@ -86,13 +97,131 @@
     </div>
   </header>
 
-  <!-- View 1: Outbound Queue & Recon -->
-  <main id="viewOutbound" class="flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
+  <!-- ========================================== -->
+  <!-- VIEW 1: PUBLIC MARKETING LANDING PAGE      -->
+  <!-- ========================================== -->
+  <section id="viewLanding" class="hidden flex-1 flex flex-col">
+    <!-- Hero Section -->
+    <div class="relative py-20 px-6 max-w-6xl mx-auto text-center flex flex-col items-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-6">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+        <span>Next-Gen Autonomous Sales Development (2026)</span>
+      </div>
 
+      <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight max-w-4xl">
+        Replace a $50,000/yr SDR with an <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Autonomous AI Sales Agent</span>
+      </h1>
+
+      <p class="mt-6 text-base md:text-lg text-slate-400 max-w-2xl leading-relaxed">
+        ProspectPulse continuously discovers target accounts, analyzes hiring signals & tech stacks, drafts non-spam personalized pitches, and syncs meetings directly to your CRM.
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row gap-4 items-center">
+        <button onclick="navigate('agent')" class="px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-sm shadow-xl shadow-emerald-500/25 transition flex items-center gap-2">
+          <span>Launch AI Agent Workspace</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+        <button onclick="navigate('crm')" class="px-6 py-3 rounded-xl bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-300 font-semibold text-sm transition flex items-center gap-2">
+          <i data-lucide="kanban" class="w-4 h-4 text-emerald-400"></i>
+          <span>View Pipeline CRM Demo</span>
+        </button>
+      </div>
+
+      <!-- Feature Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 w-full text-left">
+        <div class="p-6 rounded-2xl bg-surface-card border border-surface-border">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4">
+            <i data-lucide="flame" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-base text-white">Signal-Driven Prospecting</h3>
+          <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+            Targets buyers when they are actively hiring or raising capital, yielding 4x higher response rates than cold blast emails.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-surface-card border border-surface-border">
+          <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 mb-4">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-base text-white">Zero-Cliché Copywriting</h3>
+          <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+            Strict algorithmic gates reject generic AI templates. Pitches reference actual tools and milestones in under 85 words.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-surface-card border border-surface-border">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-4">
+            <i data-lucide="kanban" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-base text-white">Built-in Kanban Pipeline</h3>
+          <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+            Manage your entire sales funnel from discovered leads to approved meetings inside one unified dashboard.
+          </p>
+        </div>
+      </div>
+
+      <!-- Transparent Pricing Tiers -->
+      <div class="mt-20 w-full max-w-4xl">
+        <h2 class="text-2xl font-extrabold text-white">Transparent, Credit-Friendly Pricing</h2>
+        <p class="text-xs text-slate-400 mt-1">Scale from solo founder to agency without massive upfront commitments.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 text-left">
+          <!-- Pro Plan ($34/mo) -->
+          <div class="p-8 rounded-3xl bg-surface-card border border-surface-border flex flex-col justify-between">
+            <div>
+              <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-300">Starter SDR</span>
+              <div class="mt-4 flex items-baseline gap-2">
+                <span class="text-4xl font-extrabold text-white">$34</span>
+                <span class="text-xs text-slate-400">/ month</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-2">For founders and consultants looking to book 5-10 client calls monthly.</p>
+              <ul class="mt-6 space-y-2.5 text-xs text-slate-300">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>300 Fully Researched Leads / Month</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Multi-Domain Adaptation (Healthcare, FinTech, Retail)</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>LinkedIn Notes + Cold Emails</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Built-in Pipeline CRM</span></li>
+              </ul>
+            </div>
+            <button onclick="navigate('agent')" class="mt-8 w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition">
+              Start Free Trial
+            </button>
+          </div>
+
+          <!-- Growth Plan ($99/mo) -->
+          <div class="p-8 rounded-3xl bg-gradient-to-b from-surface-card to-surface-cardLight border-2 border-emerald-500/50 flex flex-col justify-between relative shadow-2xl">
+            <div class="absolute -top-3 right-8 px-3 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-white uppercase tracking-wider">
+              Most Popular
+            </div>
+            <div>
+              <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Agency & Scale</span>
+              <div class="mt-4 flex items-baseline gap-2">
+                <span class="text-4xl font-extrabold text-white">$99</span>
+                <span class="text-xs text-slate-400">/ month</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-2">For high-growth agencies managing outbound for multiple client niches.</p>
+              <ul class="mt-6 space-y-2.5 text-xs text-slate-300">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>1,500 Researched Leads / Month</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Unlimited n8n & Zapier Webhook Sync</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Inbound Authority Social Selling Studio</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Multi-Account Pacing & Anti-Ban Protection</span></li>
+              </ul>
+            </div>
+            <button onclick="navigate('agent')" class="mt-8 w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-xs transition shadow-lg shadow-emerald-500/20">
+              Get Started Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- VIEW 2: AI SDR AGENT & RECON WORKSPACE    -->
+  <!-- ========================================== -->
+  <main id="viewAgent" class="flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
     <!-- Ingestion & Search Bar -->
     <section class="p-5 rounded-2xl bg-surface-card border border-surface-border shadow-xl">
       <div class="flex flex-col lg:flex-row gap-4 items-center">
-        <!-- Input URL -->
         <div class="flex-1 relative w-full">
           <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
             <i data-lucide="globe" class="w-4 h-4"></i>
@@ -102,7 +231,6 @@
             class="w-full pl-10 pr-4 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
         </div>
 
-        <!-- Target Contact -->
         <div class="w-full lg:w-56 relative">
           <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
             <i data-lucide="user" class="w-4 h-4"></i>
@@ -112,7 +240,6 @@
             class="w-full pl-10 pr-4 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
         </div>
 
-        <!-- Role / Title -->
         <div class="w-full lg:w-56 relative">
           <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
             <i data-lucide="briefcase" class="w-4 h-4"></i>
@@ -122,7 +249,6 @@
             class="w-full pl-10 pr-4 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
         </div>
 
-        <!-- Sector Selector -->
         <div class="w-full lg:w-48 relative">
           <select id="selectSector" class="w-full px-3.5 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition appearance-none">
             <option value="Healthcare">Healthcare & Life Sci</option>
@@ -132,7 +258,6 @@
           </select>
         </div>
 
-        <!-- Submit Button -->
         <button onclick="triggerResearchAgent()" id="btnSubmit" class="w-full lg:w-auto px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-semibold rounded-xl text-sm shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition duration-150">
           <i data-lucide="sparkles" class="w-4 h-4"></i>
           <span>Run Autonomous Recon</span>
@@ -140,10 +265,9 @@
       </div>
     </section>
 
-    <!-- Split-Screen Review Queue & Dossier Inspector -->
+    <!-- Split Screen: Review Queue & Active Dossier -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
-
-      <!-- Left Column: Queue & Feed (4 Cols) -->
+      <!-- Left Column: Lead Queue Feed (4 Cols) -->
       <div class="lg:col-span-4 flex flex-col gap-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
@@ -153,7 +277,6 @@
           <span class="text-xs text-slate-500">Auto-Refreshed</span>
         </div>
 
-        <!-- Feed List -->
         <div id="leadQueueFeed" class="flex flex-col gap-3 overflow-y-auto max-h-[720px] pr-1">
           <div onclick="selectLead('acme')" id="item-acme" class="lead-item p-4 rounded-xl bg-surface-card border-2 border-emerald-500/50 hover:border-emerald-500 cursor-pointer transition shadow-md">
             <div class="flex items-start justify-between">
@@ -219,7 +342,6 @@
 
       <!-- Right Column: Active Lead Dossier & Deliverables (8 Cols) -->
       <div class="lg:col-span-8 flex flex-col gap-6">
-
         <div class="p-6 rounded-2xl bg-surface-card border border-surface-border shadow-xl">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-surface-border">
             <div>
@@ -279,7 +401,7 @@
             <span class="text-[11px] text-emerald-400 font-medium">Strict Anti-Cliché Verified</span>
           </div>
 
-          <!-- 1. LinkedIn Connection Note -->
+          <!-- LinkedIn Connection Note -->
           <div class="space-y-2">
             <div class="flex items-center justify-between text-xs">
               <span class="font-semibold text-slate-300 flex items-center gap-1.5">
@@ -297,7 +419,7 @@
             </div>
           </div>
 
-          <!-- 2. Cold Email -->
+          <!-- Cold Email -->
           <div class="space-y-2">
             <div class="flex items-center justify-between text-xs">
               <span class="font-semibold text-slate-300 flex items-center gap-1.5">
@@ -326,9 +448,9 @@
             </div>
 
             <div class="flex items-center gap-3">
-              <button onclick="openWebhookModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-1.5">
-                <i data-lucide="share-2" class="w-3.5 h-3.5 text-blue-400"></i>
-                <span>Send to n8n Webhook</span>
+              <button onclick="addCurrentLeadToCRM()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-1.5">
+                <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span>Move to Pipeline CRM</span>
               </button>
               <button onclick="approveAndDispatch()" id="btnDispatch" class="px-5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
                 <i data-lucide="send" class="w-3.5 h-3.5"></i>
@@ -342,56 +464,158 @@
     </div>
   </main>
 
-  <!-- View 2: Inbound Authority & Social Selling Studio (Category 3) -->
-  <main id="viewInbound" class="hidden flex-1 max-w-[1400px] w-full mx-auto p-6 flex flex-col gap-6">
-    <div class="p-6 rounded-2xl bg-surface-card border border-surface-border shadow-xl">
-      <div class="flex items-center justify-between pb-5 border-b border-surface-border">
-        <div>
-          <h2 class="text-lg font-bold text-white">Inbound Authority & Social Selling Studio</h2>
-          <p class="text-xs text-slate-400 mt-1">Generate high-converting, scroll-stopping LinkedIn posts & carousel outlines without corporate fluff.</p>
-        </div>
-        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Category 3 Social Agent</span>
+  <!-- ========================================== -->
+  <!-- VIEW 3: LEAD LISTS & SMART FINDER         -->
+  <!-- ========================================== -->
+  <main id="viewLists" class="hidden flex-1 max-w-[1500px] w-full mx-auto p-6 flex flex-col gap-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <h2 class="text-xl font-bold text-white">Lead Lists & Target Segments</h2>
+        <p class="text-xs text-slate-400 mt-1">Organize prospect pools, filter by industry signals, and run bulk autonomous enrichment.</p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
-        <!-- Input Form (5 cols) -->
-        <div class="lg:col-span-5 flex flex-col gap-4">
-          <div>
-            <label class="text-xs font-semibold text-slate-300 block mb-1.5">Industry Sector</label>
-            <select id="inboundSector" class="w-full px-3.5 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
-              <option value="Healthcare">Healthcare & Clinical Networks</option>
-              <option value="Banking & FinTech">Banking & Payment Infrastructure</option>
-              <option value="Retail & E-Commerce">Retail & E-Commerce Operations</option>
-              <option value="Middleware & Enterprise IT">Middleware & Distributed Systems</option>
-            </select>
-          </div>
+      <div class="flex items-center gap-3">
+        <button onclick="alert('CSV Lead List uploaded successfully!')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-surface-card hover:bg-surface-cardLight border border-surface-border text-slate-200 transition flex items-center gap-2">
+          <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+          <span>Import CSV</span>
+        </button>
+        <button onclick="createCustomList()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg shadow-emerald-500/20 transition flex items-center gap-2">
+          <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i>
+          <span>Create New List</span>
+        </button>
+      </div>
+    </div>
 
-          <div>
-            <label class="text-xs font-semibold text-slate-300 block mb-1.5">Core Operational Topic / Pain Point</label>
-            <input id="inboundTopic" type="text" value="Patient Intake Hold Times" class="w-full px-3.5 py-2.5 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-100 focus:outline-none focus:border-emerald-500">
+    <!-- Lists Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="p-6 rounded-2xl bg-surface-card border border-surface-border flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Healthcare</span>
+            <span class="text-xs text-slate-400">42 Leads</span>
           </div>
-
-          <div>
-            <label class="text-xs font-semibold text-slate-300 block mb-1.5">Key Contrarian Insight or Result</label>
-            <textarea id="inboundInsight" rows="3" class="w-full p-3.5 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-100 focus:outline-none focus:border-emerald-500 leading-relaxed">Cut front-desk phone wait times by 85% without adding a single administrative salary.</textarea>
-          </div>
-
-          <button onclick="generateInboundPost()" class="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-semibold rounded-xl text-xs shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition">
-            <i data-lucide="sparkles" class="w-4 h-4"></i>
-            <span>Synthesize Authority Post</span>
-          </button>
+          <h3 class="font-bold text-base text-white mt-3">Urgent Care & Regional Clinics</h3>
+          <p class="text-xs text-slate-400 mt-1">Hospitals and clinic groups opening 3+ locations in 2026.</p>
         </div>
+        <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
+          <span class="text-emerald-400 font-semibold">100% Enriched</span>
+          <button onclick="navigate('agent')" class="text-slate-300 hover:text-white flex items-center gap-1">Open ➔</button>
+        </div>
+      </div>
 
-        <!-- Output Canvas (7 cols) -->
-        <div class="lg:col-span-7 flex flex-col gap-4">
-          <div class="flex items-center justify-between text-xs font-semibold text-slate-300">
-            <span>Generated LinkedIn Thought-Leadership Post</span>
-            <button onclick="copyToClipboard('inboundPostOutput')" class="px-2.5 py-1 text-[11px] font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 transition flex items-center gap-1">
-              <i data-lucide="copy" class="w-3 h-3"></i>
-              <span>Copy Post</span>
-            </button>
+      <div class="p-6 rounded-2xl bg-surface-card border border-surface-border flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">FinTech</span>
+            <span class="text-xs text-slate-400">28 Leads</span>
           </div>
-          <textarea id="inboundPostOutput" rows="12" class="w-full p-4 bg-surface-dark border border-surface-border rounded-xl text-xs text-slate-200 focus:outline-none focus:border-emerald-500 leading-relaxed font-sans"></textarea>
+          <h3 class="font-bold text-base text-white mt-3">Payment Rails & ISO 20022</h3>
+          <p class="text-xs text-slate-400 mt-1">European & US payment platforms upgrading core ledgers.</p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
+          <span class="text-blue-400 font-semibold">92% Enriched</span>
+          <button onclick="navigate('agent')" class="text-slate-300 hover:text-white flex items-center gap-1">Open ➔</button>
+        </div>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-surface-card border border-surface-border flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">Retail</span>
+            <span class="text-xs text-slate-400">65 Leads</span>
+          </div>
+          <h3 class="font-bold text-base text-white mt-3">Shopify Plus Scalebrands</h3>
+          <p class="text-xs text-slate-400 mt-1">E-commerce apparel & outdoor retailers with >$5M ARR.</p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
+          <span class="text-amber-400 font-semibold">Pending Approval</span>
+          <button onclick="navigate('agent')" class="text-slate-300 hover:text-white flex items-center gap-1">Open ➔</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- VIEW 4: INTERACTIVE PIPELINE & KANBAN CRM  -->
+  <!-- ========================================== -->
+  <main id="viewCRM" class="hidden flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <h2 class="text-xl font-bold text-white">Outbound Sales Pipeline & CRM Board</h2>
+        <p class="text-xs text-slate-400 mt-1">Track every deal stage from autonomous AI reconnaissance to booked sales calls.</p>
+      </div>
+
+      <div class="flex items-center gap-6 text-xs">
+        <div>Total Value: <strong class="text-white font-bold">$184,000</strong></div>
+        <div class="w-px h-4 bg-slate-800"></div>
+        <div>Active Meetings: <strong class="text-emerald-400 font-bold">7 Booked</strong></div>
+      </div>
+    </div>
+
+    <!-- Kanban Stages (5 Columns) -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 flex-1">
+      <!-- Col 1: Discovered -->
+      <div class="p-4 rounded-2xl bg-surface-card border border-surface-border flex flex-col gap-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+          <span class="font-bold text-xs text-slate-300">1. Discovered</span>
+          <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">12</span>
+        </div>
+        <div class="p-3.5 rounded-xl bg-surface-dark border border-slate-800 flex flex-col gap-1.5 shadow">
+          <h4 class="font-bold text-xs text-white">Apex Logistics Co.</h4>
+          <p class="text-[11px] text-slate-400">Marcus Sterling • VP Ops</p>
+          <span class="text-[10px] text-emerald-400 mt-1">Series A Hiring</span>
+        </div>
+      </div>
+
+      <!-- Col 2: AI Enriched -->
+      <div class="p-4 rounded-2xl bg-surface-card border border-surface-border flex flex-col gap-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+          <span class="font-bold text-xs text-blue-400">2. AI Enriched</span>
+          <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">4</span>
+        </div>
+        <div class="p-3.5 rounded-xl bg-surface-dark border border-blue-500/30 flex flex-col gap-1.5 shadow">
+          <h4 class="font-bold text-xs text-white">NovaPay Solutions</h4>
+          <p class="text-[11px] text-slate-400">Julian Scott • VP Payments</p>
+          <span class="text-[10px] text-blue-400 mt-1">ISO 20022 Pitch Ready</span>
+        </div>
+      </div>
+
+      <!-- Col 3: Approved & Contacted -->
+      <div class="p-4 rounded-2xl bg-surface-card border border-surface-border flex flex-col gap-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+          <span class="font-bold text-xs text-amber-400">3. Contacted</span>
+          <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">8</span>
+        </div>
+        <div class="p-3.5 rounded-xl bg-surface-dark border border-amber-500/30 flex flex-col gap-1.5 shadow">
+          <h4 class="font-bold text-xs text-white">Acme Health Partners</h4>
+          <p class="text-[11px] text-slate-400">Dr. Marcus Vance • COO</p>
+          <span class="text-[10px] text-amber-400 mt-1">LinkedIn Note Sent</span>
+        </div>
+      </div>
+
+      <!-- Col 4: Meeting Booked -->
+      <div class="p-4 rounded-2xl bg-surface-card border-2 border-emerald-500/40 flex flex-col gap-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+          <span class="font-bold text-xs text-emerald-400">4. Meeting Booked</span>
+          <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 font-bold">7</span>
+        </div>
+        <div class="p-3.5 rounded-xl bg-surface-dark border border-emerald-500/50 flex flex-col gap-1.5 shadow-lg shadow-emerald-500/10">
+          <h4 class="font-bold text-xs text-white">Kestrel Outdoor Goods</h4>
+          <p class="text-[11px] text-slate-300">Elena Rostova • Head Commerce</p>
+          <span class="text-[10px] text-emerald-400 font-semibold mt-1">Demo Call: Thu 2:30 PM</span>
+        </div>
+      </div>
+
+      <!-- Col 5: Closed Won -->
+      <div class="p-4 rounded-2xl bg-surface-card border border-surface-border flex flex-col gap-3">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+          <span class="font-bold text-xs text-purple-400">5. Closed Won</span>
+          <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400">$32k</span>
+        </div>
+        <div class="p-3.5 rounded-xl bg-surface-dark border border-purple-500/30 flex flex-col gap-1.5 shadow">
+          <h4 class="font-bold text-xs text-white">Aether Telecom</h4>
+          <p class="text-[11px] text-slate-400">Annual Contract: $32,000</p>
+          <span class="text-[10px] text-purple-400 mt-1">Signed via Agent Pitch</span>
         </div>
       </div>
     </div>
@@ -486,30 +710,32 @@
       }
     };
 
-    let currentActiveLeadId = 'acme';
+    function navigate(viewName) {
+      document.getElementById('viewLanding').classList.add('hidden');
+      document.getElementById('viewAgent').classList.add('hidden');
+      document.getElementById('viewLists').classList.add('hidden');
+      document.getElementById('viewCRM').classList.add('hidden');
 
-    function switchTab(tab) {
-      if (tab === 'outbound') {
-        document.getElementById('viewOutbound').classList.remove('hidden');
-        document.getElementById('viewInbound').classList.add('hidden');
-        document.getElementById('tabOutbound').classList.add('bg-emerald-500', 'text-white');
-        document.getElementById('tabOutbound').classList.remove('text-slate-400');
-        document.getElementById('tabInbound').classList.remove('bg-emerald-500', 'text-white');
-        document.getElementById('tabInbound').classList.add('text-slate-400');
-      } else {
-        document.getElementById('viewOutbound').classList.add('hidden');
-        document.getElementById('viewInbound').classList.remove('hidden');
-        document.getElementById('tabInbound').classList.add('bg-emerald-500', 'text-white');
-        document.getElementById('tabInbound').classList.remove('text-slate-400');
-        document.getElementById('tabOutbound').classList.remove('bg-emerald-500', 'text-white');
-        document.getElementById('tabOutbound').classList.add('text-slate-400');
-        generateInboundPost();
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('bg-emerald-500', 'text-white');
+        btn.classList.add('text-slate-400');
+      });
+
+      const activeNav = document.getElementById('nav-' + viewName);
+      if (activeNav) {
+        activeNav.classList.add('bg-emerald-500', 'text-white');
+        activeNav.classList.remove('text-slate-400');
       }
+
+      if (viewName === 'landing') document.getElementById('viewLanding').classList.remove('hidden');
+      if (viewName === 'agent') document.getElementById('viewAgent').classList.remove('hidden');
+      if (viewName === 'lists') document.getElementById('viewLists').classList.remove('hidden');
+      if (viewName === 'crm') document.getElementById('viewCRM').classList.remove('hidden');
+
       lucide.createIcons();
     }
 
     function selectLead(id) {
-      currentActiveLeadId = id;
       document.querySelectorAll('.lead-item').forEach(el => {
         el.classList.remove('border-2', 'border-emerald-500/50');
         el.classList.add('border-surface-border');
@@ -548,14 +774,14 @@
       lucide.createIcons();
     }
 
-    function generateInboundPost() {
-      const sector = document.getElementById('inboundSector').value;
-      const topic = document.getElementById('inboundTopic').value;
-      const insight = document.getElementById('inboundInsight').value;
+    function addCurrentLeadToCRM() {
+      alert('Lead successfully added to CRM Pipeline Stage: Approved!');
+      navigate('crm');
+    }
 
-      const postText = `Most ${sector} leaders think scaling requires doubling headcount.\nThey are usually solving the wrong bottleneck.\n\n1. The Core Trap: As volume increases, operational friction in ${topic} quadruples before staffing catches up.\n\n2. The Hidden Cost: Frontline teams burn 30% of their day manually copying data across disparate tools.\n\n3. The Fix: Autonomous trigger-based workflows that triage low-complexity friction in sub-second cycles.\n\n4. The Result: ${insight}.\n\nWhat is your team's biggest operational hurdle in ${sector} this quarter?\n\n#B2B #Automation #${sector.replace(/\\s+/g, '')} #Operations`;
-
-      document.getElementById('inboundPostOutput').value = postText;
+    function createCustomList() {
+      const name = prompt('Enter new lead list name:', 'Q4 Enterprise Targets');
+      if (name) alert(`List "${name}" created! You can now import leads.`);
     }
 
     function openWebhookModal() {

@@ -51,26 +51,26 @@
 
   <!-- Top App Navigation -->
   <header class="h-16 border-b border-slate-200 bg-white/95 backdrop-blur px-6 flex items-center justify-between sticky top-0 z-40 shadow-xs">
-    <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shadow-md shadow-emerald-500/20 cursor-pointer" onclick="navigate('landing')">
+    <div onclick="navigate('landing')" class="flex items-center gap-3 cursor-pointer group select-none" title="Return to Overview">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 group-hover:from-emerald-500 group-hover:to-teal-400 flex items-center justify-center shadow-md shadow-emerald-500/20 transition">
         <i data-lucide="zap" class="w-5 h-5 text-white"></i>
       </div>
-      <div onclick="navigate('landing')" class="cursor-pointer">
+      <div>
         <div class="flex items-center gap-2">
-          <span class="font-extrabold text-base tracking-tight text-slate-900">Prospect<span class="text-emerald-600">Pulse</span></span>
+          <span class="font-extrabold text-base tracking-tight text-slate-900 group-hover:text-emerald-700 transition">Prospect<span class="text-emerald-600">Pulse</span></span>
           <span id="headerPlanBadge" class="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full">Pro Trial Active</span>
         </div>
-        <p class="text-[11px] text-slate-500">Autonomous B2B Outbound, Lead Lists & Pipeline CRM</p>
+        <p class="text-[11px] text-slate-500 group-hover:text-slate-700 transition">Autonomous B2B Outbound, Lead Lists & Pipeline CRM</p>
       </div>
     </div>
 
     <!-- Navigation Bar for All 4 Core Views -->
     <nav class="hidden md:flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
-      <button onclick="navigate('landing')" id="nav-landing" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+      <button onclick="navigate('landing')" id="nav-landing" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold bg-white text-emerald-700 shadow-xs border border-slate-200 transition flex items-center gap-1.5">
         <i data-lucide="home" class="w-3.5 h-3.5"></i>
         <span>Overview</span>
       </button>
-      <button onclick="navigate('agent')" id="nav-agent" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold bg-white text-emerald-700 shadow-xs border border-slate-200 transition flex items-center gap-1.5">
+      <button onclick="navigate('agent')" id="nav-agent" class="nav-btn px-3.5 py-1.5 rounded-lg font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
         <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i>
         <span>AI SDR Agent</span>
       </button>
@@ -102,7 +102,7 @@
   <!-- ========================================== -->
   <!-- VIEW 1: PUBLIC MARKETING LANDING PAGE      -->
   <!-- ========================================== -->
-  <section id="viewLanding" class="hidden flex-1 flex flex-col bg-gradient-to-b from-white via-slate-50 to-slate-100">
+  <section id="viewLanding" class="flex-1 flex flex-col bg-gradient-to-b from-white via-slate-50 to-slate-100">
     <div class="relative py-20 px-6 max-w-6xl mx-auto text-center flex flex-col items-center">
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold mb-6 shadow-2xs">
         <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i>
@@ -260,7 +260,7 @@
   <!-- ========================================== -->
   <!-- VIEW 2: AI SDR AGENT & RECON WORKSPACE    -->
   <!-- ========================================== -->
-  <main id="viewAgent" class="flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
+  <main id="viewAgent" class="hidden flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col gap-6">
     <!-- Ingestion & Search Bar (Dynamic Two-Way Synced) -->
     <section class="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs">
       <div class="flex flex-col lg:flex-row gap-4 items-center">
@@ -3500,7 +3500,10 @@ KICKOFF MEETING:    Thursday, Nov 12, 2026 @ 10:00 AM EST (Google Meet)
       // Automated E2E Test & Deep Link Hash Router
       function checkUrlHash() {
         const hash = window.location.hash.replace('#', '');
-        if (!hash) return;
+        if (!hash) {
+          navigate('landing');
+          return;
+        }
         const params = new URLSearchParams(hash);
         if (params.get('view')) navigate(params.get('view'));
         if (params.get('lead')) selectLead(params.get('lead'));
